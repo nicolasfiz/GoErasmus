@@ -7,20 +7,25 @@ import Login from "./Components/login/login";
 import Register from "./Components/login/register";
 import Footer from "./Components/footer/footer";
 import React from 'react';
+import './App.css';
 
 function App() {
   return (
-    <>
+    <main id="app">
       <Navegador />
-      <Routes>
-        <Route path="" element={<Inicio />} />
-        <Route path="articulos" element={<Articulos />} />
-        <Route path="ciudades" element={<Ciudades />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-      </Routes>
-      <Footer />
-    </>
+      <main id="body">
+        <Routes>
+          <Route path="" element={<Inicio />} />
+          <Route path="articulos" element={<Articulos />} />
+          <Route path="ciudades" element={<Ciudades />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Routes>
+      </main>
+      <div class="footer">
+        <Footer />
+      </div>
+    </main>
   );
 }
 

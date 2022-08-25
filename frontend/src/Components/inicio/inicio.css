@@ -9,7 +9,6 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
-
 .boxHead{
     display: block;
     justify-content: center;
@@ -25,11 +24,34 @@
     border-radius: 10px;
     padding: 2vh;
     background-color: rgba(255, 255, 255, 0.5);
+    text-align: center;
 }
-
-.bluredForm{
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    padding: 2vh;
+.body{
+    text-align: center;
+    margin: 1vw;
+    margin-bottom: 10vw;
+}
+.texto{
+    padding: 1vw;
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+.texto2{
+    
+}
+.titulos{
+    margin-bottom: 2vh;
+}
+.contenedor{
+    display: flex;
+    justify-content: space-evenly;
+}
+.contenedor .texto{
+    padding: 1vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    text-align: justify;
+}
+h4{
+    color:rgb(194, 191, 191);
 }
