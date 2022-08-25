@@ -1,5 +1,6 @@
 import './inicio.css';
 import { FcCollaboration, FcOpenedFolder, FcGlobe, FcBullish } from "react-icons/fc";
+import { Link } from 'react-router-dom';
 
 function Inicio() {
   return (
@@ -49,6 +50,13 @@ function Inicio() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+      <section class="despedida">
+        <div class="texto">
+          <h2 class="titulos">Saber más</h2>
+          <p>Si deseas conocernos mejor y disfrutar de todos nuestros servicios puedes registrarte <Link to="/register" className='link-primary'>aquí</Link></p>
+          <p> </p>
         </div>
       </section>
     </>

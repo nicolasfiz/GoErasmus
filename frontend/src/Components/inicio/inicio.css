@@ -29,15 +29,15 @@
 .body{
     text-align: center;
     margin: 1vw;
-    margin-bottom: 10vw;
+    margin-bottom: 1vw;
+}
+.despedida{
+    text-align: center;
 }
 .texto{
     padding: 1vw;
     padding-left: 10vw;
     padding-right: 10vw;
-}
-.texto2{
-    
 }
 .titulos{
     margin-bottom: 2vh;
