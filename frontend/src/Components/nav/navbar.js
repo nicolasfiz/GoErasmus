@@ -5,16 +5,16 @@ import MyImage from "../../assets/mundobyn.png";
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { GrLogin } from "react-icons/gr";
+import {BiUser, BiUserPlus, BiUserCheck} from "react-icons/bi";
 import './navbar.css';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 function Navegador() {
   let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `login`;
-    navigate(path);
+  const routeChange = (dest) => {
+    //let path = `login`;
+    navigate(dest);
   }
 
   return (
@@ -29,7 +29,7 @@ function Navegador() {
           </Nav>
 
           <OverlayTrigger
-            key={'bottom'}
+            key={'Inicio Sesion'}
             placement={'bottom'}
             overlay={
               <Tooltip id={`tooltip-${'bottom'}`}>
@@ -37,7 +37,31 @@ function Navegador() {
               </Tooltip>
             }
           >
-            <Button variant="outline-dark" onClick={routeChange} className="rounded-circle custom-button"><GrLogin /></Button>
+            <Button variant="outline-dark" onClick={() => routeChange("login")} className="rounded-circle custom-button"><BiUserPlus /></Button>
+          </OverlayTrigger>
+
+          <OverlayTrigger
+            key={'Perfil'}
+            placement={'bottom'}
+            overlay={
+              <Tooltip id={`tooltip-${'bottom'}`}>
+                Ver un perfil
+              </Tooltip>
+            }
+          >
+            <Button variant="outline-dark" onClick={() => routeChange("perfil/1")} className="rounded-circle custom-button"><BiUserCheck /></Button>
+          </OverlayTrigger>
+
+          <OverlayTrigger
+            key={'editPerfil'}
+            placement={'bottom'}
+            overlay={
+              <Tooltip id={`tooltip-${'bottom'}`}>
+                Acceder a mi perfil
+              </Tooltip>
+            }
+          >
+            <Button variant="outline-dark" onClick={() => routeChange("editPerfil")} className="rounded-circle custom-button"><BiUser /></Button>
           </OverlayTrigger>
         </Navbar.Collapse>
       </Container>

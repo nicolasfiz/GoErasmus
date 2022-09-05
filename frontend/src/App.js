@@ -7,6 +7,8 @@ import Login from "./Components/login/login";
 import Register from "./Components/login/register";
 import Footer from "./Components/footer/footer";
 import React from 'react';
+import Perfil from "./Components/perfil/perfil";
+import EditPerfil from "./Components/editPerfil/editPerfil.js"
 import './App.css';
 
 function App() {
@@ -20,9 +22,11 @@ function App() {
           <Route path="ciudades" element={<Ciudades />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="perfil/:token" element={<Perfil />} />
+          <Route path="editPerfil" element={<EditPerfil />} />
         </Routes>
       </main>
-      <div class="footer">
+      <div className="footer">
         <Footer />
       </div>
     </main>
