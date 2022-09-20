@@ -10,6 +10,8 @@ import React from 'react';
 import Perfil from "./Components/perfil/perfil";
 import EditPerfil from "./Components/editPerfil/editPerfil.js"
 import './App.css';
+import Buscador from "./Components/Buscador/Buscador.js";
+import Asignatura from "./Components/Asignatura/Asignatura.js";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="perfil/:token" element={<Perfil />} />
           <Route path="editPerfil" element={<EditPerfil />} />
+          <Route path="search" element={<Buscador />} />
+          <Route path="asignatura" element={<Asignatura />} />
         </Routes>
       </main>
       <div className="footer">
