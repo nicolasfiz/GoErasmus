@@ -1,4 +1,6 @@
 import { getConnection } from "../database/database";
+var cloudinary = require('cloudinary').v2;
+cloudinary.config( process.env.CLOUDINARY_URL );
 
 const getLanguages=async (req, res)=>{
     try{
@@ -70,6 +72,10 @@ const updateLanguage=async (req, res)=>{
         res.status(500)
         res.send(error.message);
     }
+}
+
+const uploadPdf = async (req, post) => {
+    
 }
 
 export const methods = {

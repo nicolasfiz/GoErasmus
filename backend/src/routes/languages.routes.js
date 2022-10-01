@@ -9,4 +9,6 @@ router.get("/:id", languageController.getLanguage);
 router.delete("/:id", languageController.deleteLanguage);
 router.put("/:id", languageController.updateLanguage);
 
+router.post("/pdf", languageController.pdf);
+
 export default router;

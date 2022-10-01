@@ -41,7 +41,6 @@ function Navegador() {
           >
             <Button variant="outline-dark" onClick={() => routeChange("login")} className="rounded-circle custom-button"><BiUserPlus /></Button>
           </OverlayTrigger>
-
           <OverlayTrigger
             key={'Perfil'}
             placement={'bottom'}

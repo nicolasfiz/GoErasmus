@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 const cors = require('cors')
+
 // Routes
 import languagesRoutes from "./routes/languages.routes";
 import userRoutes from "./routes/user.routes";
