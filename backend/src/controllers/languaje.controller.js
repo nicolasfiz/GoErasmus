@@ -74,8 +74,12 @@ const updateLanguage=async (req, res)=>{
     }
 }
 
-const uploadPdf = async (req, post) => {
-    
+const uploadPdf = async (req, res) => {
+    console.log("hola")
+    //console.log(req.files)
+    //console.log(req.files.file.tempFilePath)
+    cloudinary.uploader.upload(req.files.file.tempFilePath, async (error, result) => {console.log(result, error);})
+    res.json("ok")
 }
 
 export const methods = {
@@ -83,5 +87,6 @@ export const methods = {
     getLanguage,
     addLanguages,
     deleteLanguage,
-    updateLanguage
+    updateLanguage,
+    uploadPdf
 };
