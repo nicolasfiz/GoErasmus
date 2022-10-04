@@ -3,11 +3,11 @@ import { getConnection } from "../database/database";
 // Panel de Administracion
 const addCity = async (req, res) => {
     try {
-        const { nombre, informacion, url, pais_idPais } = req.body;
+        const { nombre, informacion, urlCabecera, pais_idPais } = req.body;
 
-        if (nombre === undefined || informacion === undefined || url === undefined || pais_idPais === undefined)
+        if (nombre === undefined || informacion === undefined || urlCabecera === undefined || pais_idPais === undefined)
             res.status(400).json({message: "Bad Request. Please fill all fields"});
-        const city = { nombre, informacion, url, pais_idPais };
+        const city = { nombre, informacion, urlCabecera, pais_idPais };
         const connection = await getConnection();
 
         await connection.query("INSERT INTO ciudad SET ?", city);
@@ -21,7 +21,7 @@ const addCity = async (req, res) => {
 const getCities = async (req, res) => {
     try {
         const connection = await getConnection();
-        const query = await connection.query(`SELECT c.idCiudad, c.nombre, p.nombre FROM ciudad c
+        const query = await connection.query(`SELECT c.idCiudad, c.nombre as nombreCiudad, p.nombre as nombrePais FROM ciudad c
                                                 LEFT JOIN Pais p ON (p.idPais = c.pais_idPais)`);
         res.join(query);
 
@@ -30,15 +30,28 @@ const getCities = async (req, res) => {
     }
 }
 
-// Ruta paises/id_pais/id_ciudad
+// Panel de Administracion
 const getCityById = async (req, res) => {
     try {
         const connection = await getConnection();
         const {id} = req.params;
-        const query = await connection.query(`SELECT nombre, url, informacion FROM ciudad
+        const query = await connection.query(`SELECT nombre, urlCabecera, informacion FROM ciudad
                                                 WHERE idCiudad=?`, id);
         res.join(query);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
 
+// Ruta paises/id_pais/id_ciudad
+const getUniversitiesByCityId = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const {id} = req.params;
+        const query = await connection.query(`SELECT u.nombre, u.urlLogo FROM Universidad u
+                                                JOIN Ciudad ON idCiudad = ciudad_idCiudad
+                                                WHERE idCiudad = ?`, id);
+        res.join(query);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -48,14 +61,14 @@ const getCityById = async (req, res) => {
 const updateCity = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nombre, informacion, url, pais_idPais } = req.body;
+        const { nombre, informacion, urlCabecera, pais_idPais } = req.body;
 
-        if(id === undefined || nombre === undefined || informacion === undefined || url === undefined || pais_idPais === undefined)
+        if(id === undefined || nombre === undefined || informacion === undefined || urlCabecera === undefined || pais_idPais === undefined)
             res.status(400).json({message:"Bad Request. Please fill all fields"});
 
-        const city = { nombre, informacion, url, pais_idPais };
+        const city = { nombre, informacion, urlCabecera, pais_idPais };
         const connection = await getConnection();
-        const query = await connection.query("UPDATE ciudad SET ? WHERE id = ?", [city, id]);
+        const query = await connection.query("UPDATE ciudad SET ? WHERE idCiudad = ?", [city, id]);
 
         res.json(query);
     } catch(error) {
@@ -68,7 +81,7 @@ const deleteCity = async (req, res) => {
     try {
         const {id} = req.params;
         const connection = await getConnection();
-        const query = await connection.query("DELETE FROM ciudad WHERE id = ?", id);
+        const query = await connection.query("DELETE FROM ciudad WHERE idCiudad = ?", id);
 
         res.json(query);
     } catch(error) {
@@ -80,6 +93,7 @@ export const methods = {
     addCity,
     getCities,
     getCityById,
+    getUniversitiesByCityId,
     updateCity,
     deleteCity
 };
