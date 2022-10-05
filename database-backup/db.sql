@@ -26,14 +26,17 @@ CREATE TABLE `archivo` (
   `idArchivo` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(45) NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
-  `url` varchar(255) NOT NULL,
+  `urlArchivo` varchar(255) NOT NULL,
   `usuario_idUsuario` int NOT NULL,
   `Asignatura_idAsignatura` int NOT NULL,
+  `votacion_idVotacion` int DEFAULT NULL,
   PRIMARY KEY (`idArchivo`),
-  UNIQUE KEY `url_archivo_UNIQUE` (`url`),
+  UNIQUE KEY `url_archivo_UNIQUE` (`urlArchivo`),
   KEY `fk_archivos_usuario1_idx` (`usuario_idUsuario`),
   KEY `fk_Archivo_Asignatura1_idx` (`Asignatura_idAsignatura`),
+  KEY `fk_archivo_votacion1_idx` (`votacion_idVotacion`),
   CONSTRAINT `fk_Archivo_Asignatura1` FOREIGN KEY (`Asignatura_idAsignatura`) REFERENCES `asignatura` (`idAsignatura`),
+  CONSTRAINT `fk_archivo_votacion1` FOREIGN KEY (`votacion_idVotacion`) REFERENCES `votacion` (`idVotacion`),
   CONSTRAINT `fk_archivos_usuario1` FOREIGN KEY (`usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -58,11 +61,17 @@ CREATE TABLE `articulo` (
   `idArticulo` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(45) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
-  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `urlCabecera` varchar(255) NOT NULL,
+  `esBorrador` tinyint NOT NULL DEFAULT '0',
+  `fechaUltimaModificacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fechaPublicacion` datetime DEFAULT NULL,
   `Ciudad_idCiudad` int NOT NULL,
+  `votacion_idVotacion` int DEFAULT NULL,
   PRIMARY KEY (`idArticulo`),
   KEY `fk_Articulo_Ciudad1_idx` (`Ciudad_idCiudad`),
-  CONSTRAINT `fk_Articulo_Ciudad1` FOREIGN KEY (`Ciudad_idCiudad`) REFERENCES `ciudad` (`idCiudad`)
+  KEY `fk_articulo_votacion1_idx` (`votacion_idVotacion`),
+  CONSTRAINT `fk_Articulo_Ciudad1` FOREIGN KEY (`Ciudad_idCiudad`) REFERENCES `ciudad` (`idCiudad`),
+  CONSTRAINT `fk_articulo_votacion1` FOREIGN KEY (`votacion_idVotacion`) REFERENCES `votacion` (`idVotacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -86,9 +95,12 @@ CREATE TABLE `asignatura` (
   `idAsignatura` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `Facultad_idfacultad` int NOT NULL,
+  `votacionPonderada_idVotacionPonderada` int DEFAULT NULL,
   PRIMARY KEY (`idAsignatura`),
   KEY `fk_Asignatura_Facultad1_idx` (`Facultad_idfacultad`),
-  CONSTRAINT `fk_Asignatura_Facultad1` FOREIGN KEY (`Facultad_idfacultad`) REFERENCES `facultad` (`idfacultad`)
+  KEY `fk_asignatura_votacionPonderada1_idx` (`votacionPonderada_idVotacionPonderada`),
+  CONSTRAINT `fk_Asignatura_Facultad1` FOREIGN KEY (`Facultad_idfacultad`) REFERENCES `facultad` (`idfacultad`),
+  CONSTRAINT `fk_asignatura_votacionPonderada1` FOREIGN KEY (`votacionPonderada_idVotacionPonderada`) REFERENCES `votacionponderada` (`idVotacionPonderada`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,10 +123,13 @@ DROP TABLE IF EXISTS `ciudad`;
 CREATE TABLE `ciudad` (
   `idCiudad` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
+  `informacion` varchar(255) NOT NULL,
+  `urlCabecera` varchar(255) NOT NULL,
   `pais_idPais` int NOT NULL,
   PRIMARY KEY (`idCiudad`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
   KEY `fk_ciudad_pais1_idx` (`pais_idPais`),
-  CONSTRAINT `fk_ciudad_pais1` FOREIGN KEY (`pais_idPais`) REFERENCES `pais` (`idPais`)
+  CONSTRAINT `fk_ciudad_pais1` FOREIGN KEY (`pais_idPais`) REFERENCES `pais` (`idPais`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -124,7 +139,7 @@ CREATE TABLE `ciudad` (
 
 LOCK TABLES `ciudad` WRITE;
 /*!40000 ALTER TABLE `ciudad` DISABLE KEYS */;
-INSERT INTO `ciudad` VALUES (1,'Varsovia',1),(2,'Bolonia',2);
+INSERT INTO `ciudad` VALUES (1,'Varsovia','','',1),(2,'Bolonia','','',2);
 /*!40000 ALTER TABLE `ciudad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,10 +153,16 @@ DROP TABLE IF EXISTS `comentario`;
 CREATE TABLE `comentario` (
   `idComentario` int NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(255) NOT NULL,
-  `Usuario_idUsuario` int NOT NULL,
+  `articulo_idArticulo` int DEFAULT NULL,
+  `asignatura_idAsignatura` int DEFAULT NULL,
+  `votacion_idVotacion` int DEFAULT NULL,
   PRIMARY KEY (`idComentario`),
-  KEY `fk_Comentario_Usuario1_idx` (`Usuario_idUsuario`),
-  CONSTRAINT `fk_Comentario_Usuario1` FOREIGN KEY (`Usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
+  KEY `fk_comentario_articulo1_idx` (`articulo_idArticulo`),
+  KEY `fk_comentario_asignatura1_idx` (`asignatura_idAsignatura`),
+  KEY `fk_comentario_votacion1_idx` (`votacion_idVotacion`),
+  CONSTRAINT `fk_comentario_articulo1` FOREIGN KEY (`articulo_idArticulo`) REFERENCES `articulo` (`idArticulo`),
+  CONSTRAINT `fk_comentario_asignatura1` FOREIGN KEY (`asignatura_idAsignatura`) REFERENCES `asignatura` (`idAsignatura`),
+  CONSTRAINT `fk_comentario_votacion1` FOREIGN KEY (`votacion_idVotacion`) REFERENCES `votacion` (`idVotacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -182,26 +203,30 @@ INSERT INTO `facultad` VALUES (1,'Facultad de electrónica',1),(2,'Facultad de a
 UNLOCK TABLES;
 
 --
--- Table structure for table `gamificacion`
+-- Table structure for table `galeriaimagenes`
 --
 
-DROP TABLE IF EXISTS `gamificacion`;
+DROP TABLE IF EXISTS `galeriaimagenes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `gamificacion` (
-  `idGamificacion` int NOT NULL AUTO_INCREMENT,
-  `cantidadPuntos` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`idGamificacion`)
+CREATE TABLE `galeriaimagenes` (
+  `idGaleriaImagenes` int NOT NULL AUTO_INCREMENT,
+  `urlImagen` varchar(255) NOT NULL,
+  `articulo_idArticulo` int NOT NULL,
+  PRIMARY KEY (`idGaleriaImagenes`),
+  UNIQUE KEY `urlImagen_UNIQUE` (`urlImagen`),
+  KEY `fk_imagenes_articulo1_idx` (`articulo_idArticulo`),
+  CONSTRAINT `fk_imagenes_articulo1` FOREIGN KEY (`articulo_idArticulo`) REFERENCES `articulo` (`idArticulo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `gamificacion`
+-- Dumping data for table `galeriaimagenes`
 --
 
-LOCK TABLES `gamificacion` WRITE;
-/*!40000 ALTER TABLE `gamificacion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gamificacion` ENABLE KEYS */;
+LOCK TABLES `galeriaimagenes` WRITE;
+/*!40000 ALTER TABLE `galeriaimagenes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `galeriaimagenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -256,34 +281,6 @@ LOCK TABLES `logro` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `logrogamificacion`
---
-
-DROP TABLE IF EXISTS `logrogamificacion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `logrogamificacion` (
-  `logros_idLogro` int NOT NULL,
-  `Gamificacion_idGamificacion` int NOT NULL,
-  `logroConseguido` tinyint NOT NULL DEFAULT '0',
-  PRIMARY KEY (`logros_idLogro`,`Gamificacion_idGamificacion`),
-  KEY `fk_gamificacion_logro_logros1_idx` (`logros_idLogro`),
-  KEY `fk_LogroGamificacion_Gamificacion1_idx` (`Gamificacion_idGamificacion`),
-  CONSTRAINT `fk_gamificacion_logro_logros1` FOREIGN KEY (`logros_idLogro`) REFERENCES `logro` (`idLogro`),
-  CONSTRAINT `fk_LogroGamificacion_Gamificacion1` FOREIGN KEY (`Gamificacion_idGamificacion`) REFERENCES `gamificacion` (`idGamificacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `logrogamificacion`
---
-
-LOCK TABLES `logrogamificacion` WRITE;
-/*!40000 ALTER TABLE `logrogamificacion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `logrogamificacion` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `notificacion`
 --
 
@@ -294,6 +291,7 @@ CREATE TABLE `notificacion` (
   `idNotificacion` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(45) NOT NULL,
   `mensaje` varchar(255) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idNotificacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -344,7 +342,9 @@ DROP TABLE IF EXISTS `pais`;
 CREATE TABLE `pais` (
   `idPais` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
-  PRIMARY KEY (`idPais`)
+  `urlBandera` varchar(255) NOT NULL,
+  PRIMARY KEY (`idPais`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -354,7 +354,7 @@ CREATE TABLE `pais` (
 
 LOCK TABLES `pais` WRITE;
 /*!40000 ALTER TABLE `pais` DISABLE KEYS */;
-INSERT INTO `pais` VALUES (1,'Polonia'),(2,'Italia');
+INSERT INTO `pais` VALUES (1,'Polonia',''),(2,'Italia','');
 /*!40000 ALTER TABLE `pais` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -418,6 +418,7 @@ DROP TABLE IF EXISTS `reporte`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reporte` (
   `idReporte` int NOT NULL AUTO_INCREMENT,
+  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Usuario_idUsuario` int NOT NULL,
   `TipoReporte_idTipoReporte` int NOT NULL,
   PRIMARY KEY (`idReporte`),
@@ -449,7 +450,7 @@ CREATE TABLE `rol` (
   `nombre` varchar(25) NOT NULL,
   PRIMARY KEY (`idRol`),
   UNIQUE KEY `nombre_rol_UNIQUE` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -458,6 +459,7 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
+INSERT INTO `rol` VALUES (6,'Administrador'),(3,'Aventurero'),(2,'Mochilero'),(1,'Novato'),(5,'Trotamundos'),(4,'Viajero Experto');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,11 +497,12 @@ DROP TABLE IF EXISTS `universidad`;
 CREATE TABLE `universidad` (
   `idUniversidad` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
+  `urlLogo` varchar(255) NOT NULL,
   `ciudad_idCiudad` int NOT NULL,
   PRIMARY KEY (`idUniversidad`),
   KEY `fk_universidad_ciudad1_idx` (`ciudad_idCiudad`),
   CONSTRAINT `fk_universidad_ciudad1` FOREIGN KEY (`ciudad_idCiudad`) REFERENCES `ciudad` (`idCiudad`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -508,7 +511,7 @@ CREATE TABLE `universidad` (
 
 LOCK TABLES `universidad` WRITE;
 /*!40000 ALTER TABLE `universidad` DISABLE KEYS */;
-INSERT INTO `universidad` VALUES (1,'Universidad Tecnológica de Varsovia',1),(2,'Universidad de Bolonia',2);
+INSERT INTO `universidad` VALUES (1,'Universidad Tecnológica de Varsovia','',1),(2,'Universidad de Bolonia','',2);
 /*!40000 ALTER TABLE `universidad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -528,20 +531,17 @@ CREATE TABLE `usuario` (
   `email` varchar(255) NOT NULL,
   `numeroTelefono` varchar(20) DEFAULT NULL,
   `contrasena` varchar(255) NOT NULL,
-  `genero` varchar(45) NOT NULL DEFAULT 'Indefinido',
   `urlFotoPerfil` varchar(255) DEFAULT NULL,
-  `facultad_idFacultad` int NOT NULL,
-  `Rol_idRol` int NOT NULL,
-  `gamificacion_idGamificacion` int NOT NULL,
+  `cantidadPuntos` int NOT NULL,
+  `Rol_idRol` int DEFAULT NULL,
+  `facultad_idfacultad` int DEFAULT NULL,
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `nombre_usuario_UNIQUE` (`nombreUsuario`),
   UNIQUE KEY `numeroTelefono_UNIQUE` (`numeroTelefono`),
-  KEY `fk_usuario_facultad1_idx` (`facultad_idFacultad`),
   KEY `fk_Usuario_Rol1_idx` (`Rol_idRol`),
-  KEY `fk_usuario_gamificacion1_idx` (`gamificacion_idGamificacion`),
-  CONSTRAINT `fk_usuario_facultad1` FOREIGN KEY (`facultad_idFacultad`) REFERENCES `facultad` (`idfacultad`),
-  CONSTRAINT `fk_usuario_gamificacion1` FOREIGN KEY (`gamificacion_idGamificacion`) REFERENCES `gamificacion` (`idGamificacion`),
+  KEY `fk_usuario_facultad1_idx` (`facultad_idfacultad`),
+  CONSTRAINT `fk_usuario_facultad1` FOREIGN KEY (`facultad_idfacultad`) REFERENCES `facultad` (`idfacultad`),
   CONSTRAINT `fk_Usuario_Rol1` FOREIGN KEY (`Rol_idRol`) REFERENCES `rol` (`idRol`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -552,8 +552,36 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Nico','',NULL,'nfiz','nicolasfiz@outlook.com',NULL,'1234','',NULL,1,0,0),(2,'Nico2','',NULL,'nfiz2','nicolasfiz@topdigital.com',NULL,'1234','',NULL,2,0,0);
+INSERT INTO `usuario` VALUES (1,'Nico','',NULL,'nfiz','nicolasfiz@outlook.com',NULL,'1234',NULL,0,0,1),(2,'Nico2','',NULL,'nfiz2','nicolasfiz@topdigital.com',NULL,'1234',NULL,0,0,2);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuariologro`
+--
+
+DROP TABLE IF EXISTS `usuariologro`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuariologro` (
+  `usuario_idUsuario` int NOT NULL,
+  `logro_idLogro` int NOT NULL,
+  PRIMARY KEY (`usuario_idUsuario`,`logro_idLogro`),
+  UNIQUE KEY `usuario_idUsuario_UNIQUE` (`usuario_idUsuario`),
+  KEY `fk_usuario_has_logro_logro1_idx` (`logro_idLogro`),
+  KEY `fk_usuario_has_logro_usuario1_idx` (`usuario_idUsuario`),
+  CONSTRAINT `fk_usuario_has_logro_logro1` FOREIGN KEY (`logro_idLogro`) REFERENCES `logro` (`idLogro`),
+  CONSTRAINT `fk_usuario_has_logro_usuario1` FOREIGN KEY (`usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuariologro`
+--
+
+LOCK TABLES `usuariologro` WRITE;
+/*!40000 ALTER TABLE `usuariologro` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuariologro` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -567,10 +595,7 @@ CREATE TABLE `votacion` (
   `idVotacion` int NOT NULL AUTO_INCREMENT,
   `numeroMeGusta` int NOT NULL DEFAULT '0',
   `numeroNoMeGusta` int NOT NULL DEFAULT '0',
-  `Usuario_idUsuario` int NOT NULL,
-  PRIMARY KEY (`idVotacion`),
-  KEY `fk_Votacion_Usuario1_idx` (`Usuario_idUsuario`),
-  CONSTRAINT `fk_Votacion_Usuario1` FOREIGN KEY (`Usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
+  PRIMARY KEY (`idVotacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -582,6 +607,29 @@ LOCK TABLES `votacion` WRITE;
 /*!40000 ALTER TABLE `votacion` DISABLE KEYS */;
 /*!40000 ALTER TABLE `votacion` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `votacionponderada`
+--
+
+DROP TABLE IF EXISTS `votacionponderada`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `votacionponderada` (
+  `idVotacionPonderada` int NOT NULL AUTO_INCREMENT,
+  `nota` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idVotacionPonderada`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `votacionponderada`
+--
+
+LOCK TABLES `votacionponderada` WRITE;
+/*!40000 ALTER TABLE `votacionponderada` DISABLE KEYS */;
+/*!40000 ALTER TABLE `votacionponderada` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -592,4 +640,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-01 18:11:50
+-- Dump completed on 2022-10-05 19:26:15
