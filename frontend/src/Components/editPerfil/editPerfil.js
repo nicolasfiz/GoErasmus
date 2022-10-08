@@ -11,7 +11,8 @@ const EditPerfil = () => {
     const [nuevosD, setNuevos] = useState({
         nombre: '',
         email: '',
-        route: ''
+        file: '',
+        
     });
 
     useEffect(() => {
@@ -25,8 +26,8 @@ const EditPerfil = () => {
             });
     }, [params]);
 
-    const handleChanges = (event) => {
-        const { name, value } = event.target;
+    const handleChanges = ({target}) => {
+        const { name, value } = target;
         setNuevos({
             ...nuevosD,
             [name]: value,
@@ -38,11 +39,17 @@ const EditPerfil = () => {
         }
     }
     
+    const save = (event) =>{
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("file", )
+    }
+    
     return (
         <main className="main">
             {datos != null ? (
                 <>
-                    <EditForm datos={datos[0]} nuevosD={nuevosD} handleChanges={handleChanges} valido={valido}/>
+                    <EditForm datos={datos[0]} nuevosD={nuevosD} handleChanges={handleChanges} valido={valido} toSave={save}/>
                     {console.log(datos[0])}
                 </>
             ) : (<p>Cargando...</p>)}

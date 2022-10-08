@@ -25,7 +25,7 @@ const Perfil = () => {
                 {datos != null ? (
                     <>
                         <div className="apartado">
-                            {datos[0].route == null ? <img src={anonimo} width={171} height={180} alt="imagenUser" /> : <img src={datos[0].route} width={171} height={180} alt="imagenUser" />}
+                            {datos[0].urlFotoPerfil == null ? <img src={anonimo} width={171} height={180} alt="imagenUser" /> : <img src={datos[0].urlFotoPerfil} width={171} height={180} alt="imagenUser" />}
                         </div>
                         <section className="datos">
                             <div className="apartado">
@@ -38,7 +38,7 @@ const Perfil = () => {
                             </div>
                             <div className="apartado">
                                 <h3>Rango: </h3>
-                                <i><p>{datos[0].rango}</p></i>
+                                <i><p>{datos[0].rol}</p></i>
                             </div>
                             <div className="apartado">
                                 <h3>Donde ha estudidado:</h3>
