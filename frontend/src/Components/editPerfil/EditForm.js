@@ -6,23 +6,21 @@ import 'react-dropdown/style.css'
 import { useState, useEffect } from 'react';
 import perfilService from "../../services/user";
 
-const EditForm = ({ datos, nuevosD, handleChanges, toSave, valido }) => {
+const EditForm = ({ datos, nuevosD, ubicacion, handleChanges, toSave, valido, handleImage, handleUbicacion}) => {
     const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
     const [paises, setPaises] = useState([]);
     const [ciudades, setCiudades] = useState([])
     const [universidades, setUniversidades] = useState([])
     const [facultades, setFacultades] = useState([])
-    const [selectedPais, setSelectedPais] = useState(null)
-    const [selectedCiudad, setSelectedCiudad] = useState(null)
-    const [selectedUniversidad, setSelectedUniversidad] = useState(null)
-    const [selectedFacultad, setSelectedFacultad] = useState(null)
-
+    const [ciudad , setCiudad] = useState(datos.pais.length>0)
+    const [universidad, setUniversidad] = useState(datos.ciudad.length>0)
+    const [facultad, setFacultad] = useState(datos.universidad.length>0)
+    const [pais, setPais] =useState(true);
 
     useEffect(() => {
         perfilService
             .getPaises()
             .then(response => {
-                console.log(response)
                 setPaises(response);
             })
             .catch(error => {
@@ -30,23 +28,32 @@ const EditForm = ({ datos, nuevosD, handleChanges, toSave, valido }) => {
             });
     }, []);
 
-    const changePais = (elem) => {
-        perfilService.
-            getCiudades(elem.value).
-            then(result => {
+    const changePais = async (elem) => {
+        setPais(false)
+        setCiudad(false)
+        setUniversidad(false)
+        setFacultad(false)
+        perfilService
+            .getCiudades(elem.value)
+            .then(result => {
                 setCiudades(result);
-                setSelectedPais(elem.value);
+                handleUbicacion('pais', elem.value)
+                setPais(true)
+                setCiudad(true)
             })
             .catch(error =>
                 console.log(error)
             );
     }
     const changeCiudad = (elem) => {
-        perfilService.
-            getUniversidades(elem.value).
-            then(result => {
+        setUniversidad(false)
+        setFacultad(false)
+        perfilService
+            .getUniversidades(elem.value)
+            .then(result => {
                 setUniversidades(result);
-                setSelectedCiudad(elem.value);
+                handleUbicacion('ciudad', elem.value)
+                setUniversidad(true)
             })
             .catch(error =>
                 console.log(error)
@@ -54,18 +61,20 @@ const EditForm = ({ datos, nuevosD, handleChanges, toSave, valido }) => {
 
     }
     const changeUniversidad = (elem) => {
-        perfilService.
-            getFacultades(elem.value).
-            then(result => {
+        setFacultad(false)
+        perfilService
+            .getFacultades(elem.value)
+            .then(result => {
                 setFacultades(result);
-                setSelectedUniversidad(elem.value);
+                handleUbicacion('universidad',elem.value);
+                setFacultad(true)
             })
             .catch(error =>
                 console.log(error)
             );
     }
     const changeFacultad = (elem) => {
-        setSelectedFacultad(elem.value)
+        handleUbicacion('facultad', elem.value)
     }
     return (
         <form className='formPerfil' onSubmit={toSave}>
@@ -73,12 +82,12 @@ const EditForm = ({ datos, nuevosD, handleChanges, toSave, valido }) => {
                 {datos.urlFotoPerfil == null ? <img src={anonimo} width={171} height={180} alt="imagenUser" /> : <img src={datos.urlFotoPerfil} width={171} height={180} alt="imagenUser" />}
             </div>
             <div className='apartado'>
-                <input className='field' type="file" style={{ marginTop: "2vh" }} name="route" value={nuevosD.file} onChange={handleChanges} />
+                <input className='field' type="file" style={{ marginTop: "2vh" }} name="route" onChange={handleImage} />
             </div>
             <section className='campos'>
                 <div className="apartado">
                     <h3>Nombre de usuario: </h3>
-                    <input className='field' name="nombre" value={nuevosD.nombre} placeholder={datos.nombre} onChange={handleChanges} />
+                    <input className='field' name="nombre" value={nuevosD.nombre} placeholder={datos.nombre} onChange={handleChanges}/>
                     {nuevosD.nombre.length > 15 ? (<p className='error'>El nombre de usuario no puede tener mas de 15 caracteres</p>) : null}
                 </div>
                 <div className="apartado">
@@ -88,10 +97,10 @@ const EditForm = ({ datos, nuevosD, handleChanges, toSave, valido }) => {
                 </div>
                 <div className='apartado'>
                     <h3>Donde ha estudidado:</h3>
-                    <Dropdown className="dropdown" options={paises} name="pais" onChange={changePais} placeholder="Selecciona un país" />
-                    {selectedPais ? <Dropdown className="dropdown" options={ciudades} name="pais" onChange={changeCiudad} placeholder="Selecciona una ciudad" /> : null}
-                    {selectedCiudad ? <Dropdown className="dropdown" options={universidades} name="pais" onChange={changeUniversidad} placeholder="Selecciona una universidad" /> : null}
-                    {selectedUniversidad ? <Dropdown className="dropdown" options={facultades} name="pais" onChange={changeFacultad} placeholder="Selecciona un facultad" /> : null}
+                    {pais? <Dropdown className="dropdown" options={paises} value={ubicacion.pais} name="pais" onChange={changePais} placeholder="Selecciona un país"/> : null}
+                    {ciudad? <Dropdown className="dropdown" value={ubicacion.ciudad} options={ciudades} name="ciudad" onChange={changeCiudad} placeholder="Selecciona una ciudad" /> : null}
+                    {ciudad&&universidad ? <Dropdown className="dropdown" value={ubicacion.universidad} options={universidades} name="universidad" onChange={changeUniversidad} placeholder="Selecciona una universidad" /> : null}
+                    {ciudad&&universidad&&facultad ? <Dropdown className="dropdown" value={ubicacion.facultad} options={facultades} name="facultad" onChange={changeFacultad} placeholder="Selecciona un facultad" /> : null}
                 </div>
             </section>
             <Button type="submit" variant="dark" disabled={!valido}>Guardar</Button>

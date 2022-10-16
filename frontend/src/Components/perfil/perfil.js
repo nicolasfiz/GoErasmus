@@ -41,7 +41,7 @@ const Perfil = () => {
                                 <i><p>{datos[0].rol}</p></i>
                             </div>
                             <div className="apartado">
-                                <h3>Donde ha estudidado:</h3>
+                                <h3>Donde ha estudiado:</h3>
                                 <ul>
                                     <li>País: <i>{datos[0].pais}</i></li>
                                     <li>Ciudad: <i>{datos[0].ciudad}</i></li>

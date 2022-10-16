@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:4000/api/user/'
+const baseUrl = 'http://localhost:4000/api/user'
 
 const getDatos = (id) => {
     const request = axios.get(`${baseUrl}/getUser/${id}`)
@@ -32,13 +32,19 @@ const getFacultades = (universidad) => {
     return request.then(response => response.data)
 }
 
+const guardarDatos = (id, FormData) => {
+    const request = axios.put(`${baseUrl}/guardarDatos/${id}`, FormData)
+    return request.then(response => response.data)
+}
+
 const funciones = {
     getDatos,
     getImagen,
     getPaises,
     getCiudades,
     getUniversidades,
-    getFacultades
+    getFacultades,
+    guardarDatos
 }
 
 export default funciones;
