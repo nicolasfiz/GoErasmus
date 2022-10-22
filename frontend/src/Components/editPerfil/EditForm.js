@@ -6,16 +6,16 @@ import 'react-dropdown/style.css'
 import { useState, useEffect } from 'react';
 import perfilService from "../../services/user";
 
-const EditForm = ({ datos, nuevosD, ubicacion, handleChanges, toSave, valido, handleImage, handleUbicacion}) => {
+const EditForm = ({ datos, nuevosD, ubicacion, imagen, handleChanges, toSave, valido, handleImage, handleUbicacion }) => {
     const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
     const [paises, setPaises] = useState([]);
     const [ciudades, setCiudades] = useState([])
     const [universidades, setUniversidades] = useState([])
     const [facultades, setFacultades] = useState([])
-    const [ciudad , setCiudad] = useState(datos.pais.length>0)
-    const [universidad, setUniversidad] = useState(datos.ciudad.length>0)
-    const [facultad, setFacultad] = useState(datos.universidad.length>0)
-    const [pais, setPais] =useState(true);
+    const [ciudad, setCiudad] = useState(datos.pais.length > 0)
+    const [universidad, setUniversidad] = useState(datos.ciudad.length > 0)
+    const [facultad, setFacultad] = useState(datos.universidad.length > 0)
+    const [pais, setPais] = useState(true);
 
     useEffect(() => {
         perfilService
@@ -66,7 +66,7 @@ const EditForm = ({ datos, nuevosD, ubicacion, handleChanges, toSave, valido, ha
             .getFacultades(elem.value)
             .then(result => {
                 setFacultades(result);
-                handleUbicacion('universidad',elem.value);
+                handleUbicacion('universidad', elem.value);
                 setFacultad(true)
             })
             .catch(error =>
@@ -78,16 +78,18 @@ const EditForm = ({ datos, nuevosD, ubicacion, handleChanges, toSave, valido, ha
     }
     return (
         <form className='formPerfil' onSubmit={toSave}>
-            <div className="apartado">
+            <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
                 {datos.urlFotoPerfil == null ? <img src={anonimo} width={171} height={180} alt="imagenUser" /> : <img src={datos.urlFotoPerfil} width={171} height={180} alt="imagenUser" />}
-            </div>
-            <div className='apartado'>
-                <input className='field' type="file" style={{ marginTop: "2vh" }} name="route" onChange={handleImage} />
+                <label className='labelInput'>
+                    <p style={{color: '#4193ef', marginTop: '4px'}}>Cambiar foto de perfil</p>
+                    <input id="inputTag" className='input' type="file" name="route" onChange={handleImage} />
+                    {imagen? <p style={{color: '#4ba672'}}>{imagen.name}</p>:null}
+                </label>
             </div>
             <section className='campos'>
                 <div className="apartado">
                     <h3>Nombre de usuario: </h3>
-                    <input className='field' name="nombre" value={nuevosD.nombre} placeholder={datos.nombre} onChange={handleChanges}/>
+                    <input className='field' name="nombre" value={nuevosD.nombre} placeholder={datos.nombre} onChange={handleChanges} />
                     {nuevosD.nombre.length > 15 ? (<p className='error'>El nombre de usuario no puede tener mas de 15 caracteres</p>) : null}
                 </div>
                 <div className="apartado">
@@ -97,10 +99,11 @@ const EditForm = ({ datos, nuevosD, ubicacion, handleChanges, toSave, valido, ha
                 </div>
                 <div className='apartado'>
                     <h3>Donde ha estudidado:</h3>
-                    {pais? <Dropdown className="dropdown" options={paises} value={ubicacion.pais} name="pais" onChange={changePais} placeholder="Selecciona un país"/> : null}
-                    {ciudad? <Dropdown className="dropdown" value={ubicacion.ciudad} options={ciudades} name="ciudad" onChange={changeCiudad} placeholder="Selecciona una ciudad" /> : null}
-                    {ciudad&&universidad ? <Dropdown className="dropdown" value={ubicacion.universidad} options={universidades} name="universidad" onChange={changeUniversidad} placeholder="Selecciona una universidad" /> : null}
-                    {ciudad&&universidad&&facultad ? <Dropdown className="dropdown" value={ubicacion.facultad} options={facultades} name="facultad" onChange={changeFacultad} placeholder="Selecciona un facultad" /> : null}
+                    {pais ? <Dropdown className="dropdown" options={paises} value={ubicacion.pais} name="pais" onChange={changePais} placeholder="Selecciona un país" /> : null}
+                    {ciudad ? <Dropdown className="dropdown" value={ubicacion.ciudad} options={ciudades} name="ciudad" onChange={changeCiudad} placeholder="Selecciona una ciudad" /> : null}
+                    {ciudad && universidad ? <Dropdown className="dropdown" value={ubicacion.universidad} options={universidades} name="universidad" onChange={changeUniversidad} placeholder="Selecciona una universidad" /> : null}
+                    {ciudad && universidad && facultad ? <Dropdown className="dropdown" value={ubicacion.facultad} options={facultades} name="facultad" onChange={changeFacultad} placeholder="Selecciona un facultad" /> : null}
+                    {(!ubicacion.pais || !ubicacion.ciudad || !ubicacion.universidad || !ubicacion.facultad) ? <p className='error'>Debes seleccionar donde estudiaste</p> : null}
                 </div>
             </section>
             <Button type="submit" variant="dark" disabled={!valido}>Guardar</Button>

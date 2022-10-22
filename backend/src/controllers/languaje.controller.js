@@ -65,6 +65,7 @@ const updateLanguage=async (req, res)=>{
         }
 
         const language = { name, programers };
+        console.log(language)
         const connection = await getConnection();
         const result=await connection.query("UPDATE languages SET  ? where id = ?", [language, id]);
         res.json(result);

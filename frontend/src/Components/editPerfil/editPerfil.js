@@ -2,6 +2,7 @@ import perfilService from "../../services/user";
 import { useState, useEffect } from "react";
 import "./editPerfil.css";
 import EditForm from "./EditForm";
+import toast, { Toaster } from 'react-hot-toast';
 
 const EditPerfil = () => {
     const validEmail = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -31,6 +32,9 @@ const EditPerfil = () => {
                     universidad: response[0].universidad,
                     facultad: response[0].facultad
                 })
+                if(response[0].pais.length()===0||response[0].ciudad.length()===0||response[0].universidad.length()===0||response[0].facultad.length()===0){
+                    setValido(false);
+                }
             })
             .catch(error => {
                 console.log(error);
@@ -49,12 +53,29 @@ const EditPerfil = () => {
                 universidad: '',
                 facultad: ''
             })
+            setValido(false)
+        }else if(type==='ciudad'){
+            setUbicacion({
+                ...ubicacion,
+                ciudad: value,
+                universidad: '',
+                facultad: ''
+            })
+            setValido(false)
+        }else if(type ==='universidad'){
+            setUbicacion({
+                ...ubicacion,
+                universidad: value,
+                facultad: ''
+            })
+            setValido(false)
         }
         else {
             setUbicacion({
                 ...ubicacion,
                 [type]: value,
             })
+            setValido(true)
         }
 
     }
@@ -76,7 +97,7 @@ const EditPerfil = () => {
         event.preventDefault()
         const bodyFormData = new FormData()
         bodyFormData.append("email", nuevosD.email)
-        bodyFormData.append("nombreUsuario", nuevosD.nombre)
+        bodyFormData.append("nombre", nuevosD.nombre)
         bodyFormData.append("file", imagen)
         for (const property in ubicacion) {
             bodyFormData.append(property, ubicacion[property])
@@ -88,16 +109,18 @@ const EditPerfil = () => {
 
         perfilService
             .guardarDatos(params, bodyFormData)
-            .then(response => console.log(response))
+            .then(response => console.log("respuesta:",response))
             .catch(error => console.log(error))
+       toast.success("Los datos se han guardado correctamente")
     }
 
     return (
+        
         <main className="main">
+            <Toaster />
             {datos != null ? (
                 <>
-                    <EditForm datos={datos[0]} ubicacion={ubicacion} nuevosD={nuevosD} handleChanges={handleChanges} valido={valido} toSave={save} handleImage={handleImage} handleUbicacion={handleUbicacion} />
-                    {/*console.log(datos[0])*/}
+                    <EditForm datos={datos[0]} ubicacion={ubicacion} nuevosD={nuevosD} imagen={imagen} handleChanges={handleChanges} valido={valido} toSave={save} handleImage={handleImage} handleUbicacion={handleUbicacion} />
                 </>
             ) : (<p>Cargando...</p>)}
         </main>
