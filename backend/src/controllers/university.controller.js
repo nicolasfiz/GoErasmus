@@ -25,7 +25,6 @@ const getUniversities = async (req, res) => {
                                                 FROM Universidad u
                                                 LEFT JOIN Ciudad c ON (c.idCiudad = u.ciudad_idCiudad)`);
         res.join(query);
-
     } catch (error) {
         res.status(500).send(error.message);
     }

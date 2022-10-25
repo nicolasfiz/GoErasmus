@@ -1,6 +1,7 @@
 .head{
     display: flex;
-    background-image: url('C:\Users\nfiz\Desktop\ErasmusGo\frontend\src\assets\schueler-1920.jpg');
+    /*background-image: url('C:\Users\nfiz\Desktop\ErasmusGo\frontend\src\assets\schueler-1920.jpg');*/
+    background-image: url('C:\Users\Juanandarcas\Documents\0Proyectos\GoErasmus\frontend\src\assets\schueler-1920.jpg');
     flex-direction: column;
     justify-content: center;
     align-items: center;
