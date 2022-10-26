@@ -9,6 +9,7 @@ import {BiUser, BiUserPlus, BiUserCheck} from "react-icons/bi";
 import './navbar.css';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { GiProgression } from "react-icons/gi";
 
 function Navegador() {
   let navigate = useNavigate();
@@ -63,6 +64,18 @@ function Navegador() {
             }
           >
             <Button variant="outline-dark" onClick={() => routeChange("editPerfil")} className="rounded-circle custom-button"><BiUser /></Button>
+          </OverlayTrigger>
+
+          <OverlayTrigger
+            key={'Logros'}
+            placement={'bottom'}
+            overlay={
+              <Tooltip id={`tooltip-${'bottom'}`}>
+                Mi progreso
+              </Tooltip>
+            }
+          >
+            <Button variant="outline-dark" onClick={() => routeChange("progreso/1")} className="rounded-circle custom-button"><GiProgression /></Button>
           </OverlayTrigger>
         </Navbar.Collapse>
       </Container>

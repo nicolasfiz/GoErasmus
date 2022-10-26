@@ -108,8 +108,34 @@ const guardarDatos = async (req, res) => {
         res.status(500)
         res.send(error.message);
     }
-    //console.log(req.body)
-    //console.log(req.files.file.tempFilePath)
+}
+
+const getLogros = async (req, res) => {
+    try{
+        const connection = await getConnection()
+        const {id} = req.params
+        //Obtener rol del usuario
+        const rolQuery = await connection.query(`select r.idRol, r.nombre from usuario u join rol r on u.Rol_idRol=r.idRol where u.idUsuario=?;`, id);
+        const rol = rolQuery[0].nombre
+        const idRol = rolQuery[0].idRol
+        //logros usuario
+        const usuarioLogro = await connection.query(`select * from usuariologro where usuario_idusuario = ?;`, id);
+        const array = []
+        usuarioLogro.map(elem => array.push(elem.logro_idLogro))
+        const logrosConseguidos = await connection.query(`select descripcion from logro where idLogro in (?);`, [array]);
+        const logrosProximos = await connection.query(`select descripcion from logro where idLogro not in (?) AND rol_idRol = ?`, [array, idRol])
+        const cantidadLogrosRol = await connection.query(`select count(*) as cantidad from logro where rol_idRol = ?;`, idRol);
+        const cantidad = cantidadLogrosRol[0].cantidad;
+        const arrayConseguidos = []
+        const arrayProximos = []
+        logrosConseguidos.map(elem => arrayConseguidos.push(elem.descripcion))
+        logrosProximos.map(elem=> arrayProximos.push(elem.descripcion))
+        res.send({rol, cantidad, arrayConseguidos, arrayProximos})
+        
+    }catch(error){
+        res.status(500)
+        res.send(error.message)
+    }
 }
 
 export const methods = {
@@ -119,5 +145,6 @@ export const methods = {
     getCiudades,
     getUniversidades,
     getFacultades,
-    guardarDatos
+    guardarDatos,
+    getLogros
 };

@@ -12,6 +12,7 @@ import EditPerfil from "./Components/editPerfil/editPerfil.js"
 import './App.css';
 import Buscador from "./Components/Buscador/Buscador.js";
 import Asignatura from "./Components/Asignatura/Asignatura.js";
+import Logro from "./Components/Logro/logro";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="editPerfil" element={<EditPerfil />} />
           <Route path="search" element={<Buscador />} />
           <Route path="asignatura" element={<Asignatura />} />
+          <Route path="progreso/:token" element={<Logro />} />
         </Routes>
       </main>
       <div className="footer">

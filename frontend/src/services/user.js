@@ -37,6 +37,11 @@ const guardarDatos = (id, FormData) => {
     return request.then(response => response.data)
 }
 
+const getLogros = (id) => {
+    const request = axios.get(`${baseUrl}/logros/${id}`)
+    return request.then(response => response.data)
+}
+
 const funciones = {
     getDatos,
     getImagen,
@@ -44,7 +49,8 @@ const funciones = {
     getCiudades,
     getUniversidades,
     getFacultades,
-    guardarDatos
+    guardarDatos,
+    getLogros
 }
 
 export default funciones;
