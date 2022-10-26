@@ -2,7 +2,6 @@ import { getConnection } from "../database/database";
 var cloudinary = require('cloudinary').v2;
 cloudinary.config(process.env.CLOUDINARY_URL);
 
-//Cambiar query por los cambios de la bbdd
 const getUser = async (req, res) => {
     try {
         const connection = await getConnection();
@@ -138,6 +137,18 @@ const getLogros = async (req, res) => {
     }
 }
 
+// Panel de Administracion
+const resetPoints = async (req, res) => {
+    try{
+        const connection = await getConnection();
+        const query = await connection.query("SET SQL_SAFE_UPDATES = 0; UPDATE usuario SET cantidadPuntos = 0; SET SQL_SAFE_UPDATES = 1;");
+
+        res.json(query);
+    }catch(error){
+        res.status(500).send(error.message);
+    }
+}
+
 export const methods = {
     getUser,
     getPaises,
@@ -146,5 +157,6 @@ export const methods = {
     getUniversidades,
     getFacultades,
     guardarDatos,
-    getLogros
+    getLogros,
+    resetPoints
 };
