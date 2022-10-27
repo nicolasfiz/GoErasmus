@@ -1,7 +1,7 @@
 import { getConnection } from "../database/database";
+import config from '../config';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
-import config from '../config';
 const nodemailer = require('nodemailer');
 
 export const signUp = async (req, res) => {
@@ -9,15 +9,15 @@ export const signUp = async (req, res) => {
     try {
         const { nombre, apellido1, apellido2, nombreUsuario, email, contrasenaSinCifrar, contrasenaRepetida } = req.body;
 
-        // Checking that require data is filled
+        // Checking that the required data has been filled in and that the passwords match
         if (nombre === undefined || apellido1 === undefined || nombreUsuario === undefined ||
             email === undefined || contrasenaSinCifrar === undefined || contrasenaRepetida === undefined)
             return res.status(400).json({ message: "Bad Request. Please fill all fields" });
-        // Checking that passwords match
         else if (contrasenaSinCifrar !== contrasenaRepetida)
             return res.status(500).json({ message: "Passwords don't match"});
             const connection = await getConnection();
-        //Checking that there aren't any these email and username in bbdd already
+        
+        // Checking that both email and username are not already in the database
         let idUsername = await connection.query("SELECT idUsuario FROM usuario WHERE nombreUsuario = ?", nombreUsuario);
         if (idUsername.length !== 0)
             return res.status(500).json({message: "There is already an account with that username"});
@@ -25,31 +25,33 @@ export const signUp = async (req, res) => {
         let idEmail = await connection.query("SELECT idUsuario FROM usuario WHERE email = ?", email);
         if (idEmail.length !== 0)
             return res.status(500).json({message: "There is already an account with that email"});
+        
+        // ------------------------------------------------------------------------------------------------------------------ //
 
-        //Filling rest of properties
+        // Filling in the rest of the properties
         let cantidadPuntos = 0;
         let facultad_idfacultad = null;
         let numeroTelefono = null;
         let urlFotoPerfil = null;
-
         let {Rol_idRol, nombreRol} = await connection.query('SELECT idRol, nombre FROM Rol where nombre = "Novato"');
         
-        //Encrypting password
+        //Encrypting the password
         const  contrasena = await encryptPassword(contrasenaSinCifrar);
         
-        //Contructing data user
+        //Constructing the user to be added to the database and inserting it into the database
         const user = { nombre, apellido1, apellido2, nombreUsuario, email, numeroTelefono,
             contrasena, urlFotoPerfil, cantidadPuntos, Rol_idRol, facultad_idfacultad };
-        
-        //Inserting in bbdd
         await connection.query("INSERT INTO usuario SET ?", user);
 
-        // Generating token
+        // ------------------------------------------------------------------------------------------------------------------ //
+
+        // Generating the user token
         const idUsuario = await connection.query(`SELECT idUsuario FROM Usuario WHERE email = ?`, user.email);
         const token = jwt.sign({id: idUsuario, rol: nombreRol}, config.secret, {
-                expiresIn: 86400 //24 horas
+                expiresIn: 86400 //24 hours
         });
-         return res.json({token});
+
+        return res.json({token});
     } catch(error) {
         return res.status(500).send(error.message);
     }
@@ -58,54 +60,66 @@ export const signUp = async (req, res) => {
 export const signIn = async (req, res) => {
     const {email, password} = req.body;
     const connection = await getConnection();
+
+    // Checking that the email is in the database
     const emailFound = await connection.query('SELECT email FROM Usuario WHERE email = ?', email);
     if ( emailFound.length === 0)
         return res.status(400).json({ message: "Bad request. Email not found" });
+    
+    // Checking that the password matches the saved one
     const passwordDB = await connection.query('SELECT contrasena FROM Usuario WHERE email = ?', email);
     const matchPassword = await validatePassword(password, passwordDB[0].contrasena);
     if (!matchPassword)
         return res.status(400).json({ message: "Invalid password. Please try again!" });
+    
+    // Querying the data needed to generate the token
     const {idUsuario, nombreRol} = await connection.query(`SELECT u.idUsuario as idUsuario, r.nombre as nombreRol FROM Usuario u
                                                             JOIN Rol r ON r.idRol = u.Rol_idRol WHERE u.email = ?`, email);
+
+     // Generating the user token                                                        
     const token = jwt.sign({id: idUsuario, rol: nombreRol}, config.secret, {
         expiresIn: 86400 
     });
+
     return res.json({token: token});
 }
 
 export const sendPasswordtoUserEmail = async (req, res) => {
     const {email} = req.body;
     const connection = await getConnection();
+
+    // Checking that the email is in the database
     const emailFound = await connection.query("SELECT email FROM usuario WHERE email = ?", email);
     if (emailFound.length === 0)
         return res.status(400).json({message: "Bad request. That email isn't registered in the system."});
     
-    // Objeto de transporte
-    const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: config.email,
-              pass: config.email_pass
-            }
-    });
-
+    // Generating a random password to be mailed to the user and encrypting it to store it in the database
     const idUsuario = await connection.query("SELECT idUsuario FROM usuario WHERE email = ?", email);
-    console.log(idUsuario);
-    // Generating a random password and encrypting it
     const alphanumeric = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let autoGeneratedPassword = '';
     for (let i = 0; i < 8; i++)
         autoGeneratedPassword += alphanumeric[Math.floor(Math.random() * alphanumeric.length)];
     const contrasena = await encryptPassword(autoGeneratedPassword);
     await connection.query("update usuario set contrasena=? where idUsuario=?;", [contrasena, idUsuario[0].idUsuario]);
-    // Cuerpo del correo
-    const mensaje = "Usted ha solicitado una recuperacion de cuenta.\n" + 
-                    "Para acceder nuevamente a su cuenta, por favor introduzca la siguiente contraseña autogenerada: "  + autoGeneratedPassword +
-                    "\nUna vez iniciada la sesión, le recomendamos cambiarla por una nueva que sea más segura.\n" +
-                    "Saludos,\n\nEl equipo de GoERASMUS.";
 
+    // ------------------------------------------------------------------------------------------------------------------ //
     
-    // Objeto con las opciones
+    // Generating the transport object
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: config.email,
+            pass: config.email_pass
+        }
+    });
+
+    // Creating the body of the email message
+    const mensaje = "Usted ha solicitado una recuperacion de cuenta.\n" + 
+                "Para acceder nuevamente a su cuenta, por favor introduzca la siguiente contraseña autogenerada: " + autoGeneratedPassword +
+                "\nUna vez iniciada la sesión, le recomendamos cambiarla por una nueva que sea más segura.\n" +
+                "Saludos,\n\nEl equipo de GoERASMUS.";
+   
+    // Creating the object with the email options
     const mailOptions = {
         from: config.email,
         to: email,
@@ -113,16 +127,21 @@ export const sendPasswordtoUserEmail = async (req, res) => {
         text: mensaje
     };
 
-    //Envio del mensaje
+    //Sending the email to the user
     transporter.sendMail(mailOptions, function(error, info){
         if (error)
-          res.status(500).json({message: error});
-        res.json({ message: 'Email enviado: ' + info.response });
+          return res.status(500).json({message: error});
+        return res.json({ message: 'Email enviado: ' + info.response });
       });
 }
 
+
+
 const encryptPassword = async (password) => {
+
+    //Generating a salt of 10 iterations
     const salt = await bcrypt.genSalt(10);
+    // The password is returned hashed with salt added to it
     return await bcrypt.hash(password, salt);
 }
 
