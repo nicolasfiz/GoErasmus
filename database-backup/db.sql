@@ -95,12 +95,9 @@ CREATE TABLE `asignatura` (
   `idAsignatura` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `Facultad_idfacultad` int NOT NULL,
-  `votacionPonderada_idVotacionPonderada` int DEFAULT NULL,
   PRIMARY KEY (`idAsignatura`),
   KEY `fk_Asignatura_Facultad1_idx` (`Facultad_idfacultad`),
-  KEY `fk_asignatura_votacionPonderada1_idx` (`votacionPonderada_idVotacionPonderada`),
-  CONSTRAINT `fk_Asignatura_Facultad1` FOREIGN KEY (`Facultad_idfacultad`) REFERENCES `facultad` (`idfacultad`),
-  CONSTRAINT `fk_asignatura_votacionPonderada1` FOREIGN KEY (`votacionPonderada_idVotacionPonderada`) REFERENCES `votacionponderada` (`idVotacionPonderada`)
+  CONSTRAINT `fk_Asignatura_Facultad1` FOREIGN KEY (`Facultad_idfacultad`) REFERENCES `facultad` (`idfacultad`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -154,14 +151,14 @@ CREATE TABLE `comentario` (
   `idComentario` int NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(255) NOT NULL,
   `articulo_idArticulo` int DEFAULT NULL,
-  `asignatura_idAsignatura` int DEFAULT NULL,
   `votacion_idVotacion` int DEFAULT NULL,
+  `usuario_idUsuario` int NOT NULL,
   PRIMARY KEY (`idComentario`),
   KEY `fk_comentario_articulo1_idx` (`articulo_idArticulo`),
-  KEY `fk_comentario_asignatura1_idx` (`asignatura_idAsignatura`),
   KEY `fk_comentario_votacion1_idx` (`votacion_idVotacion`),
+  KEY `fk_comentario_usuario1_idx` (`usuario_idUsuario`),
   CONSTRAINT `fk_comentario_articulo1` FOREIGN KEY (`articulo_idArticulo`) REFERENCES `articulo` (`idArticulo`),
-  CONSTRAINT `fk_comentario_asignatura1` FOREIGN KEY (`asignatura_idAsignatura`) REFERENCES `asignatura` (`idAsignatura`),
+  CONSTRAINT `fk_comentario_usuario1` FOREIGN KEY (`usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`),
   CONSTRAINT `fk_comentario_votacion1` FOREIGN KEY (`votacion_idVotacion`) REFERENCES `votacion` (`idVotacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -203,33 +200,6 @@ INSERT INTO `facultad` VALUES (1,'Facultad de electrónica',1),(2,'Facultad de a
 UNLOCK TABLES;
 
 --
--- Table structure for table `galeriaimagenes`
---
-
-DROP TABLE IF EXISTS `galeriaimagenes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `galeriaimagenes` (
-  `idGaleriaImagenes` int NOT NULL AUTO_INCREMENT,
-  `urlImagen` varchar(255) NOT NULL,
-  `articulo_idArticulo` int NOT NULL,
-  PRIMARY KEY (`idGaleriaImagenes`),
-  UNIQUE KEY `urlImagen_UNIQUE` (`urlImagen`),
-  KEY `fk_imagenes_articulo1_idx` (`articulo_idArticulo`),
-  CONSTRAINT `fk_imagenes_articulo1` FOREIGN KEY (`articulo_idArticulo`) REFERENCES `articulo` (`idArticulo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `galeriaimagenes`
---
-
-LOCK TABLES `galeriaimagenes` WRITE;
-/*!40000 ALTER TABLE `galeriaimagenes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `galeriaimagenes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `languages`
 --
 
@@ -267,8 +237,11 @@ CREATE TABLE `logro` (
   `descripcion` varchar(255) NOT NULL,
   `cantidadPuntos` int NOT NULL DEFAULT '0',
   `url` varchar(255) NOT NULL,
-  PRIMARY KEY (`idLogro`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `rol_idRol` int NOT NULL,
+  PRIMARY KEY (`idLogro`,`rol_idRol`),
+  KEY `fk_logro_rol1_idx` (`rol_idRol`),
+  CONSTRAINT `fk_logro_rol1` FOREIGN KEY (`rol_idRol`) REFERENCES `rol` (`idRol`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,6 +250,7 @@ CREATE TABLE `logro` (
 
 LOCK TABLES `logro` WRITE;
 /*!40000 ALTER TABLE `logro` DISABLE KEYS */;
+INSERT INTO `logro` VALUES (1,'email','Confirmar email',5,'a',1),(2,'perfil','Caracteristicas de perfil seleccionadas',5,'a',1),(3,'foto','Foto perfil seleccionada',5,'a',1),(4,'1 aportaciones','Realizar al menos una aportación',15,'a',2),(5,'1 votos','Recibir menos un voto positivo',20,'a',2),(6,'concurso','Ganar concurso',30,'a',4),(7,'3 aportaciones','Realizar al menos tres aportaciones',25,'a',3),(8,'3 votos','Recibir al menos tres votos positivos',25,'a',3);
 /*!40000 ALTER TABLE `logro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -552,7 +526,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Nico','',NULL,'nfiz','nicolasfiz@outlook.com',NULL,'1234',NULL,0,0,1),(2,'Nico2','',NULL,'nfiz2','nicolasfiz@topdigital.com',NULL,'1234',NULL,0,0,2);
+INSERT INTO `usuario` VALUES (1,'nicolasmartin','',NULL,'nfiz','nicolasfiz@outlook.com',NULL,'1234','http://res.cloudinary.com/dbi1wsnuq/image/upload/v1666799074/p4lt1ix1f54dexdhi4cq.jpg',0,3,1),(2,'Nico2','',NULL,'nfiz2','nicolasfiz@topdigital.com',NULL,'1234',NULL,0,1,2);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -567,7 +541,6 @@ CREATE TABLE `usuariologro` (
   `usuario_idUsuario` int NOT NULL,
   `logro_idLogro` int NOT NULL,
   PRIMARY KEY (`usuario_idUsuario`,`logro_idLogro`),
-  UNIQUE KEY `usuario_idUsuario_UNIQUE` (`usuario_idUsuario`),
   KEY `fk_usuario_has_logro_logro1_idx` (`logro_idLogro`),
   KEY `fk_usuario_has_logro_usuario1_idx` (`usuario_idUsuario`),
   CONSTRAINT `fk_usuario_has_logro_logro1` FOREIGN KEY (`logro_idLogro`) REFERENCES `logro` (`idLogro`),
@@ -581,6 +554,7 @@ CREATE TABLE `usuariologro` (
 
 LOCK TABLES `usuariologro` WRITE;
 /*!40000 ALTER TABLE `usuariologro` DISABLE KEYS */;
+INSERT INTO `usuariologro` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7);
 /*!40000 ALTER TABLE `usuariologro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -616,9 +590,14 @@ DROP TABLE IF EXISTS `votacionponderada`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `votacionponderada` (
-  `idVotacionPonderada` int NOT NULL AUTO_INCREMENT,
   `nota` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`idVotacionPonderada`)
+  `comentario_idComentario` int NOT NULL,
+  `asignatura_idAsignatura` int NOT NULL,
+  PRIMARY KEY (`comentario_idComentario`,`asignatura_idAsignatura`),
+  KEY `fk_votacionPonderada_comentario1_idx` (`comentario_idComentario`),
+  KEY `fk_votacionPonderada_asignatura1_idx` (`asignatura_idAsignatura`),
+  CONSTRAINT `fk_votacionPonderada_asignatura1` FOREIGN KEY (`asignatura_idAsignatura`) REFERENCES `asignatura` (`idAsignatura`),
+  CONSTRAINT `fk_votacionPonderada_comentario1` FOREIGN KEY (`comentario_idComentario`) REFERENCES `comentario` (`idComentario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -640,4 +619,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-05 19:26:15
+-- Dump completed on 2022-10-29 17:47:35
