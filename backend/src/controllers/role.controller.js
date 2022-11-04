@@ -10,7 +10,7 @@ const addRole = async (req, res) => {
         const role = { nombre };
         const connection = await getConnection();
 
-        await connection.query("INSERT INTO universidad SET ?", role);
+        await connection.query("INSERT INTO rol SET ?", role);
         res.json({message: "Role added successfully"});
     } catch(error) {
         res.status(500).send(error.message);
@@ -33,9 +33,8 @@ const getRoleById = async (req, res) => {
     try {
         const connection = await getConnection();
         const {id} = req.params;
-        const query = await connection.query(`SELECT nombre FROM rol
-                                                WHERE idRol=?`, id);
-        res.join(query);
+        const query = await connection.query(`SELECT nombre as nombreRol FROM rol WHERE idRol=?`, id);
+        res.json(query);
     } catch (error) {
         res.status(500).send(error.message);
     }

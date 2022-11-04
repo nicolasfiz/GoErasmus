@@ -1,6 +1,5 @@
 import { getConnection } from "../database/database";
 
-// Panel de Administracion
 const addFaculty = async (req, res) => {
     try {
         const { nombre, universidad_idUniversidad } = req.body;
@@ -17,33 +16,36 @@ const addFaculty = async (req, res) => {
     }
 }
 
-// Panel de Administracion
 const getFaculties = async (req, res) => {
     try {
         const connection = await getConnection();
-        const query = await connection.query(`SELECT f.nombre as nombreFacultad, u.nombre as nombreUniversidad
-                                                FROM Facultad f
-                                                LEFT JOIN Universidad u ON (f.universidad_idUniversidad = u.idUniversidad)`);
-        res.join(query);
-
+        let {id} = req.query;
+        let query;
+        if (id === undefined)
+            query = await connection.query(`SELECT f.nombre as nombreFacultad, u.nombre as nombreUniversidad
+                                            FROM Facultad f LEFT JOIN Universidad u ON (f.universidad_idUniversidad = u.idUniversidad)`);
+        else
+            query = await connection.query(`SELECT f.nombre as nombreFacultad FROM Facultad f
+                                            JOIN Universidad ON idUniversidad = f.universidad_idUniversidad
+                                            WHERE idUniversidad = ?`, id);
+        res.json(query);
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
 
-// Panel de Administracion
 const getFacultyById = async (req, res) => {
     try {
         const connection = await getConnection();
         const {id} = req.params;
-        const query = await connection.query(`SELECT nombre FROM facultad WHERE idFacultad = ?`, id);
-        res.join(query);
+        const query = await connection.query(`SELECT nombre as nombreFacultad FROM facultad WHERE idFacultad = ?`, id);
+        res.json(query);
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
 
-/*// Ruta paises/id_pais/id_ciudad/id_universidad/id_facultad
+/*
 const getSubjectsByFacultyId = async (req, res) => {
     try {
         const connection = await getConnection();
@@ -57,7 +59,6 @@ const getSubjectsByFacultyId = async (req, res) => {
     }
 }*/
 
-// Panel de Administracion
 const updateFaculty = async (req, res) => {
     try {
         const { id } = req.params;
@@ -69,20 +70,17 @@ const updateFaculty = async (req, res) => {
         const facultad = { nombre, universidad_idUniversidad };
         const connection = await getConnection();
         const query = await connection.query("UPDATE facultad SET ? WHERE idFacultad = ?", [facultad, id]);
-
         res.json(query);
     } catch(error) {
         res.status(500).send(error.message);
     }
 }
 
-// Panel de Administracion
 const deleteFaculty = async (req, res) => {
     try {
         const {id} = req.params;
         const connection = await getConnection();
         const query = await connection.query("DELETE FROM facultad WHERE idFacultad = ?", id);
-
         res.json(query);
     } catch(error) {
         res.status(500).send(error.message);
@@ -93,7 +91,6 @@ export const methods = {
     addFaculty,
     getFaculties,
     getFacultyById,
-    //getSubjectsByFacultyId,
     updateFaculty,
     deleteFaculty
 };

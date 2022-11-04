@@ -137,13 +137,13 @@ const getLogros = async (req, res) => {
     }
 }
 
-// Panel de Administracion
 const resetPoints = async (req, res) => {
     try{
         const connection = await getConnection();
-        const query = await connection.query("SET SQL_SAFE_UPDATES = 0; UPDATE usuario SET cantidadPuntos = 0; SET SQL_SAFE_UPDATES = 1;");
-
-        res.json(query);
+        await connection.query("SET SQL_SAFE_UPDATES = 0;");
+        await connection.query("UPDATE usuario SET cantidadPuntos = 0");
+        await connection.query("SET SQL_SAFE_UPDATES = 1;");
+        res.json({ message: "Points reset successfully" });
     }catch(error){
         res.status(500).send(error.message);
     }
