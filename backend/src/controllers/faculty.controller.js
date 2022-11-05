@@ -45,20 +45,6 @@ const getFacultyById = async (req, res) => {
     }
 }
 
-/*
-const getSubjectsByFacultyId = async (req, res) => {
-    try {
-        const connection = await getConnection();
-        const {id} = req.params;
-        const query = await connection.query(`SELECT a.nombre FROM Asignatura a
-                                                JOIN Facultad ON idFacultad = a.facultad_idFacultad
-                                                WHERE iFacultad = ?`, id);
-        res.join(query);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-}*/
-
 const updateFaculty = async (req, res) => {
     try {
         const { id } = req.params;

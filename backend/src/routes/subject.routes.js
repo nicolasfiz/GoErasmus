@@ -1,0 +1,12 @@
+import {Router} from 'express'
+const router = Router();
+
+import {methods as subjectCtrl} from '../controllers/subject.controller';
+
+router.post('/', subjectCtrl.addSubject);
+router.get('/', subjectCtrl.getSubjects);
+router.get('/:id', subjectCtrl.getSubjectById);
+router.put('/:id', subjectCtrl.updateSubject);
+router.delete('/:id', subjectCtrl.deleteSubject);
+
+export default router;

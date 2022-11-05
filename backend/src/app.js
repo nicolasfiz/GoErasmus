@@ -17,6 +17,7 @@ import citiesGalleryRoutes from "./routes/citiesgallery.routes";
 import articlesGalleryRoutes from "./routes/articlesgallery.routes";
 import universityRoutes from "./routes/university.routes";
 import facultyRoutes from "./routes/faculty.routes";
+import subjectRoutes from "./routes/subject.routes";
 
 const app = express();
 
@@ -49,5 +50,6 @@ app.use("/api/citiesgallery", citiesGalleryRoutes);
 app.use("/api/articlesgallery", articlesGalleryRoutes);
 app.use("/api/university", universityRoutes);
 app.use("/api/faculty", facultyRoutes);
+app.use("/api/subject", subjectRoutes);
 
 export default app;
