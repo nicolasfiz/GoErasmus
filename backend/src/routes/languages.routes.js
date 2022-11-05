@@ -1,14 +1,13 @@
 import { Router } from 'express';
-import {methods as languageController} from "../controllers/languaje.controller"
+import {methods as languagesCtrl} from "../controllers/languaje.controller"
 
 const router = Router()
 
-router.get("/", languageController.getLanguages);
-router.post("/", languageController.addLanguages);
-router.get("/:id", languageController.getLanguage);
-router.delete("/:id", languageController.deleteLanguage);
-router.put("/:id", languageController.updateLanguage);
-
-router.post("/uploadPdf", languageController.uploadPdf);
+router.post("/", languagesCtrl.addLanguages);
+router.get("/", languagesCtrl.getLanguages);
+router.get("/:id", languagesCtrl.getLanguageById);
+router.put("/:id", languagesCtrl.updateLanguage);
+router.delete("/:id", languagesCtrl.deleteLanguage);
+router.post("/uploadPdf", languagesCtrl.uploadPdf);
 
 export default router;
