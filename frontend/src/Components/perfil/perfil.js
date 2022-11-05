@@ -30,7 +30,7 @@ const Perfil = () => {
                         <section className="datos">
                             <div className="apartado">
                                 <h3>Nombre de usuario: </h3>
-                                <i><p>{datos[0].nombre}</p></i>
+                                <i><p>{datos[0].nombreUsuario}</p></i>
                             </div>
                             <div className="apartado">
                                 <h3>Email:</h3>

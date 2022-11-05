@@ -5,10 +5,12 @@ cloudinary.config(process.env.CLOUDINARY_URL);
 const getUser = async (req, res) => {
     try {
         const connection = await getConnection();
-        const { id } = req.params;
-        const result = await connection.query(`SELECT u.nombre, u.email, r.nombre as rol, u.urlFotoPerfil, f.nombre as facultad, un.nombre as universidad, c.nombre as ciudad, p.nombre as pais
+        const { nombreUsuario } = req.params;
+        console.log(nombreUsuario)
+        const result = await connection.query(`SELECT u.nombreUsuario, u.email, r.nombre as rol, u.urlFotoPerfil, f.nombre as facultad, un.nombre as universidad, c.nombre as ciudad, p.nombre as pais
         FROM usuario u LEFT JOIN rol r ON u.Rol_idRol=r.idRol LEFT JOIN facultad f ON u.facultad_idfacultad=f.idFacultad LEFT JOIN universidad un ON f.universidad_iduniversidad=un.iduniversidad
-        LEFT JOIN ciudad c on un.iduniversidad=c.idCiudad left join pais p on c.pais_idpais=p.idpais WHERE u.idUsuario=?;`, id);
+        LEFT JOIN ciudad c on un.iduniversidad=c.idCiudad left join pais p on c.pais_idpais=p.idpais WHERE u.nombreUsuario = '`+nombreUsuario+`';`);
+        console.log(result)
         res.json(result);
     } catch (error) {
         res.status(500).send(error.message);

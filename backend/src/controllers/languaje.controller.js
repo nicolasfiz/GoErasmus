@@ -76,7 +76,7 @@ const updateLanguage=async (req, res)=>{
 }
 
 const uploadPdf = async (req, res) => {
-    console.log("hola")
+    console.log(req.files)
     //console.log(req.files)
     //console.log(req.files.file.tempFilePath)
     cloudinary.uploader.upload(req.files.file.tempFilePath, async (error, result) => {console.log(result, error);})

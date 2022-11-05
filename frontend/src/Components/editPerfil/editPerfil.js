@@ -6,12 +6,12 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const EditPerfil = () => {
     const validEmail = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    let params = "1";
+    let params = "nfiz";
     const [datos, setDatos] = useState(null);
     const [valido, setValido] = useState(true);
     const [imagen, setImagen] = useState(null);
     const [nuevosD, setNuevos] = useState({
-        nombre: '',
+        nombreUsuario: '',
         email: '',
     });
     const [ubicacion, setUbicacion] = useState({
@@ -86,7 +86,7 @@ const EditPerfil = () => {
             ...nuevosD,
             [name]: value,
         })
-        if ((name === "nombre" && value.length > 15) || (name === "email" && value.length > 0 && !validEmail.test(value))) {
+        if ((name === "nombreUsuario" && value.length > 15) || (name === "email" && value.length > 0 && !validEmail.test(value))) {
             setValido(false);
         } else {
             setValido(true);
@@ -97,7 +97,7 @@ const EditPerfil = () => {
         event.preventDefault()
         const bodyFormData = new FormData()
         bodyFormData.append("email", nuevosD.email)
-        bodyFormData.append("nombre", nuevosD.nombre)
+        bodyFormData.append("nombreUsuario", nuevosD.nombreUsuario)
         bodyFormData.append("file", imagen)
         for (const property in ubicacion) {
             bodyFormData.append(property, ubicacion[property])

@@ -28,7 +28,7 @@ function App() {
           <Route path="perfil/:token" element={<Perfil />} />
           <Route path="editPerfil" element={<EditPerfil />} />
           <Route path="search" element={<Buscador />} />
-          <Route path="asignatura" element={<Asignatura />} />
+          <Route path="asignatura/:idAsignatura" element={<Asignatura />} />
           <Route path="progreso/:token" element={<Logro />} />
         </Routes>
       </main>

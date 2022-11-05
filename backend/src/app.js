@@ -9,6 +9,7 @@ import languagesRoutes from "./routes/languages.routes";
 import userRoutes from "./routes/user.routes";
 import roleRoutes from "./routes/roles.routes";
 import authRoutes from "./routes/auth.routes";
+import asignatura from "./routes/asignatura.routes";
 
 const app = express();
 
@@ -33,5 +34,6 @@ app.use("/api/languages", languagesRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/roles", roleRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/asignatura", asignatura)
 
 export default app;

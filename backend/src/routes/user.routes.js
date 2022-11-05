@@ -3,7 +3,7 @@ import {methods as userController} from "../controllers/user.controller"
 
 const router = Router()
 
-router.get("/getUser/:id", userController.getUser);
+router.get("/getUser/:nombreUsuario", userController.getUser);
 router.post("/picture", userController.uploadPicture);
 router.get("/paises", userController.getPaises);
 router.get("/ciudades/:id", userController.getCiudades);
