@@ -3,14 +3,16 @@ import {methods as userController} from "../controllers/user.controller"
 
 const router = Router()
 
+router.get("/", userController.getUsers);
 router.get("/getUser/:id", userController.getUser);
-router.post("/picture", userController.uploadPicture);
+router.delete("/:id", userController.deleteUser);
 router.get("/paises", userController.getPaises);
 router.get("/ciudades/:id", userController.getCiudades);
 router.get("/universidades/:id", userController.getUniversidades);
 router.get("/facultades/:id", userController.getFacultades);
-router.put("/guardarDatos/:id", userController.guardarDatos);
 router.get("/logros/:id", userController.getLogros);
+router.post("/picture", userController.uploadPicture);
+router.put("/guardarDatos/:id", userController.guardarDatos);
 router.post("/resetPoints", userController.resetPoints);
 
 export default router;
