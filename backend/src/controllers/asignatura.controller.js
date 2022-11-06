@@ -23,7 +23,7 @@ const getComentarios = async (req, res) => {
     try {
         const connection = await getConnection();
         const { idAsignatura } = req.params;
-        const result = await connection.query(`select c.votacion_idvotacion, vp.nota, c.descripcion, u.nombreUsuario, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg
+        const result = await connection.query(`select c.votacion_idvotacion, vp.nota, c.descripcion, u.nombreUsuario, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg, c.fecha
         from votacionponderada vp 
         left join comentario c on c.idcomentario = vp.comentario_idComentario 
         left join usuario u on c.usuario_idUsuario=u.idUsuario
@@ -38,7 +38,7 @@ const getArchivo = async (req, res) => {
     try {
         const connection = await getConnection();
         const { idAsignatura } = req.params;
-        const result = await connection.query(`select a.votacion_idVotacion, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg, a.titulo,a.descripcion, a.urlArchivo, u.nombreUsuario
+        const result = await connection.query(`select a.votacion_idVotacion, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg, a.titulo,a.descripcion, a.urlArchivo, u.nombreUsuario, a.fecha
         from archivo a 
         left join votacion v on a.votacion_idVotacion=v.idVotacion
         left join usuario u on a.usuario_idUsuario=u.idUsuario where a.Asignatura_idAsignatura=?;`, idAsignatura);

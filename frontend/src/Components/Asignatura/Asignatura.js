@@ -9,6 +9,9 @@ import asignaturaService from "../../services/asignatura.service";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
+import ArchivoAsignatura from "./ArchivosAsignatura/ArchivosAsignatura";
+
+const COMENTARIOS_POR_PAGINA = 6
 
 const Asignatura = () => {
   const params = useParams();
@@ -30,8 +33,8 @@ const Asignatura = () => {
     <div
       style={{
         margin: "2vh",
-        marginLeft: "10vh",
-        marginRight: "10vh",
+        marginLeft: "15vh",
+        marginRight: "15vh",
         boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
         borderRadius: "8px",
         backgroundColor: "white",
@@ -51,7 +54,7 @@ const Asignatura = () => {
             width: "100%",
             borderTopLeftRadius: "8px",
             borderTopRightRadius: "8px",
-            padding: "1rem",
+            padding: "0.2rem",
           }}
         >
           <p
@@ -64,7 +67,6 @@ const Asignatura = () => {
           </h1>
           <div
             style={{
-              padding: "1rem",
               fontSize: "1rem",
               color: "#aaaaaa",
               textAlign: "center",
@@ -91,7 +93,7 @@ const Asignatura = () => {
               flexDirection: "column",
               padding: "1rem",
               alignItems: "center",
-              margin: "4rem",
+              margin: "2rem",
               boxShadow:
                 "0 1px 5px 0 rgb(0 0 0 / 12%), 0 3px 1px -2px rgb(0 0 0 / 20%)",
               background: "#fafafa",
@@ -111,7 +113,7 @@ const Asignatura = () => {
                         background: "#198754",
                         borderColor: "#198754",
                       }
-                    : { background: "red", borderColor: "red" }
+                    : { background: "#dc3545", borderColor: "#dc3545" }
                   : {
                       background: "rgb(124 124 124)",
                       borderColor: 'rgb(124 124 124)'
@@ -146,13 +148,10 @@ const Asignatura = () => {
         className="mb-3"
       >
         <Tab eventKey="Comentarios" title="Comentarios">
-          <ComentariosAsignatura itemsPerPage={6} />
+          <ComentariosAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura}/>
         </Tab>
         <Tab eventKey="Archivos" title="Archivos">
-          <ul>
-            <li key={1}>buenisimas</li>
-            <li key={2}>mañanas</li>
-          </ul>
+          <ArchivoAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura}/>
         </Tab>
       </Tabs>
     </div>
