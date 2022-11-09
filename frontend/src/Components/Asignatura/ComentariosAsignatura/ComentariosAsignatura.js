@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import "react-bootstrap/Pagination";
+<<<<<<< HEAD
 import Card from "react-bootstrap/Card";
 import "./ComentariosAsignatura.css";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
@@ -66,10 +67,24 @@ function Items({ currentItems }) {
 function PaginatedItems({ itemsPerPage }) {
   // We start with an empty list of items.
   const [currentItems, setCurrentItems] = useState(null);
+=======
+import "./ComentariosAsignatura.css";
+import ToggleButton from "react-bootstrap/ToggleButton";
+import asignaturaService from "../../../services/asignatura.service";
+import moment from "moment";
+import Comentario from "./Comentario";
+import Spinner from "react-bootstrap/Spinner";
+
+const PaginatedItems = ({ itemsPerPage, idAsignatura }) => {
+  // We start with an empty list of items.
+  const [currentItems, setCurrentItems] = useState(null);
+  const [items, setItems] = useState(null);
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
   const [pageCount, setPageCount] = useState(0);
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
+<<<<<<< HEAD
   const [likesCheck, setLikesChecked] = useState(false);
   const [dateCheck, setDateChecked] = useState(false);
   useEffect(() => {
@@ -79,6 +94,19 @@ function PaginatedItems({ itemsPerPage }) {
     setCurrentItems(items.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(items.length / itemsPerPage));
   }, [itemOffset, itemsPerPage]);
+=======
+  const [check, setCheck] = useState(false);
+  useEffect(() => {
+    // Fetch items from another resources.
+    asignaturaService.getComentarios(idAsignatura).then((response) => {
+      console.log(response);
+      setItems(response);
+      const endOffset = itemOffset + itemsPerPage;
+      setCurrentItems(response.slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(response.length / itemsPerPage));
+    });
+  }, [itemOffset, itemsPerPage, idAsignatura]);
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
@@ -89,18 +117,48 @@ function PaginatedItems({ itemsPerPage }) {
     setItemOffset(newOffset);
   };
 
+<<<<<<< HEAD
   return (
     <>
       <div style={{display: 'flex', justifyContent: 'center'}}>
         <ToggleButton
           style={{marginRight: '1rem'}}
+=======
+  const changeCheck = (tipo) => {
+    if (tipo === "like") {
+      setCheck(true);
+      currentItems.sort((a, b) => a.mg - b.mg);
+      currentItems.reverse();
+    } else {
+      setCheck(false);
+      currentItems.sort(
+        (a, b) =>
+          moment(a.fecha, "YYYY-MM-DD").unix() -
+          moment(b.fecha, "YYYY-MM-DD").unix()
+      );
+      currentItems.reverse();
+    }
+  };
+
+  return items ? (
+    <>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <ToggleButton
+          style={{ marginRight: "1rem" }}
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
           className="mb-2"
           id="toggle-check"
           type="checkbox"
           variant="outline-primary"
+<<<<<<< HEAD
           checked={likesCheck}
           value="1"
           onChange={(e) => setLikesChecked(e.currentTarget.checked)}
+=======
+          checked={check}
+          value="1"
+          onChange={() => changeCheck("like")}
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
         >
           Más likes
         </ToggleButton>
@@ -109,15 +167,26 @@ function PaginatedItems({ itemsPerPage }) {
           id="toggle-check2"
           type="checkbox"
           variant="outline-primary"
+<<<<<<< HEAD
           checked={dateCheck}
           value="1"
           onChange={(e) => setDateChecked(e.currentTarget.checked)}
+=======
+          checked={!check}
+          value="1"
+          onChange={() => changeCheck("reciente")}
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
         >
           Recientes
         </ToggleButton>
       </div>
+<<<<<<< HEAD
       <Items currentItems={currentItems} />
       <div style={{ marginLeft: "2rem" }}>
+=======
+      <Comentario currentItems={currentItems} />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
         <ReactPaginate
           nextLabel="siguiente >"
           onPageChange={handlePageClick}
@@ -140,7 +209,25 @@ function PaginatedItems({ itemsPerPage }) {
         />
       </div>
     </>
+<<<<<<< HEAD
   );
 }
+=======
+  ) : (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: 'center',
+        margin: '2rem'
+      }}
+    >
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    </div>
+  );
+};
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
 
 export default PaginatedItems;

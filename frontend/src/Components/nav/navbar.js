@@ -28,7 +28,7 @@ function Navegador() {
             <Link to="search" className='nav-link'>Buscar</Link>
             <Link to="paises" className='nav-link'>Países</Link>
             <Link to="articulos" className="nav-link">Artículos</Link>
-            <Link to="asignatura" className='nav-link'>Asignatura</Link>
+            <Link to="asignatura/1" className='nav-link'>Asignatura</Link>
           </Nav>
 
           <OverlayTrigger

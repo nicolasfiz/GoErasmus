@@ -9,6 +9,12 @@ import asignaturaService from "../../services/asignatura.service";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
+<<<<<<< HEAD
+=======
+import ArchivoAsignatura from "./ArchivosAsignatura/ArchivosAsignatura";
+
+const COMENTARIOS_POR_PAGINA = 6
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
 
 const Asignatura = () => {
   const params = useParams();
@@ -30,8 +36,13 @@ const Asignatura = () => {
     <div
       style={{
         margin: "2vh",
+<<<<<<< HEAD
         marginLeft: "10vh",
         marginRight: "10vh",
+=======
+        marginLeft: "15vh",
+        marginRight: "15vh",
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
         boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
         borderRadius: "8px",
         backgroundColor: "white",
@@ -51,7 +62,11 @@ const Asignatura = () => {
             width: "100%",
             borderTopLeftRadius: "8px",
             borderTopRightRadius: "8px",
+<<<<<<< HEAD
             padding: "1rem",
+=======
+            padding: "0.2rem",
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
           }}
         >
           <p
@@ -64,7 +79,10 @@ const Asignatura = () => {
           </h1>
           <div
             style={{
+<<<<<<< HEAD
               padding: "1rem",
+=======
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
               fontSize: "1rem",
               color: "#aaaaaa",
               textAlign: "center",
@@ -91,7 +109,11 @@ const Asignatura = () => {
               flexDirection: "column",
               padding: "1rem",
               alignItems: "center",
+<<<<<<< HEAD
               margin: "4rem",
+=======
+              margin: "2rem",
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
               boxShadow:
                 "0 1px 5px 0 rgb(0 0 0 / 12%), 0 3px 1px -2px rgb(0 0 0 / 20%)",
               background: "#fafafa",
@@ -111,7 +133,11 @@ const Asignatura = () => {
                         background: "#198754",
                         borderColor: "#198754",
                       }
+<<<<<<< HEAD
                     : { background: "red", borderColor: "red" }
+=======
+                    : { background: "#dc3545", borderColor: "#dc3545" }
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
                   : {
                       background: "rgb(124 124 124)",
                       borderColor: 'rgb(124 124 124)'
@@ -146,6 +172,7 @@ const Asignatura = () => {
         className="mb-3"
       >
         <Tab eventKey="Comentarios" title="Comentarios">
+<<<<<<< HEAD
           <ComentariosAsignatura itemsPerPage={6} />
         </Tab>
         <Tab eventKey="Archivos" title="Archivos">
@@ -153,6 +180,12 @@ const Asignatura = () => {
             <li key={1}>buenisimas</li>
             <li key={2}>mañanas</li>
           </ul>
+=======
+          <ComentariosAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura}/>
+        </Tab>
+        <Tab eventKey="Archivos" title="Archivos">
+          <ArchivoAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura}/>
+>>>>>>> 3b5a822d61982f7b0d045aaed5b17951e2283838
         </Tab>
       </Tabs>
     </div>
