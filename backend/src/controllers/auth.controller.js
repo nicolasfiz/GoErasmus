@@ -18,22 +18,22 @@ export const signUp = async (req, res) => {
             const connection = await getConnection();
         
         // Checking that both email and username are not already in the database
-        let idUsername = await connection.query("SELECT idUsuario FROM usuario WHERE nombreUsuario = ?", nombreUsuario);
+        let idUsername = await connection.query("SELECT idUsuario FROM usuario WHERE nombreUsuario = ?", nombreUsuario.toLowerCase());
         if (idUsername.length !== 0)
             return res.status(500).json({message: "There is already an account with that username"});
 
-        let idEmail = await connection.query("SELECT idUsuario FROM usuario WHERE email = ?", email);
+        let idEmail = await connection.query("SELECT idUsuario FROM usuario WHERE email = ?", email.toLowerCase());
         if (idEmail.length !== 0)
             return res.status(500).json({message: "There is already an account with that email"});
         
         // ------------------------------------------------------------------------------------------------------------------ //
 
         // Filling in the rest of the properties
+        let apellido2 = null;
         let urlFotoPerfil = null;
         let cantidadPuntos = 0;
         let cuentaActivada = 0;
         let fechaCreacionCuenta = "current_timestamp";
-        //let Rol_idRol = null;
         let facultad_idfacultad = null;
         
         let {Rol_idRol, nombreRol} = await connection.query('SELECT idRol, nombre as nombreRol FROM Rol where nombre = "Novato"');
@@ -42,8 +42,8 @@ export const signUp = async (req, res) => {
         const  contrasena = await encryptPassword(contrasenaSinCifrar);
         
         //Constructing the user to be added to the database and inserting it into the database
-        const user = { nombre, apellido1, apellido2, nombreUsuario, email, numeroTelefono,
-            contrasena, urlFotoPerfil, cantidadPuntos, cuentaActivada, fechaCreacionCuenta, Rol_idRol, facultad_idfacultad };
+        const user = { nombre, apellido1, apellido2, nombreUsuario, email, contrasena, urlFotoPerfil,
+                        cantidadPuntos, cuentaActivada, fechaCreacionCuenta, Rol_idRol, facultad_idfacultad };
         await connection.query("INSERT INTO usuario SET ?", user);
 
         // ------------------------------------------------------------------------------------------------------------------ //
