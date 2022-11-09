@@ -6,9 +6,11 @@ const router = Router()
 router.get("/:idAsignatura", asignaturaController.getAsignatura);
 router.get("/comentarios/:idAsignatura", asignaturaController.getComentarios);
 router.get("/archivos/:idAsignatura", asignaturaController.getArchivo)
-//router.post("/valoracion")
-//router.post("/archivo")
-//router.update("/mg/:idVotacion")
-//router.update("/nmg/:idVotacion")
+router.post("/archivo", asignaturaController.subirArchivo)
+router.delete("/archivo/:idArchivo", asignaturaController.deleteArchivo)
+router.post("/valoracion", asignaturaController.subirValoracion)
+//router.delete("/valoracion/:idValoracion")
+//router.put("/mg/:idVotacion")
+//router.put("/nmg/:idVotacion")
 
 export default router;

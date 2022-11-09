@@ -7,6 +7,8 @@ import asignaturaService from "../../../services/asignatura.service";
 import moment from "moment";
 import Archivo from "./Archivo";
 import Spinner from "react-bootstrap/Spinner";
+import Button from "react-bootstrap/Button";
+import { AiOutlineUpload } from "react-icons/ai";
 
 const PaginatedArchivos = ({ itemsPerPage, idAsignatura }) => {
   // We start with an empty list of items.
@@ -55,6 +57,20 @@ const PaginatedArchivos = ({ itemsPerPage, idAsignatura }) => {
 
   return items ? (
     <>
+      <div style={{display: 'flex', margin: '2rem',justifyContent: 'center' }}>
+        <Button variant="warning">
+          Subir archivo <AiOutlineUpload />
+        </Button>
+      </div>
+      <p
+        style={{
+          textAlign: "center",
+          fontWeight: "100",
+          fontSize: "22px",
+        }}
+      >
+        Ordenar
+      </p>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ToggleButton
           style={{ marginRight: "1rem" }}
@@ -68,7 +84,9 @@ const PaginatedArchivos = ({ itemsPerPage, idAsignatura }) => {
         >
           Más likes
         </ToggleButton>
+        <p>_</p>
         <ToggleButton
+          style={{ marginLeft: "1rem" }}
           className="mb-2"
           id="toggle-check2Archivo"
           type="checkbox"
@@ -109,8 +127,8 @@ const PaginatedArchivos = ({ itemsPerPage, idAsignatura }) => {
       style={{
         display: "flex",
         justifyContent: "center",
-        alignItems: 'center',
-        margin: '2rem'
+        alignItems: "center",
+        margin: "2rem",
       }}
     >
       <Spinner animation="border" role="status">

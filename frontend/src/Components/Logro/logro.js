@@ -24,7 +24,7 @@ const Logro = () => {
   return (
     <div
       style={{
-        margin: "4vh",
+        margin: "1rem 15rem 1rem 15rem",
         boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
         borderRadius: "8px",
         backgroundColor: "white",

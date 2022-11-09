@@ -55,6 +55,15 @@ const PaginatedItems = ({ itemsPerPage, idAsignatura }) => {
 
   return items ? (
     <>
+      <p
+        style={{
+          textAlign: "center",
+          fontWeight: "100",
+          fontSize: "22px",
+        }}
+      >
+        Ordenar
+      </p>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ToggleButton
           style={{ marginRight: "1rem" }}
@@ -68,7 +77,9 @@ const PaginatedItems = ({ itemsPerPage, idAsignatura }) => {
         >
           Más likes
         </ToggleButton>
+        <p>_</p>
         <ToggleButton
+          style={{ marginLeft: "1rem" }}
           className="mb-2"
           id="toggle-check2"
           type="checkbox"
@@ -109,8 +120,8 @@ const PaginatedItems = ({ itemsPerPage, idAsignatura }) => {
       style={{
         display: "flex",
         justifyContent: "center",
-        alignItems: 'center',
-        margin: '2rem'
+        alignItems: "center",
+        margin: "2rem",
       }}
     >
       <Spinner animation="border" role="status">

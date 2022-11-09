@@ -32,9 +32,7 @@ const Asignatura = () => {
   return datosAsignatura ? (
     <div
       style={{
-        margin: "2vh",
-        marginLeft: "15vh",
-        marginRight: "15vh",
+        margin: "1rem 15rem 1rem 15rem",
         boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
         borderRadius: "8px",
         backgroundColor: "white",
@@ -124,7 +122,7 @@ const Asignatura = () => {
                 {datosAsignatura.puntuacion ? datosAsignatura.puntuacion : 0}
               </b>
             </div>
-            <p style={{ fontSize: "18px" }}>{datosAsignatura.valoraciones} valoracioness</p>
+            <p style={{ fontSize: "18px" }}>{datosAsignatura.valoraciones} valoraciones</p>
             {
               datosAsignatura.valoraciones === 0 ? (
                 <div style={{ width: "100%" }}>
