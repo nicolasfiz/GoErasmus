@@ -19,7 +19,7 @@ const addCountry = async (req, res) => {
 const getCountries = async (req, res) => {
     try {
         const connection = await getConnection();
-        const query = await connection.query('SELECT nombre as nombrePais, urlBandera FROM pais');
+        const query = await connection.query('SELECT nombre as nombrePais, urlBandera FROM pais ORDER BY nombre ASC');
         res.json(query);
     } catch (error) {
         res.status(500).send(error.message);

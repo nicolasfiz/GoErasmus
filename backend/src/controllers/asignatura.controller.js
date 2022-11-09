@@ -28,7 +28,7 @@ const getComentarios = async (req, res) => {
         from votacionponderada vp 
         left join comentario c on c.idcomentario = vp.comentario_idComentario 
         left join usuario u on c.usuario_idUsuario=u.idUsuario
-        left join votacion v on c.votacion_idVotacion=v.idVotacion where vp.asignatura_idAsignatura=?;;`, idAsignatura);
+        left join votacion v on c.votacion_idVotacion=v.idVotacion where vp.asignatura_idAsignatura=?;`, idAsignatura);
         res.json(result);
     } catch (error) {
         res.status(500).send(error.message);

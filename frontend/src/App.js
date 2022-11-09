@@ -1,8 +1,9 @@
 import Navegador from "./Components/nav/navbar";
 import { Routes, Route } from "react-router-dom";
 import Inicio from "./Components/inicio/inicio.js";
-import Articulos from "./Components/articulos";
-import Ciudades from "./Components/ciudades";
+import Articulos from "./Components/Ciudades/articulos";
+import Paises from "./Components/Paises/paises";
+import Ciudades from "./Components/Ciudades/ciudades";
 import Login from "./Components/login/login";
 import Register from "./Components/login/register";
 import Footer from "./Components/footer/footer";
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="" element={<Inicio />} />
           <Route path="articulos" element={<Articulos />} />
+          <Route path="paises" element={<Paises />} />
           <Route path="ciudades" element={<Ciudades />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

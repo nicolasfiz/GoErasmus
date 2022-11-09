@@ -2,6 +2,30 @@ import { getConnection } from "../database/database";
 var cloudinary = require('cloudinary').v2;
 cloudinary.config(process.env.CLOUDINARY_URL);
 
+const getUsers = async (req, res) => { // id ? usuarios por rolId : todos los usuarios 
+    try {
+        const connection = await getConnection();
+        const {id} = req.query;
+        let query;
+        if (id === undefined)
+            query = await connection.query(`SELECT u.nombre as nombre, u.apellido1 as primerApellido,
+                                            u.apellido2 as segundoApellido, u.nombreUsuario as nombreUsuario,
+                                            u.email as emailUsuario, u.urlFotoPerfil as urlFotoPerfil,
+                                            u.cantidadPuntos as cantidadPuntos, f.nombre as nombreFacultad, r.nombre as nombreRol
+                                            FROM Usuario u JOIN Facultad f ON u.facultad_idFacultad = f.idFacultad
+                                            JOIN Rol r ON u.rol_idRol = r.idRol
+                                            GROUP BY u.rol_idRol
+                                            ORDER BY u.rol_idRol ASC`);
+        else
+            query = await connection.query(`SELECT nombreUsuario, cantidadPuntos FROM Usuario
+                                            WHERE (rol_idRol = ?) AND (cuentaActivada = 1) AND (cantidadPuntos > 0)
+                                            ORDER BY cantidadPuntos DESC LIMIT 0,100`, id);
+        res.json(query);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
 const getUser = async (req, res) => {
     try {
         const connection = await getConnection();
@@ -10,12 +34,24 @@ const getUser = async (req, res) => {
         const result = await connection.query(`SELECT u.nombreUsuario, u.email, r.nombre as rol, u.urlFotoPerfil, f.nombre as facultad, un.nombre as universidad, c.nombre as ciudad, p.nombre as pais
         FROM usuario u LEFT JOIN rol r ON u.Rol_idRol=r.idRol LEFT JOIN facultad f ON u.facultad_idfacultad=f.idFacultad LEFT JOIN universidad un ON f.universidad_iduniversidad=un.iduniversidad
         LEFT JOIN ciudad c on un.iduniversidad=c.idCiudad left join pais p on c.pais_idpais=p.idpais WHERE u.nombreUsuario = '`+nombreUsuario+`';`);
-        console.log(result)
+        console.log(result);
         res.json(result);
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
+
+const deleteUser = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const connection = await getConnection();
+        const query = await connection.query("DELETE FROM usuario WHERE idUsuario = ?", id);
+        res.json(query);
+    } catch(error) {
+        res.status(500).send(error.message);
+    }
+}
+
 const getPaises = async (req, res) => {
     try {
         const connection = await getConnection();
@@ -24,8 +60,7 @@ const getPaises = async (req, res) => {
         result.map(elem => array.push(elem.nombre))
         res.send(array);
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500).send(error.message);
     }
 }
 
@@ -38,8 +73,7 @@ const getCiudades = async (req, res) => {
         result.map(elem => array.push(elem.nombre))
         res.send(array);
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500).send(error.message);
     }
 }
 const getUniversidades = async (req, res) => {
@@ -51,8 +85,7 @@ const getUniversidades = async (req, res) => {
         result.map(elem => array.push(elem.nombre))
         res.send(array);
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500).send(error.message);
     }
 }
 const getFacultades = async (req, res) => {
@@ -64,8 +97,34 @@ const getFacultades = async (req, res) => {
         result.map(elem => array.push(elem.nombre))
         res.send(array);
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500).send(error.message);
+    }
+}
+
+const getLogros = async (req, res) => {
+    try{
+        const connection = await getConnection()
+        const {id} = req.params
+        //Obtener rol del usuario
+        const rolQuery = await connection.query(`select r.idRol, r.nombre from usuario u join rol r on u.Rol_idRol=r.idRol where u.idUsuario=?;`, id);
+        const rol = rolQuery[0].nombre
+        const idRol = rolQuery[0].idRol
+        //logros usuario
+        const usuarioLogro = await connection.query(`select * from usuariologro where usuario_idusuario = ?;`, id);
+        const array = []
+        usuarioLogro.map(elem => array.push(elem.logro_idLogro))
+        const logrosConseguidos = await connection.query(`select descripcion from logro where idLogro in (?);`, [array]);
+        const logrosProximos = await connection.query(`select descripcion from logro where idLogro not in (?) AND rol_idRol = ?`, [array, idRol])
+        const cantidadLogrosRol = await connection.query(`select count(*) as cantidad from logro where rol_idRol = ?;`, idRol);
+        const cantidad = cantidadLogrosRol[0].cantidad;
+        const arrayConseguidos = []
+        const arrayProximos = []
+        logrosConseguidos.map(elem => arrayConseguidos.push(elem.descripcion))
+        logrosProximos.map(elem=> arrayProximos.push(elem.descripcion))
+        res.send({rol, cantidad, arrayConseguidos, arrayProximos})
+        
+    }catch(error){
+        res.status(500).send(error.message);
     }
 }
 
@@ -74,8 +133,7 @@ const uploadPicture = async (req, res) => {
         cloudinary.uploader.upload(req.files.file.tempFilePath, async (error, result) => { console.log(result, error); })
         res.json("ok")
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500).send(error.message)
     }
 }
 
@@ -106,36 +164,7 @@ const guardarDatos = async (req, res) => {
         const result = await connection.query("UPDATE usuario SET ? where idUsuario = ?", [datos, id]);
         res.json(result);
     } catch (error) {
-        res.status(500)
-        res.send(error.message);
-    }
-}
-
-const getLogros = async (req, res) => {
-    try{
-        const connection = await getConnection()
-        const {id} = req.params
-        //Obtener rol del usuario
-        const rolQuery = await connection.query(`select r.idRol, r.nombre from usuario u join rol r on u.Rol_idRol=r.idRol where u.idUsuario=?;`, id);
-        const rol = rolQuery[0].nombre
-        const idRol = rolQuery[0].idRol
-        //logros usuario
-        const usuarioLogro = await connection.query(`select * from usuariologro where usuario_idusuario = ?;`, id);
-        const array = []
-        usuarioLogro.map(elem => array.push(elem.logro_idLogro))
-        const logrosConseguidos = await connection.query(`select descripcion from logro where idLogro in (?);`, [array]);
-        const logrosProximos = await connection.query(`select descripcion from logro where idLogro not in (?) AND rol_idRol = ?`, [array, idRol])
-        const cantidadLogrosRol = await connection.query(`select count(*) as cantidad from logro where rol_idRol = ?;`, idRol);
-        const cantidad = cantidadLogrosRol[0].cantidad;
-        const arrayConseguidos = []
-        const arrayProximos = []
-        logrosConseguidos.map(elem => arrayConseguidos.push(elem.descripcion))
-        logrosProximos.map(elem=> arrayProximos.push(elem.descripcion))
-        res.send({rol, cantidad, arrayConseguidos, arrayProximos})
-        
-    }catch(error){
-        res.status(500)
-        res.send(error.message)
+        res.status(500).send(error.message);
     }
 }
 
@@ -152,13 +181,15 @@ const resetPoints = async (req, res) => {
 }
 
 export const methods = {
+    getUsers,
     getUser,
+    deleteUser,
     getPaises,
-    uploadPicture,
     getCiudades,
     getUniversidades,
     getFacultades,
-    guardarDatos,
     getLogros,
+    uploadPicture,
+    guardarDatos,
     resetPoints
 };
