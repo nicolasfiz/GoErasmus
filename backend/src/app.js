@@ -10,6 +10,7 @@ import userRoutes from "./routes/user.routes";
 import achievementRoutes from "./routes/achievement.routes";
 import roleRoutes from "./routes/roles.routes";
 import authRoutes from "./routes/auth.routes";
+import asignatura from "./routes/asignatura.routes";
 import countryRoutes from "./routes/country.routes";
 import cityRoutes from "./routes/city.routes";
 import citiesGalleryRoutes from "./routes/citiesgallery.routes";
@@ -43,6 +44,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/achievement", achievementRoutes);
 app.use("/api/roles", roleRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/asignatura", asignatura)
 app.use("/api/country", countryRoutes);
 app.use("/api/city", cityRoutes);
 app.use("/api/citiesgallery", citiesGalleryRoutes);

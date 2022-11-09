@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:4000/api/user'
+const baseUrl = `${process.env.REACT_APP_URL}/user`
 
-const getDatos = (id) => {
-    const request = axios.get(`${baseUrl}/getUser/${id}`)
+const getDatos = (nombreUsuario) => {
+    const request = axios.get(`${baseUrl}/getUser/${nombreUsuario}`)
     return request.then(response => response.data);
 }
 

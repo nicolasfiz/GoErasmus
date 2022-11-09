@@ -3,6 +3,7 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import userService from "../../services/user";
 import { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
+import "./logro.css";
 
 const Logro = () => {
   const token = useParams().token;
@@ -21,17 +22,36 @@ const Logro = () => {
   }, [token]);
 
   return (
-    <div>
+    <div
+      style={{
+        margin: "4vh",
+        boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
+        borderRadius: "8px",
+        backgroundColor: "white",
+      }}
+    >
       {logros ? (
-        <div style={{margin: '2em'}}>
-          <div style={{ textAlign: "center", padding: "2rem"}}>
-            <h1>{logros.rol}</h1>
-            <div style={{ margin: "2em" }}>
-              <ProgressBar
-                animated
-                now={((logros.cantidad - logros.arrayProximos.length)/ logros.cantidad) * 100}
-              />
-            </div>
+        <div style={{ margin: "2em" }}>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
+            <Card bg="light">
+              <Card.Header>
+                <p className="textoCard">Nivel:</p>
+                <h1>{logros.rol}</h1>
+              </Card.Header>
+              <Card.Body>
+                <p className="textoCard">Experiencia:</p>
+                <div style={{ margin: "2em" }}>
+                  <ProgressBar
+                    animated
+                    now={
+                      ((logros.cantidad - logros.arrayProximos.length) /
+                        logros.cantidad) *
+                      100
+                    }
+                  />
+                </div>
+              </Card.Body>
+            </Card>
           </div>
           {logros.arrayProximos.length > 0 ? (
             <div
@@ -51,7 +71,7 @@ const Logro = () => {
                       marginBottom: "1em",
                       marginRight: "4em",
                       marginLeft: "4em",
-                      background: '#ffd043'
+                      background: "#ffd043",
                     }}
                     key={elem}
                   >

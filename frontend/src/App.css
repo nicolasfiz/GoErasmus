@@ -12,4 +12,5 @@
 #app {
     min-height: 100%;
     position: relative;
+    min-width: 100%;
 } 

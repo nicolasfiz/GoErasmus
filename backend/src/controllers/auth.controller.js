@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 export const signUp = async (req, res) => {
 
     try {
-        const { nombre, apellido1, apellido2, nombreUsuario, email, contrasenaSinCifrar, contrasenaRepetida } = req.body;
+        const { nombre, apellido1, nombreUsuario, email, contrasenaSinCifrar, contrasenaRepetida } = req.body;
 
         // Checking that the required data has been filled in and that the passwords match
         if (nombre === undefined || apellido1 === undefined || nombreUsuario === undefined ||

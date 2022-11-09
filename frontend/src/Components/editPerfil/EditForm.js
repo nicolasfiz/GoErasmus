@@ -89,8 +89,8 @@ const EditForm = ({ datos, nuevosD, ubicacion, imagen, handleChanges, toSave, va
             <section className='campos'>
                 <div className="apartado">
                     <h3>Nombre de usuario: </h3>
-                    <input className='field' name="nombre" value={nuevosD.nombre} placeholder={datos.nombre} onChange={handleChanges} />
-                    {nuevosD.nombre.length > 15 ? (<p className='error'>El nombre de usuario no puede tener mas de 15 caracteres</p>) : null}
+                    <input className='field' name="nombreUsuario" value={nuevosD.nombreUsuario} placeholder={datos.nombreUsuario} onChange={handleChanges} />
+                    {nuevosD.nombreUsuario.length > 15 ? (<p className='error'>El nombre de usuario no puede tener mas de 15 caracteres</p>) : null}
                 </div>
                 <div className="apartado">
                     <h3>Email:</h3>
