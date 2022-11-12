@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:4000/api/country';
+const baseUrl = `${process.env.REACT_APP_URL}/country`;
 
 const getCountries = () => {
     const request = axios.get(`${baseUrl}/`)

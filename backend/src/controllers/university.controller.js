@@ -16,17 +16,18 @@ const addUniversity = async (req, res) => {
     }
 }
 
-const getUniversities = async (req, res) => {
+const getUniversities = async (req, res) => { // name ? universidades de ciudad name : todas las universidades
     try {
         const connection = await getConnection();
-        const {id} = req.query;
+        const {name} = req.query;
         let query;
-        if (id === undefined)
+        if (name === undefined)
             query = await connection.query(`SELECT u.nombre as nombreUniversidad, c.nombre as nombreCiudad
                                             FROM Universidad u LEFT JOIN Ciudad c ON (c.idCiudad = u.ciudad_idCiudad)`);
         else
-            query = await connection.query(`SELECT u.nombre as nombreFacultad, u.urlLogo as urlLogo
-                                            FROM Universidad u JOIN Ciudad ON idCiudad = ciudad_idCiudad WHERE idCiudad = ?`, id);
+            query = await connection.query(`SELECT u.nombre as nombreUniversidad, u.urlLogo
+                                            FROM Universidad u JOIN Ciudad c ON c.idCiudad = u.ciudad_idCiudad WHERE c.nombre= ?
+                                            ORDER BY nombreUniversidad ASC`, name);
         res.json(query);
     } catch (error) {
         res.status(500).send(error.message);

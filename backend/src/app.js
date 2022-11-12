@@ -14,7 +14,7 @@ import asignatura from "./routes/asignatura.routes";
 import countryRoutes from "./routes/country.routes";
 import cityRoutes from "./routes/city.routes";
 import citiesGalleryRoutes from "./routes/citiesgallery.routes";
-//import articleRoutes from "./routes/article.routes";
+import articleRoutes from "./routes/article.routes";
 import articlesGalleryRoutes from "./routes/articlesgallery.routes";
 import universityRoutes from "./routes/university.routes";
 import facultyRoutes from "./routes/faculty.routes";
@@ -48,7 +48,7 @@ app.use("/api/asignatura", asignatura)
 app.use("/api/country", countryRoutes);
 app.use("/api/city", cityRoutes);
 app.use("/api/citiesgallery", citiesGalleryRoutes);
-//app.use("/api/article", articleRoutes);
+app.use("/api/article", articleRoutes);
 app.use("/api/articlesgallery", articlesGalleryRoutes);
 app.use("/api/university", universityRoutes);
 app.use("/api/faculty", facultyRoutes);

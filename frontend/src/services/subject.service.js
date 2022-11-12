@@ -1,26 +1,26 @@
 import axios from 'axios';
 
-const baseUrl = `${process.env.REACT_APP_URL}/university`;
+const baseUrl = `${process.env.REACT_APP_URL}/subject`;
 
-const getUniversities = () => {
+const getSubjects = () => {
     const request = axios.get(`${baseUrl}/`)
     return request.then(response => response.data);
 }
 
-const getUniversitiesByCityName = (name) => {
+const getSubjectsByFacultyName = (name) => {
     const request = axios.get(`${baseUrl}/?name=${name}`)
     return request.then(response => response.data);
 }
 
-const getUniversityById = (id) => {
+const getSubjectById = (id) => {
     const request = axios.get(`${baseUrl}/${id}`);
     return request.then(response => response.data);
 }
 
 const methods = {
-    getUniversities,
-    getUniversitiesByCityName,
-    getUniversityById
+    getSubjects,
+    getSubjectsByFacultyName,
+    getSubjectById
 }
 
 export default methods;

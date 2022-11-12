@@ -1,9 +1,12 @@
 import Navegador from "./Components/nav/navbar";
 import { Routes, Route } from "react-router-dom";
 import Inicio from "./Components/inicio/inicio.js";
-import Articulos from "./Components/Ciudades/articulos";
+import Articulos from "./Components/Articulos/articulos";
 import Paises from "./Components/Paises/paises";
 import Ciudades from "./Components/Ciudades/ciudades";
+import Ciudad from "./Components/Ciudades/Ciudad/ciudad";
+import Facultades from "./Components/Facultades/facultades";
+import Asignaturas from "./Components/Asignaturas/asignaturas";
 import Login from "./Components/login/login";
 import Register from "./Components/login/register";
 import Footer from "./Components/footer/footer";
@@ -22,14 +25,18 @@ function App() {
       <main id="body">
         <Routes>
           <Route path="" element={<Inicio />} />
-          <Route path="articulos" element={<Articulos />} />
           <Route path="paises" element={<Paises />} />
-          <Route path="ciudades" element={<Ciudades />} />
+          <Route path=":nombrePais/" element={<Ciudades />} />
+          <Route path=":nombrePais/:nombreCiudad" element={<Ciudad />} />
+          <Route path="articulos" element={<Articulos />} />
+          <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
+          <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="perfil/:token" element={<Perfil />} />
           <Route path="editPerfil" element={<EditPerfil />} />
           <Route path="search" element={<Buscador />} />
+          {/* <Route path="panelAdministrador" element={<Administracion />} /> */}
           <Route path="asignatura/:idAsignatura" element={<Asignatura />} />
           <Route path="progreso/:token" element={<Logro />} />
         </Routes>

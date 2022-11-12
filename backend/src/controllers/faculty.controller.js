@@ -19,15 +19,15 @@ const addFaculty = async (req, res) => {
 const getFaculties = async (req, res) => {
     try {
         const connection = await getConnection();
-        let {id} = req.query;
+        let {name} = req.query;
         let query;
-        if (id === undefined)
+        if (name === undefined)
             query = await connection.query(`SELECT f.nombre as nombreFacultad, u.nombre as nombreUniversidad
                                             FROM Facultad f LEFT JOIN Universidad u ON (f.universidad_idUniversidad = u.idUniversidad)`);
         else
             query = await connection.query(`SELECT f.nombre as nombreFacultad FROM Facultad f
-                                            JOIN Universidad ON idUniversidad = f.universidad_idUniversidad
-                                            WHERE idUniversidad = ?`, id);
+                                            JOIN Universidad u ON u.idUniversidad = f.universidad_idUniversidad
+                                            WHERE u.nombre = ? ORDER BY nombreFacultad ASC`, name);
         res.json(query);
     } catch (error) {
         res.status(500).send(error.message);

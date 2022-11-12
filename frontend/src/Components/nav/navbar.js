@@ -26,9 +26,10 @@ function Navegador() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Link to="search" className='nav-link'>Buscar</Link>
-            <Link to="paises" className='nav-link'>Países</Link>
+            <Link to="paises" className='nav-link'>Descubrir</Link>
             <Link to="articulos" className="nav-link">Artículos</Link>
             <Link to="asignatura/1" className='nav-link'>Asignatura</Link>
+            <Link to="panelAdministrador" className='nav-link'>Panel de Administración</Link>
           </Nav>
 
           <OverlayTrigger
