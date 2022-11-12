@@ -31,7 +31,7 @@ const Universidad =  () => {
   }, [params.nombreCiudad]);
 
   return <main>
-    <div className="container">
+    <div className="cityContainer">
       {universidades.map(({nombreUniversidad, urlLogo}, id) =>  <UniversityCard key={id} nombre={nombreUniversidad} urlLogo={urlLogo}/>)}
     </div>
   </main>;
@@ -43,7 +43,7 @@ const Paragraph = ({img, cityName, text}) => {
 
   return (
     <>
-    <img className="cab" src={img} alt={cityName} title={cityName} />
+    <img className="paragraphCab" src={img} alt={cityName} title={cityName} />
     {paragraphs.map(paragraph => <><p> {paragraph} </p><br /></>)}
     </>
   );

@@ -1,11 +1,11 @@
-.container
+.cityContainer
 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
-.container > * 
+.cityContainer > * 
 {
     margin: 10px;
 }

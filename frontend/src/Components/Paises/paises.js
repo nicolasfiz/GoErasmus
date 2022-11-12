@@ -29,7 +29,7 @@ function Paises() {
     }, []);
 
     return <main>
-      <div className="container">
+      <div className="countryContainer">
         {paises.map(({nombrePais, urlBandera}, id) =>  <CountryCard key={id} nombre={nombrePais} urlBandera={urlBandera}/>)}
       </div>
     </main>;

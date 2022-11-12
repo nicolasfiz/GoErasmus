@@ -29,7 +29,7 @@ function Ciudades() {
     }, [params.nombrePais]);
 
     return <main>
-      <div className="container">
+      <div className="cityContainer">
         {ciudades.map(({nombreCiudad, urlCabecera}, id) =>  <CityCard key={id} nombre={nombreCiudad} urlCabecera={urlCabecera}/>)}
       </div>
     </main>;

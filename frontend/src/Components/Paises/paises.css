@@ -1,11 +1,11 @@
-.container
+.countryContainer
 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
-.container > * 
+.countryContainer > * 
 {
     margin: 10px;
 }
