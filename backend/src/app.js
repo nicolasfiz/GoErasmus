@@ -42,7 +42,7 @@ app.use(fileUpload({
 app.use("/api/languages", languagesRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/achievement", achievementRoutes);
-app.use("/api/roles", roleRoutes);
+app.use("/api/role", roleRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/asignatura", asignatura)
 app.use("/api/country", countryRoutes);

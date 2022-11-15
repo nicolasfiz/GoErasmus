@@ -4,9 +4,10 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 const nodemailer = require('nodemailer');
 
-export const signUp = async (req, res) => {
+export const signUp = async (req, res) => { //Probar cambios + envio email
 
     try {
+        const connection = await getConnection();
         const { nombre, apellido1, nombreUsuario, email, contrasenaSinCifrar, contrasenaRepetida } = req.body;
 
         // Checking that the required data has been filled in and that the passwords match
@@ -15,7 +16,6 @@ export const signUp = async (req, res) => {
             return res.status(400).json({ message: "Bad Request. Please fill all fields" });
         else if (contrasenaSinCifrar !== contrasenaRepetida)
             return res.status(500).json({ message: "Passwords don't match"});
-            const connection = await getConnection();
         
         // Checking that both email and username are not already in the database
         let idUsername = await connection.query("SELECT idUsuario FROM usuario WHERE nombreUsuario = ?", nombreUsuario.toLowerCase());
@@ -27,31 +27,63 @@ export const signUp = async (req, res) => {
             return res.status(500).json({message: "There is already an account with that email"});
         
         // ------------------------------------------------------------------------------------------------------------------ //
-
-        // Filling in the rest of the properties
-        let apellido2 = null;
-        let urlFotoPerfil = null;
-        let cantidadPuntos = 0;
-        let cuentaActivada = 0;
-        let fechaCreacionCuenta = "current_timestamp";
-        let facultad_idfacultad = null;
         
         let {Rol_idRol, nombreRol} = await connection.query('SELECT idRol, nombre as nombreRol FROM Rol where nombre = "Novato"');
         
         //Encrypting the password
         const  contrasena = await encryptPassword(contrasenaSinCifrar);
+
+        nombre = capitalize(nombre);
+        apellido1 = capitalize(apellido1);
+        email = email.toLowerCase();
         
         //Constructing the user to be added to the database and inserting it into the database
-        const user = { nombre, apellido1, apellido2, nombreUsuario, email, contrasena, urlFotoPerfil,
-                        cantidadPuntos, cuentaActivada, fechaCreacionCuenta, Rol_idRol, facultad_idfacultad };
+        const user = { nombre, apellido1, nombreUsuario, email, contrasena, Rol_idRol };
         await connection.query("INSERT INTO usuario SET ?", user);
 
         // ------------------------------------------------------------------------------------------------------------------ //
-
+        
         // Generating the user token
         const idUsuario = await connection.query(`SELECT idUsuario FROM Usuario WHERE email = ?`, user.email);
         const token = jwt.sign({id: idUsuario, rol: nombreRol}, config.secret, {
                 expiresIn: 86400 //24 hours
+        });
+
+        // ------------------------------------------------------------------------------------------------------------------ //
+
+        // Generating the transport object
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: config.email,
+            pass: config.email_pass
+          }
+        });
+
+        // Creating the activation link
+        const link = `http://localhost:3000/api/auth/?token=${token}`;
+
+        // Creating the body of the email message
+        const mensaje = `Hola viajero,\nEstás a punto de empezar una larga travesía y el punto de partida es GoERASMUS, 
+                        pero antes de ir al aeropuerto es necesario hacer la maleta o, en nuestro caso, pulsar 
+                        el enlace a continuación para activar tu cuenta:\n${link}\n
+                        Esperamos con ganas las anécdotas de tus viajes.\n
+                        Un saludo,\n
+                        El equipo de GoERASMUS.`;
+   
+        // Creating the object with the email options
+        const mailOptions = {
+          from: config.email,
+          to: email,
+          subject: 'Bienvenido a GoERASMUS',
+          text: mensaje
+        };
+
+        //Sending the email to the user
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error)
+            return res.status(500).json({message: error});
+          return res.json({ message: 'Email enviado: ' + info.response });
         });
 
         return res.json({token});
@@ -60,9 +92,12 @@ export const signUp = async (req, res) => {
     }
 }
 
-export const signIn = async (req, res) => {
+export const signIn = async (req, res) => { //Probar cambios
+  try {
     const {email, password} = req.body;
     const connection = await getConnection();
+
+    email = email.toLowerCase();
 
     // Checking that the email is in the database
     const emailFound = await connection.query('SELECT email FROM Usuario WHERE email = ?', email);
@@ -85,11 +120,17 @@ export const signIn = async (req, res) => {
     });
 
     return res.json({token: token});
+  } catch(error) {
+    return res.status(500).send(error.message);
+  }
 }
 
-export const sendPasswordtoUserEmail = async (req, res) => {
+export const sendPasswordtoUserEmail = async (req, res) => { //Probar
+  try {
     const {email} = req.body;
     const connection = await getConnection();
+
+    email = email.toLowerCase();
 
     // Checking that the email is in the database
     const emailFound = await connection.query("SELECT email FROM usuario WHERE email = ?", email);
@@ -103,7 +144,7 @@ export const sendPasswordtoUserEmail = async (req, res) => {
     for (let i = 0; i < 8; i++)
         autoGeneratedPassword += alphanumeric[Math.floor(Math.random() * alphanumeric.length)];
     const contrasena = await encryptPassword(autoGeneratedPassword);
-    await connection.query("update usuario set contrasena=? where idUsuario=?;", [contrasena, idUsuario[0].idUsuario]);
+    await connection.query("UPDATE usuario SET contrasena = ? WHERE idUsuario = ?;", [contrasena, idUsuario[0].idUsuario]);
 
     // ------------------------------------------------------------------------------------------------------------------ //
     
@@ -133,6 +174,36 @@ export const sendPasswordtoUserEmail = async (req, res) => {
           return res.status(500).json({message: error});
         return res.json({ message: 'Email enviado: ' + info.response });
       });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+export const confirmAccount = async (req, res) => { //Probar
+  try {
+    const {token} = req.query;
+
+    if (token !== undefined)
+    {
+      const connection = await getConnection();
+      const {idUsuario} = jwt.verify(token, config.secret);
+      await connection.query("UPDATE usuario SET cuentaActivada=? WHERE idUsuario=?", ['Si', idUsuario]);
+      return res.json({ message: "Account activated successfully!" });
+    }
+    else
+      return res.status(400).json({message: "token not found!"});
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+const capitalize = (str) => {
+
+    const arr = str.split(" ");
+    for(var i = 0; i < arr.length; i++)
+        arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+    const capitalize = arr.join(" ");
+    return (capitalize);
 }
 
 const encryptPassword = async (password) => {
@@ -150,5 +221,6 @@ const validatePassword = async (password, receivedPassword) => {
 export const methods = {
     signIn,
     signUp,
-    sendPasswordtoUserEmail
+    sendPasswordtoUserEmail,
+    confirmAccount
 };

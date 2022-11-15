@@ -2,6 +2,16 @@ import axios from 'axios';
 
 const baseUrl = `${process.env.REACT_APP_URL}/user`
 
+const getUsers = () => {
+    const request = axios.get(`${baseUrl}/`)
+    return request.then(response => response.data);
+}
+
+const deleteUser = (id) => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then(response => response.data);
+}
+
 const getDatos = (nombreUsuario) => {
     const request = axios.get(`${baseUrl}/getUser/${nombreUsuario}`)
     return request.then(response => response.data);
@@ -43,6 +53,8 @@ const getLogros = (id) => {
 }
 
 const funciones = {
+    getUsers,
+    deleteUser,
     getDatos,
     getImagen,
     getPaises,

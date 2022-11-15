@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import subjectServices from "../../services/subject.service";
+import "./asignaturas.css";
+import "../Facultades/facultades.css";
 
-const  SubjectCell = ({index, nombreAsignatura}) => {
+const  SubjectCell = ({index, idAsignatura, nombreAsignatura}) => {
 
   const nav = useNavigate();
 
   return <>
            <tr>
-             <td>{index}</td>
-             <td onClick={() => nav(`/asignatura/${nombreAsignatura}`) }>{nombreAsignatura}</td>
+             <td className="centerTableText">{index}</td>
+             <td onClick={() => nav(`/asignatura/${idAsignatura}`) }>{nombreAsignatura}</td>
            </tr>
          </>;
 }
@@ -28,17 +30,19 @@ function Asignaturas() {
   }, [params.nombreFacultad]);
 
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Nombre de la asignatura</th>
-        </tr>
-      </thead>
-      <tbody>
-        {asignaturas.map(({nombreAsignatura}, id) => <SubjectCell key={id} index={++index} nombreAsignatura={nombreAsignatura} />)}
-      </tbody>
-    </Table>
+    <main className="subjectTable">
+      <Table striped bordered hover className="shadowTable">
+        <thead>
+          <tr>
+            <th className="centerTableText">#</th>
+            <th>Nombre de la asignatura</th>
+          </tr>
+        </thead>
+        <tbody>
+          {asignaturas.map(({idAsignatura, nombreAsignatura}, id) => <SubjectCell key={id} index={++index} idAsignatura={idAsignatura} nombreAsignatura={nombreAsignatura} />)}
+        </tbody>
+      </Table>
+    </main>
   );
 }
 

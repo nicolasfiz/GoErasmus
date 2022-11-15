@@ -21,7 +21,7 @@ function Navegador() {
   return (
     <Navbar bg="light" expand="lg" sticky="top">
       <Container >
-        <Link to="" className='navbar-brand'>G<img src={MyImage} width={17} height={20} style={{ paddingBottom: 3 }} alt="mundoLogo" />Erasmus</Link>
+        <Link to="" className='navbar-brand'>G<img src={MyImage} width={17} height={20} style={{ paddingBottom: 3 }} alt="mundoLogo" />ERASMUS</Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -29,7 +29,7 @@ function Navegador() {
             <Link to="paises" className='nav-link'>Descubrir</Link>
             <Link to="articulos" className="nav-link">Artículos</Link>
             <Link to="asignatura/1" className='nav-link'>Asignatura</Link>
-            <Link to="panelAdministrador" className='nav-link'>Panel de Administración</Link>
+            <Link to="panelAdministracion" className='nav-link'>Panel de Administración</Link>
           </Nav>
 
           <OverlayTrigger

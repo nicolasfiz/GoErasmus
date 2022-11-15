@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Tab, Tabs } from "react-bootstrap";
+import { Button, Card, Tab, Tabs, Image } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import universityServices from "../../../services/university.service";
 import cityServices from "../../../services/city.service";
-import "./ciudad.css"
+import "./ciudad.css";
+import "../ciudades.css";
 
 const UniversityCard = ({nombre, urlLogo}) => {
 
@@ -43,8 +44,12 @@ const Paragraph = ({img, cityName, text}) => {
 
   return (
     <>
-    <img className="paragraphCab" src={img} alt={cityName} title={cityName} />
-    {paragraphs.map(paragraph => <><p> {paragraph} </p><br /></>)}
+      <section className="citySection">
+        <Image fluid className="paragraphCab" src={img} alt={cityName} title={cityName} />
+      </section>
+      <section className="citySection">
+        {paragraphs.map((paragraph, id) => <p key={id}> {paragraph} </p>)}
+      </section>
     </>
   );
 }
@@ -62,10 +67,10 @@ const InformacionCiudad = () => {
   }, [params.nombreCiudad]);
 
   return (<>
-            <section>
+            <article className="cityInformation">
               {ciudad.map(({urlCabecera, nombre, informacion}, id) => <Paragraph key={id} img={urlCabecera} cityName={nombre} text={informacion} />)}
               <hr />
-            </section>
+            </article>
             <section>
               <p>que dise tu</p>
             </section>

@@ -7,6 +7,7 @@ import Ciudades from "./Components/Ciudades/ciudades";
 import Ciudad from "./Components/Ciudades/Ciudad/ciudad";
 import Facultades from "./Components/Facultades/facultades";
 import Asignaturas from "./Components/Asignaturas/asignaturas";
+import Administracion from "./Components/Administracion/administracion";
 import Login from "./Components/login/login";
 import Register from "./Components/login/register";
 import Footer from "./Components/footer/footer";
@@ -36,7 +37,7 @@ function App() {
           <Route path="perfil/:token" element={<Perfil />} />
           <Route path="editPerfil" element={<EditPerfil />} />
           <Route path="search" element={<Buscador />} />
-          {/* <Route path="panelAdministrador" element={<Administracion />} /> */}
+          <Route path="panelAdministracion" element={<Administracion />} />
           <Route path="asignatura/:idAsignatura" element={<Asignatura />} />
           <Route path="progreso/:token" element={<Logro />} />
         </Routes>
