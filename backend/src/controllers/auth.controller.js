@@ -61,7 +61,7 @@ export const signUp = async (req, res) => { //Probar cambios + envio email
         });
 
         // Creating the activation link
-        const link = `http://localhost:3000/api/auth/?token=${token}`;
+        const link = `http://localhost:3000/confirmacion/?token=${token}`;
 
         // Creating the body of the email message
         const mensaje = `Hola viajero,\nEstás a punto de empezar una larga travesía y el punto de partida es GoERASMUS, 
@@ -195,6 +195,27 @@ export const confirmAccount = async (req, res) => { //Probar
   } catch (error) {
     return res.status(500).send(error.message);
   }
+}
+
+export const verifyToken = async (req, res, next) => {
+  try{
+    const token = req.headers["access-token"];
+    console.log(token);
+
+    if (!token)
+      return res.status(400).json({message: "No token provided"});
+  
+    const connection = await getConnection();
+    const decoded = jwt.verify(token, config.secret);
+    const user = await connection.query("SELECT * from usuario WHERE idUsuario = ?", decoded.idUsuario);
+    if (user === [])
+      return res.status(400).json({message: "no user found"});
+    
+    next();
+  } catch (error) {
+    return res.status(500).json({message: "Unauthorized"});
+  }
+
 }
 
 const capitalize = (str) => {

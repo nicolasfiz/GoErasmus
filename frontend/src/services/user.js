@@ -2,52 +2,52 @@ import axios from 'axios';
 
 const baseUrl = `${process.env.REACT_APP_URL}/user`
 
-const getUsers = () => {
+const getUsers = async () => {
     const request = axios.get(`${baseUrl}/`)
     return request.then(response => response.data);
 }
 
-const deleteUser = (id) => {
+const deleteUser = async (id) => {
     const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(response => response.data);
 }
 
-const getDatos = (nombreUsuario) => {
+const getDatos = async (nombreUsuario) => {
     const request = axios.get(`${baseUrl}/getUser/${nombreUsuario}`)
     return request.then(response => response.data);
 }
 
-const getImagen = (id) => {
+const getImagen = async (id) => {
     const request = axios.get(`${baseUrl}/imagen/${id}`);
     return request.then(response => response.data);
 }
 
-const getPaises = () => {
+const getPaises = async () => {
     const request = axios.get(`${baseUrl}/paises`)
     return request.then(response => response.data);
 }
 
-const getCiudades = (pais) => {
+const getCiudades = async (pais) => {
     const request = axios.get(`${baseUrl}/ciudades/${pais}`)
     return request.then(response => response.data);
 }
 
-const getUniversidades = (ciudad) => {
+const getUniversidades = async (ciudad) => {
     const request = axios.get(`${baseUrl}/universidades/${ciudad}`)
     return request.then(response => response.data)
 }
 
-const getFacultades = (universidad) => {
+const getFacultades = async (universidad) => {
     const request = axios.get(`${baseUrl}/facultades/${universidad}`)
     return request.then(response => response.data)
 }
 
-const guardarDatos = (id, FormData) => {
+const guardarDatos = async (id, FormData) => {
     const request = axios.put(`${baseUrl}/guardarDatos/${id}`, FormData)
     return request.then(response => response.data)
 }
 
-const getLogros = (id) => {
+const getLogros = async (id) => {
     const request = axios.get(`${baseUrl}/logros/${id}`)
     return request.then(response => response.data)
 }

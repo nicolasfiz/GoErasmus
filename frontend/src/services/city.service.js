@@ -2,17 +2,17 @@ import axios from 'axios';
 
 const baseUrl = `${process.env.REACT_APP_URL}/city`;
 
-const getAllCities = () => {
+const getAllCities = async () => {
     const request = axios.get(`${baseUrl}/`)
     return request.then(response => response.data);
 }
 
-const getCitiesByCountryName = (name) => {
+const getCitiesByCountryName = async (name) => {
     const request = axios.get(`${baseUrl}/?name=${name}`)
     return request.then(response => response.data);
 }
 
-const getCityByName = (name) => {
+const getCityByName = async (name) => {
     const request = axios.get(`${baseUrl}/${name}`);
     return request.then(response => response.data);
 }
