@@ -8,14 +8,14 @@ function Inicio() {
       <section>
         <div className="head">
           <div className="boxHead">
-            <h1>Bienvenido a Go Eramus</h1>
+            <h1>Bienvenido a GoErasmus</h1>
             <p><i>Una ayuda por y para estudiantes</i></p>
           </div>
         </div>
       </section>
       <section className="body">
         <div className="texto">
-          <h2 className="titulos">¿Qué es Go Eramus?</h2>
+          <h2 className="titulos">¿Qué es GoErasmus?</h2>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae est felis. Etiam bibendum commodo venenatis. Etiam porttitor, nisi eu sollicitudin lobortis, purus augue gravida mi, nec semper purus lectus sit amet metus. Nulla aliquet, metus a posuere vehicula, mi lectus ornare metus, quis sagittis orci augue feugiat dolor. Sed dapibus erat ipsum, et congue tortor semper vel. Praesent egestas elit a neque porttitor egestas. Quisque fringilla vestibulum nisi, id porttitor risus condimentum vitae. Aliquam rhoncus purus ipsum, sit amet pulvinar felis rhoncus vitae. Nullam sagittis hendrerit mollis. Cras sagittis neque nec sapien finibus vulputate. Quisque elementum, orci id blandit tempor, magna nibh maximus tortor, sit amet congue elit ante id nisi. Nam mattis, ipsum eget luctus pellentesque, neque massa gravida est, a ullamcorper justo nibh ut mauris. Vestibulum vitae nisl scelerisque, tincidunt arcu vel, maximus sapien. Nulla in sem lorem. Vestibulum porta risus risus, quis molestie neque facilisis et</p>
         </div>
         <div className="servicios">

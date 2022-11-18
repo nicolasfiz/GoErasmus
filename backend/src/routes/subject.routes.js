@@ -2,6 +2,7 @@ import {Router} from 'express'
 const router = Router();
 
 import {methods as subjectCtrl} from '../controllers/subject.controller';
+// import * as authJwt from "../middlewares/authJwt";
 
 router.post('/', subjectCtrl.addSubject);
 router.get('/', subjectCtrl.getSubjects);

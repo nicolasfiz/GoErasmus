@@ -21,7 +21,7 @@ function Navegador() {
   return (
     <Navbar bg="light" expand="lg" sticky="top">
       <Container >
-        <Link to="" className='navbar-brand'>G<img src={MyImage} width={17} height={20} style={{ paddingBottom: 3 }} alt="mundoLogo" />ERASMUS</Link>
+        <Link to="" className='navbar-brand'>G<img src={MyImage} width={17} height={20} style={{ paddingBottom: 3 }} alt="mundoLogo" />Erasmus</Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

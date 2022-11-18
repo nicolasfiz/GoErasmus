@@ -2,6 +2,7 @@ import {Router} from 'express'
 const router = Router();
 
 import {methods as achievementCtrl} from '../controllers/achievement.controller';
+//import * as authJwt from "../middlewares/authJwt";
 
 router.post('/', achievementCtrl.addAchievement);
 router.get('/', achievementCtrl.getAchievements);

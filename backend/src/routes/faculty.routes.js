@@ -2,6 +2,7 @@ import {Router} from 'express'
 const router = Router();
 
 import {methods as facultyCtrl} from '../controllers/faculty.controller';
+// import * as authJwt from "../middlewares/authJwt";
 
 router.post('/', facultyCtrl.addFaculty);
 router.get('/', facultyCtrl.getFaculties);

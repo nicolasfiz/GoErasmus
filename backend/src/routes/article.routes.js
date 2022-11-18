@@ -2,6 +2,7 @@ import {Router} from 'express'
 const router = Router();
 
 import {methods as articleCtrl} from '../controllers/article.controller';
+// import * as authJwt from "../middlewares/authJwt";
 
 router.post('/', articleCtrl.addDraftArticle);
 router.get('/', articleCtrl.getArticles);
