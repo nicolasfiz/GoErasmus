@@ -1,20 +1,14 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:4000/api/country';
+const baseUrl = `${process.env.REACT_APP_URL}/country`;
 
-const getCountries = () => {
+const getCountries = async () => {
     const request = axios.get(`${baseUrl}/`)
     return request.then(response => response.data);
 }
 
-const getCountryById = (id) => {
-    const request = axios.get(`${baseUrl}/${id}`);
-    return request.then(response => response.data);
-}
-
 const methods = {
-    getCountries,
-    getCountryById
+    getCountries
 }
 
 export default methods;

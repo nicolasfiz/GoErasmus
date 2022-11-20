@@ -9,7 +9,7 @@ const getAsignatura = async (req, res) => {
         const { idAsignatura } = req.params;
         const result = await connection.query(`select a.nombre, a.puntuacion, f.nombre as facultad, u.nombre as universidad, c.nombre as ciudad, p.nombre as pais,
         (SELECT COUNT(*) FROM votacionPonderada where asignatura_idAsignatura = ?) as valoraciones
-        from asignatura a join facultad f on a.Facultad_idfacultad=f.idfacultad
+        from asignatura a join facultad f on a.facultad_idfacultad=f.idfacultad
         join universidad u on f.universidad_iduniversidad=u.iduniversidad
         join ciudad c on u.ciudad_idciudad=c.idciudad 
         join pais p on c.pais_idpais = p.idpais where a.idAsignatura=?;`, [idAsignatura, idAsignatura]);

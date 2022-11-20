@@ -2,10 +2,11 @@ import {Router} from 'express'
 const router = Router();
 
 import {methods as cityCtrl} from '../controllers/city.controller';
+// import * as authJwt from "../middlewares/authJwt";
 
 router.post('/', cityCtrl.addCity);
 router.get('/', cityCtrl.getCities);
-router.get('/:id', cityCtrl.getCityById);
+router.get('/:name', cityCtrl.getCityByName);
 router.put('/:id', cityCtrl.updateCity);
 router.delete('/:id', cityCtrl.deleteCity);
 

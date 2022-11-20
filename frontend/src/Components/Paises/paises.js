@@ -10,9 +10,9 @@ const  CountryCard = ({nombre, urlBandera}) => {
 
   return (
       <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src={urlBandera} />
+      <Card.Img style={{boxShadow: '2px 2px 12px rgba(0, 0, 0, 0.15), -2px -2px 12px rgba(0, 0, 0, 0.15)'}}variant="top" src={urlBandera} />
       <Card.Body className="d-grid gap-2">
-        <Button size="lg" variant="primary" onClick={() => {nav(`${nombre}/ciudades`)}}>{nombre}</Button>
+        <Button size="lg" variant="primary" onClick={() => {nav(`/${nombre}/`)}}>{nombre}</Button>
       </Card.Body>
     </Card>
   );
@@ -29,8 +29,7 @@ function Paises() {
     }, []);
 
     return <main>
-      <h2>Selecciona un país</h2>
-      <div className="container">
+      <div className="countryContainer">
         {paises.map(({nombrePais, urlBandera}, id) =>  <CountryCard key={id} nombre={nombrePais} urlBandera={urlBandera}/>)}
       </div>
     </main>;

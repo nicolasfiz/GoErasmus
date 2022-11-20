@@ -1,62 +1,38 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Tab, Tabs } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-//import cityServices from "../../services/city.service";
-import universityServices from "../../services/university.service";
+import { Button, Card } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import cityServices from "../../services/city.service";
 import './ciudades.css';
 
-const UniversityCard = ({nombre, urlLogo}) => {
+const  CityCard = ({nombre, urlCabecera}) => {
 
   const nav = useNavigate();
 
   return (
       <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src={urlLogo} />
+      <Card.Img variant="top" src={urlCabecera} />
       <Card.Body className="d-grid gap-2">
-        <Button size="lg" variant="primary" onClick={() => {nav(`${nombre}/facultades`)}}>{nombre}</Button>
+        <Button size="lg" variant="primary" onClick={() => {nav(`${nombre}/`)}}>{nombre}</Button>
       </Card.Body>
     </Card>
   );
 }
 
-const Universidad =  () => {
+function Ciudades() {
+    const params = useParams();
+    const [ciudades, setCiudades] = useState([]);
 
-  const [universidades, setUniversidades] = useState([]);
-
-  useEffect(() => {
-    universityServices.getCountries().then(universities => {
-      setUniversidades(universities);
-    });
-  });
-
-  return <main>
-    <h2>Selecciona una universidad</h2>
-    <div className="container">
-      {universidades.map(({nombre, urlLogo}, id) =>  <UniversityCard key={id} nombre={nombre} urlLogo={urlLogo}/>)}
-    </div>
-  </main>;
-}
-
-function Ciudad() {
+    useEffect(() => {
+      cityServices.getCitiesByCountryName(params.nombrePais).then(cities => {
+        setCiudades(cities);
+      });
+    }, [params.nombrePais]);
 
     return <main>
-      <Tabs
-        defaultActiveKey="informacion"
-        id="informacion-universidades-articulos"
-        className="mb-3"
-        fill
-      >
-        <Tab eventKey="informacion" title="Información">
-          
-        </Tab>
-        <Tab eventKey="universidades" title="Universidades">
-          <Universidad />
-        </Tab>
-        <Tab eventKey="articulos" title="Artículos" disabled>
-      
-        </Tab>
-      </Tabs>
-    </main>
+      <div className="cityContainer">
+        {ciudades.map(({nombreCiudad, urlCabecera}, id) =>  <CityCard key={id} nombre={nombreCiudad} urlCabecera={urlCabecera}/>)}
+      </div>
+    </main>;
 }
 
-export default Ciudad;
+export default Ciudades;

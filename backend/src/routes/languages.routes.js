@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {methods as languagesCtrl} from "../controllers/languaje.controller"
+// import * as authJwt from "../middlewares/authJwt";
 
 const router = Router()
 

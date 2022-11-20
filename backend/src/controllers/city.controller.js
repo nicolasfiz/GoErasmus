@@ -16,17 +16,18 @@ const addCity = async (req, res) => {
     }
 }
 
-const getCities = async (req, res) => {
+const getCities = async (req, res) => { // name ? ciudades de pais name : todas las ciudades
     try {
         const connection = await getConnection();
-        const {id} = req.query;
+        const {name} = req.query;
         let query;
-        if (id === undefined)
+        if (name === undefined)
             query = await connection.query(`SELECT c.nombre as nombreCiudad, p.nombre as nombrePais FROM ciudad c
                                                 LEFT JOIN Pais p ON (p.idPais = c.pais_idPais)`);
         else
             query = await connection.query(`SELECT c.nombre as nombreCiudad, c.urlCabecera FROM Ciudad c
-                                                JOIN Pais p ON p.idPais = c.pais_idPais WHERE p.idPais=?`, id);
+                                                JOIN Pais p ON p.idPais = c.pais_idPais WHERE p.nombre=?
+                                                ORDER BY nombreCiudad ASC`, name);
         res.json(query);
 
     } catch (error) {
@@ -34,11 +35,11 @@ const getCities = async (req, res) => {
     }
 }
 
-const getCityById = async (req, res) => {
+const getCityByName = async (req, res) => {
     try {
         const connection = await getConnection();
-        const {id} = req.params;
-        const query = await connection.query(`SELECT nombre, urlCabecera, informacion FROM ciudad WHERE idCiudad=?`, id);
+        const {name} = req.params;
+        const query = await connection.query(`SELECT nombre, urlCabecera, informacion FROM ciudad WHERE nombre = ?`, name);
         res.json(query);
     } catch (error) {
         res.status(500).send(error.message);
@@ -74,7 +75,7 @@ const deleteCity = async (req, res) => {
 export const methods = {
     addCity,
     getCities,
-    getCityById,
+    getCityByName,
     updateCity,
     deleteCity
 };
