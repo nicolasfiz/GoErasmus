@@ -7,10 +7,9 @@ router.get("/:idAsignatura", asignaturaController.getAsignatura);
 router.get("/comentarios/:idAsignatura", asignaturaController.getComentarios);
 router.get("/archivos/:idAsignatura", asignaturaController.getArchivo)
 router.post("/archivo", asignaturaController.subirArchivo)
-router.delete("/archivo/:idArchivo", asignaturaController.deleteArchivo)
 router.post("/valoracion", asignaturaController.subirValoracion)
-//router.delete("/valoracion/:idValoracion")
-//router.put("/mg/:idVotacion")
-//router.put("/nmg/:idVotacion")
+router.get("/votacionUsuario/:idUsuario", asignaturaController.getVotacionUsuario)
+router.put("/mg/:idVotacion", asignaturaController.mg)
+router.put("/nmg/:idVotacion", asignaturaController.nmg)
 
 export default router;

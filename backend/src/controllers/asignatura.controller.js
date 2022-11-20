@@ -21,14 +21,13 @@ const getAsignatura = async (req, res) => {
 
 const getComentarios = async (req, res) => {
     try {
-        await setTimeout(3000)
         const connection = await getConnection();
         const { idAsignatura } = req.params;
-        const result = await connection.query(`select c.votacion_idvotacion, vp.nota, c.descripcion, u.nombreUsuario, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg, c.fecha
+        const result = await connection.query(`select v.idVotacion, vp.nota, c.descripcion, u.nombreUsuario, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg, c.fecha
         from votacionponderada vp 
         left join comentario c on c.idcomentario = vp.comentario_idComentario 
         left join usuario u on c.usuario_idUsuario=u.idUsuario
-        left join votacion v on c.votacion_idVotacion=v.idVotacion where vp.asignatura_idAsignatura=?;`, idAsignatura);
+        left join votacion v on v.comentario_idComentario=c.idComentario where vp.asignatura_idAsignatura=?;`, idAsignatura);
         res.json(result);
     } catch (error) {
         res.status(500).send(error.message);
@@ -39,9 +38,9 @@ const getArchivo = async (req, res) => {
     try {
         const connection = await getConnection();
         const { idAsignatura } = req.params;
-        const result = await connection.query(`select a.votacion_idVotacion, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg, a.titulo,a.descripcion, a.urlArchivo, u.nombreUsuario, a.fecha, a.nombreArchivo
+        const result = await connection.query(`select v.idVotacion, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg, a.titulo,a.descripcion, a.urlArchivo, u.nombreUsuario, a.fecha, a.nombreArchivo
         from archivo a 
-        left join votacion v on a.votacion_idVotacion=v.idVotacion
+        left join votacion v on a.idArchivo= v.archivo_idArchivo
         left join usuario u on a.usuario_idUsuario=u.idUsuario where a.Asignatura_idAsignatura=?;`, idAsignatura);
         res.json(result);
     } catch (error) {
@@ -52,13 +51,9 @@ const getArchivo = async (req, res) => {
 const subirArchivo = async (req, res) => {
     try {
         const connection = await getConnection();
-        //idVotacion
-        await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta) values (0, 0);")
-        const idVotacionQuery = await connection.query("select idVotacion from votacion order by idVotacion DESC LIMIT 1;")
-        const idVotacion = idVotacionQuery[0].idVotacion
         //urlArchivo
         let urlArchivo;
-        if (req.files != null) {
+        if (req.files !=  null) {
             await cloudinary.uploader.upload(req.files.file.tempFilePath, async (error, result) => {
                 if (error) {
                     res.status(500)
@@ -67,14 +62,18 @@ const subirArchivo = async (req, res) => {
                 urlArchivo = result.url;
             })
         }
-        //resto de datos por body
+        //body
         const {titulo, descripcion, idUsuario, idAsignatura, nombreArchivo} = req.body;
         //fecha
         const fecha = new Date();
-        //objeto final
-        const archivo = {titulo, descripcion, urlArchivo, usuario_idUsuario: idUsuario, Asignatura_idAsignatura: idAsignatura, votacion_idVotacion: idVotacion, fecha, nombreArchivo}
+        //archivo
+        const archivo = {titulo, descripcion, urlArchivo, usuario_idUsuario: idUsuario, Asignatura_idAsignatura: idAsignatura, fecha, nombreArchivo}
         //consulta final
-        const result = await connection.query(`INSERT INTO archivo SET ?`, archivo);
+        await connection.query(`INSERT INTO archivo SET ?`, archivo);
+        const idArchivoQuery = await connection.query(`SELECT idArchivo from archivo order by idArchivo DESC LIMIT 1`)
+        const idArchivo = idArchivoQuery[0].idArchivo
+        //idVotacion
+        const result = await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta, archivo_idArchivo) values (0, 0, ?);", idArchivo)
         res.json(result);
     } catch (error) {
         res.status(500)
@@ -82,6 +81,7 @@ const subirArchivo = async (req, res) => {
     }
 }
 
+/*
 
 const deleteArchivo = async (req, res)=>{
     try{
@@ -97,33 +97,30 @@ const deleteArchivo = async (req, res)=>{
         res.status(500).send(error.message);
     }
 }
+*/
 
 const subirValoracion = async (req, res) => {
     try {
         const connection = await getConnection();
-        //idVotacion
-        await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta) values (0, 0);")
-        const idVotacionQuery = await connection.query("select idVotacion from votacion order by idVotacion DESC LIMIT 1;")
-        const idVotacion = idVotacionQuery[0].idVotacion
-        //resto de datos por body
+        //body
         const { descripcion, idUsuario, idAsignatura, nota} = req.body;
         //fecha
         const fecha = new Date();
         //crear comentario
-        const comentario = {descripcion, usuario_idUsuario: idUsuario, fecha, votacion_idVotacion: idVotacion}
-        console.log(comentario)
+        const comentario = {descripcion, usuario_idUsuario: idUsuario, fecha}
         await connection.query(`INSERT INTO comentario SET ?`, comentario)
         const idComentarioQuery = await connection.query("select idComentario from comentario order by idComentario DESC LIMIT 1")
         const idComentario = idComentarioQuery[0].idComentario
         //añadir valoracion
         const votacionPonderada = {nota, comentario_idComentario: idComentario, asignatura_idAsignatura: idAsignatura}
-        console.log(votacionPonderada)
         await connection.query(`INSERT INTO votacionPonderada SET ?`, votacionPonderada);
         //Calcular media
         const mediaQuery = await connection.query(`select AVG(nota) as puntuacion from votacionponderada where asignatura_idAsignatura=?;`, idAsignatura)
         const puntuacionBase = mediaQuery[0].puntuacion
         const puntuacion = puntuacionBase.toFixed(1)
-        const result = await connection.query(`UPDATE asignatura SET puntuacion = ? WHERE idAsignatura = ?`, [puntuacion, idAsignatura])
+        await connection.query(`UPDATE asignatura SET puntuacion = ? WHERE idAsignatura = ?`, [puntuacion, idAsignatura])
+        //idVotacion
+        const result = await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta, comentario_idComentario) values (0, 0, ?);", idComentario)
         res.json(result);
     } catch (error) {
         res.status(500)
@@ -131,11 +128,77 @@ const subirValoracion = async (req, res) => {
     }
 }
 
+const getVotacionUsuario = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const { idUsuario } = req.params;
+        const result = await connection.query(`select votacion_idVotacion from votacion_usuario where usuario_idUsuario = ?;`, idUsuario);
+        const final = result.map(elem => elem.votacion_idVotacion)
+        res.json(final);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+const mg = async (req, res)=>{
+    try{
+        const { idVotacion } = req.params;
+        const { idUsuario } = req.body;
+        const connection = await getConnection();
+
+        if(idVotacion === undefined || idUsuario === undefined ){
+            res.status(400).json({ message:"Bad Request. Please fill all fields" });
+        }
+        //insert votacion_usuario
+        const votacionUsuario = {votacion_idVotacion: idVotacion, usuario_idUsuario: idUsuario}
+        await connection.query(`INSERT INTO votacion_usuario SET ?`, votacionUsuario)
+        //select mg
+        const mgQuery = await connection.query(`select numeroMeGusta from votacion where idVotacion = ?;`, idVotacion)
+        let mg = mgQuery[0].numeroMeGusta
+        mg+=1
+        console.log(mg)
+        //update mg
+        const mgFinal = {numeroMeGusta: mg}    
+        const query = await connection.query("UPDATE votacion SET ? where idVotacion = ?", [mgFinal, idVotacion]);
+        res.json(query);
+    }catch(error){
+        res.status(500).send(error.message);
+    }
+}
+const nmg = async (req, res)=>{
+    try{
+        const { idVotacion } = req.params;
+        const { idUsuario } = req.body;
+        const connection = await getConnection();
+
+        if(idVotacion === undefined || idUsuario === undefined ){
+            res.status(400).json({ message:"Bad Request. Please fill all fields" });
+        }
+        //insert votacion_usuario
+        const votacionUsuario = {votacion_idVotacion: idVotacion, usuario_idUsuario: idUsuario}
+        await connection.query(`INSERT INTO votacion_usuario SET ?`, votacionUsuario)
+        //select mg
+        const mgQuery = await connection.query(`select numeroNoMeGusta from votacion where idVotacion = ?;`, idVotacion)
+        let nmg = mgQuery[0].numeroNoMeGusta
+        nmg+=1
+        console.log(nmg)
+        //update mg
+        const nmgFinal = {numeroNoMeGusta: nmg}    
+        const query = await connection.query("UPDATE votacion SET ? where idVotacion = ?", [nmgFinal, idVotacion]);
+        res.json(query);
+    }catch(error){
+        res.status(500).send(error.message);
+    }
+}
+
+
 export const methods = {
     getAsignatura,
     getComentarios,
     getArchivo,
     subirArchivo,
-    deleteArchivo,
-    subirValoracion
+    subirValoracion,
+    getVotacionUsuario,
+    mg,
+    nmg
 };

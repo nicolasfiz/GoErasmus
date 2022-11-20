@@ -8,7 +8,7 @@ import moment from "moment";
 import Comentario from "./Comentario";
 import Spinner from "react-bootstrap/Spinner";
 
-const PaginatedItems = ({ itemsPerPage, idAsignatura }) => {
+const PaginatedItems = ({ itemsPerPage, idAsignatura, idUsuario, votados }) => {
   // We start with an empty list of items.
   const [currentItems, setCurrentItems] = useState(null);
   const [items, setItems] = useState(null);
@@ -20,7 +20,12 @@ const PaginatedItems = ({ itemsPerPage, idAsignatura }) => {
   useEffect(() => {
     // Fetch items from another resources.
     asignaturaService.getComentarios(idAsignatura).then((response) => {
-      console.log(response);
+      response.sort(
+        (a, b) =>
+          moment(a.fecha, "YYYY-MM-DD").unix() -
+          moment(b.fecha, "YYYY-MM-DD").unix()
+      );
+      response.reverse();
       setItems(response);
       const endOffset = itemOffset + itemsPerPage;
       setCurrentItems(response.slice(itemOffset, endOffset));
@@ -91,7 +96,7 @@ const PaginatedItems = ({ itemsPerPage, idAsignatura }) => {
           Recientes
         </ToggleButton>
       </div>
-      <Comentario currentItems={currentItems} />
+      <Comentario currentItems={currentItems} votados={votados} idUsuario={idUsuario}/>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ReactPaginate
           nextLabel="siguiente >"

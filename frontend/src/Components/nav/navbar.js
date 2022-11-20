@@ -17,9 +17,8 @@ function Navegador() {
     //let path = `login`;
     navigate(dest);
   }
-
   return (
-    <Navbar bg="light" expand="lg" sticky="top">
+    <Navbar bg="light" expand="lg" sticky="top" >
       <Container >
         <Link to="" className='navbar-brand'>G<img src={MyImage} width={17} height={20} style={{ paddingBottom: 3 }} alt="mundoLogo" />Erasmus</Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -30,7 +29,6 @@ function Navegador() {
             <Link to="articulos" className="nav-link">Artículos</Link>
             <Link to="asignatura/1" className='nav-link'>Asignatura</Link>
           </Nav>
-
           <OverlayTrigger
             key={'Inicio Sesion'}
             placement={'bottom'}
@@ -79,6 +77,7 @@ function Navegador() {
           </OverlayTrigger>
         </Navbar.Collapse>
       </Container>
+          
     </Navbar>
   );
 }

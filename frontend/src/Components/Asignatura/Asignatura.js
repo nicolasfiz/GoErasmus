@@ -10,12 +10,17 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import ArchivoAsignatura from "./ArchivosAsignatura/ArchivosAsignatura";
+import { Toaster } from 'react-hot-toast';
+import SubirComentario from "./ComentariosAsignatura/SubirComentario";
 
 const COMENTARIOS_POR_PAGINA = 6
 
 const Asignatura = () => {
   const params = useParams();
+  const idUsuario = 1
   const [datosAsignatura, setDatosAsignatura] = useState(null);
+  const [votados, setVotados] = useState(null)
+  const [subirComentarioModal, setsubirComentarioModal] = useState(false)
 
   useEffect(() => {
     asignaturaService
@@ -27,9 +32,12 @@ const Asignatura = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [params.idAsignatura]);
+    asignaturaService.getVotacionUsuarios(idUsuario).then((response) => {
+      setVotados(response);
+    });
+  }, [params.idAsignatura, idUsuario]);
 
-  return datosAsignatura ? (
+  return datosAsignatura && votados ? (
     <div
       style={{
         margin: "1rem 15rem 1rem 15rem",
@@ -38,6 +46,13 @@ const Asignatura = () => {
         backgroundColor: "white",
       }}
     >
+      <Toaster />
+      <SubirComentario
+        show={subirComentarioModal}
+        onHide={() => setsubirComentarioModal(false)}
+        idusuario={idUsuario}
+        idasignatura={params.idAsignatura}
+      />
       <div
         style={{
           display: "flex",
@@ -108,14 +123,14 @@ const Asignatura = () => {
                 datosAsignatura.puntuacion
                   ? datosAsignatura.puntuacion >= 5
                     ? {
-                        background: "#198754",
-                        borderColor: "#198754",
-                      }
+                      background: "#198754",
+                      borderColor: "#198754",
+                    }
                     : { background: "#dc3545", borderColor: "#dc3545" }
                   : {
-                      background: "rgb(124 124 124)",
-                      borderColor: 'rgb(124 124 124)'
-                    }
+                    background: "rgb(124 124 124)",
+                    borderColor: 'rgb(124 124 124)'
+                  }
               }
             >
               <b>
@@ -128,14 +143,14 @@ const Asignatura = () => {
                 <div style={{ width: "100%" }}>
                   <ProgressBar variant="danger" now={0} />
                 </div>
-              ):(
+              ) : (
                 <div style={{ width: "100%" }}>
-                  <ProgressBar variant={datosAsignatura.puntuacion >= 5 ? 'success': 'danger'} now={datosAsignatura.puntuacion*10} />
+                  <ProgressBar variant={datosAsignatura.puntuacion >= 5 ? 'success' : 'danger'} now={datosAsignatura.puntuacion * 10} />
                 </div>
               )
             }
             <div>
-              <Button variant="warning">Votar</Button>
+              <Button variant="warning" onClick={() => setsubirComentarioModal(true)}>Votar</Button>
             </div>
           </div>
         </section>
@@ -146,10 +161,10 @@ const Asignatura = () => {
         className="mb-3"
       >
         <Tab eventKey="Comentarios" title="Comentarios">
-          <ComentariosAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura}/>
+          <ComentariosAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura} idUsuario={idUsuario} votados={votados} />
         </Tab>
         <Tab eventKey="Archivos" title="Archivos">
-          <ArchivoAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura}/>
+          <ArchivoAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura} idUsuario={idUsuario} votados={votados} />
         </Tab>
       </Tabs>
     </div>

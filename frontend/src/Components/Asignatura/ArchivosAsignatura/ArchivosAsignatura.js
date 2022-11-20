@@ -9,8 +9,9 @@ import Archivo from "./Archivo";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import { AiOutlineUpload } from "react-icons/ai";
+import SubirArchivo from "./SubirArchivo";
 
-const PaginatedArchivos = ({ itemsPerPage, idAsignatura }) => {
+const PaginatedArchivos = ({ itemsPerPage, idAsignatura, idUsuario, votados }) => {
   // We start with an empty list of items.
   const [currentItems, setCurrentItems] = useState(null);
   const [items, setItems] = useState(null);
@@ -19,10 +20,16 @@ const PaginatedArchivos = ({ itemsPerPage, idAsignatura }) => {
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
   const [checkArchivo, setCheckArchivo] = useState(false);
+  const [modal, setModal] = useState(false)
   useEffect(() => {
     // Fetch items from another resources.
     asignaturaService.getArchivos(idAsignatura).then((response) => {
-      console.log(response);
+      response.sort(
+        (a, b) =>
+          moment(a.fecha, "YYYY-MM-DD").unix() -
+          moment(b.fecha, "YYYY-MM-DD").unix()
+      );
+      response.reverse();
       setItems(response);
       const endOffset = itemOffset + itemsPerPage;
       setCurrentItems(response.slice(itemOffset, endOffset));
@@ -57,8 +64,14 @@ const PaginatedArchivos = ({ itemsPerPage, idAsignatura }) => {
 
   return items ? (
     <>
+      <SubirArchivo
+        show={modal}
+        onHide={() => setModal(false)}
+        idusuario={idUsuario}
+        idasignatura={idAsignatura}
+      />
       <div style={{display: 'flex', margin: '2rem',justifyContent: 'center' }}>
-        <Button variant="warning">
+        <Button variant="warning" onClick={() => setModal(true)}>
           Subir archivo <AiOutlineUpload />
         </Button>
       </div>
@@ -98,7 +111,7 @@ const PaginatedArchivos = ({ itemsPerPage, idAsignatura }) => {
           Recientes
         </ToggleButton>
       </div>
-      <Archivo currentItems={currentItems} />
+      <Archivo currentItems={currentItems} votados={votados} idUsuario={idUsuario} />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ReactPaginate
           nextLabel="siguiente >"
