@@ -1,31 +1,23 @@
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import Usuarios from './usuarios/Usuarios';
+import Asignaturas from './asignaturas/Asignaturas'
 const Buscador = () => {
     return (
-        <>
-        <br />
-        <Tabs
+        <div style={{marginTop: '1rem'}}>
+            <Tabs
                 defaultActiveKey="Asignaturas"
                 id="uncontrolled-tab-example"
                 className="mb-3"
             >
                 <Tab eventKey="Asignaturas" title="Asignaturas">
-                    <ul>
-                        <li>buenas</li>
-                        <li>tardes</li>
-                    </ul>
+                    <Asignaturas />
                 </Tab>
                 <Tab eventKey="Personas" title="Personas">
-                    <ul>
-                        <li>buenisimas</li>
-                        <li>mañanas</li>
-                    </ul>
+                    <Usuarios />
                 </Tab>
             </Tabs>
-            <div>
-                <input type="text" />
-            </div>
-        </>
+        </div>
     )
 }
 

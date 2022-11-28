@@ -23,3 +23,10 @@
     margin-right: 2px;
     margin-bottom: 2px;
 }
+.descripcion{
+    margin-left: 1rem;
+    font-size: 14px;
+    font-weight: 100;
+    color: rgb(142, 142, 142);
+    margin-bottom: 1rem;
+}

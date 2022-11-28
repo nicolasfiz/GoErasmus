@@ -1,13 +1,14 @@
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { BsDownload } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+import ListGroup from 'react-bootstrap/ListGroup';
 import Moment from "moment";
 import axios from "axios";
 import fileDownload from "js-file-download";
 import asignaturasService from "../../../services/asignatura.service";
 import toast from "react-hot-toast";
 import ToggleButton from 'react-bootstrap/ToggleButton'
+import "./ArchivosAsignatura.css"
 
 const baseUrl = `${process.env.REACT_APP_DIRECCIONES}perfil/`;
 
@@ -35,9 +36,9 @@ const Archivo = ({ currentItems, votados, idUsuario }) => {
       bodyFormData.append("idUsuario", idUsuario);
       asignaturasService
         .nmg(idVotacion, bodyFormData)
-        .then((respose) =>{
+        .then((respose) => {
           toast.success("Votado")
-          votados.push(idVotacion)        
+          votados.push(idVotacion)
         })
         .catch((error) => toast.error("ha ocurrido un errror"));
     }
@@ -55,62 +56,58 @@ const Archivo = ({ currentItems, votados, idUsuario }) => {
 
   return (
     <>
-      <div style={{ margin: "1rem", marginLeft: "30%", marginRight: "30%" }}>
+      <ListGroup style={{ margin: '1rem 30% 2rem 30%' }}>
         {currentItems &&
           currentItems.map((item) => (
-            <div
-              key={item.nombreUsuario + item.fecha}
-              style={{ marginBottom: "1rem", paddingTop: "1rem" }}
-            >
-              <Card style={{ background: "#fafafa" }}>
-                <Card.Body>
-                  <Card.Title>{item.titulo.toUpperCase()}</Card.Title>
-                  <Card.Subtitle>
-                    <a
-                      href={baseUrl + item.nombreUsuario}
-                      style={{ textDecoration: "none" }}
-                    >
-                      {item.nombreUsuario}
-                    </a>
-                  </Card.Subtitle>
-                  <Card.Text>{item.descripcion}</Card.Text>
-                </Card.Body>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+            <ListGroup.Item style={{ background: "#fafafa" }} key={item.nombreUsuario + item.fecha}>
+              <div>
+                <a
+                  href={baseUrl + item.nombreUsuario}
+                  style={{ textDecoration: "none" }}
                 >
-                  <div style={{ marginRight: "1rem" }}>
-                    <ToggleButton variant="outline-success" id={`likeComentario${item.idVotacion}`} type="checkbox" onChange={() => mg(item.idVotacion)}>
-                      <AiFillLike /> {item.mg}
-                    </ToggleButton>
-                  </div>
-                  <div style={{ marginRight: "1rem" }}>
-                    <ToggleButton variant="outline-danger" id={`likeArchivo${item.idVotacion}`} type="checkbox" onChange={() => nmg(item.idVotacion)}>
-                      <AiFillDislike /> {item.nmg}
-                    </ToggleButton>
-                  </div>
-                  <div>
-                    <Button
-                      variant="outline-primary"
-                      onClick={() =>
-                        handleDownload(item.urlArchivo, `${item.nombreArchivo}`)
-                      }
-                    >
-                      <BsDownload />
-                    </Button>
-                  </div>
+                  {item.nombreUsuario}
+                </a>
+                {" " + item.titulo}
+              </div>
+
+              <div className="descripcion">{item.descripcion}</div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div style={{ marginRight: "1rem" }}>
+                  <ToggleButton size="sm" variant="outline-success" id={`likeComentario${item.idVotacion}`} type="checkbox" onChange={() => mg(item.idVotacion)}>
+                    <AiFillLike /> {item.mg}
+                  </ToggleButton>
                 </div>
-                <div className="fecha">
-                  {Moment(item.fecha).format("DD-MM-YYYY")}
+                <div style={{ marginRight: "1rem" }}>
+                  <ToggleButton size="sm" variant="outline-danger" id={`likeArchivo${item.idVotacion}`} type="checkbox" onChange={() => nmg(item.idVotacion)}>
+                    <AiFillDislike /> {item.nmg}
+                  </ToggleButton>
                 </div>
-              </Card>
-            </div>
+                <div>
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={() =>
+                      handleDownload(item.urlArchivo, `${item.nombreArchivo}`)
+                    }
+                  >
+                    <BsDownload />
+                  </Button>
+                </div>
+              </div>
+              <div className="fecha">
+                {Moment(item.fecha).format("DD-MM-YYYY")}
+              </div>
+            </ListGroup.Item>
           ))}
-      </div>
+      </ListGroup>
     </>
   );
 };

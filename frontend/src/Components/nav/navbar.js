@@ -5,7 +5,7 @@ import MyImage from "../../assets/mundobyn.png";
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {BiUser, BiUserPlus, BiUserCheck} from "react-icons/bi";
+import { BiUser, BiUserPlus, BiUserCheck } from "react-icons/bi";
 import './navbar.css';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -20,7 +20,7 @@ function Navegador() {
   return (
     <Navbar bg="light" expand="lg" sticky="top" >
       <Container >
-        <Link to="" className='navbar-brand'>G<img src={MyImage} width={17} height={20} style={{ paddingBottom: 3 }} alt="mundoLogo" />Erasmus</Link>
+        <Link to="" className='navbar-brand'>G<img src={MyImage} width={17} height={20} style={{ paddingBottom: 3.2, paddingTop: 0 }} alt="mundoLogo" />Erasmus</Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -78,7 +78,7 @@ function Navegador() {
           </OverlayTrigger>
         </Navbar.Collapse>
       </Container>
-          
+
     </Navbar>
   );
 }

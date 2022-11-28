@@ -1,0 +1,24 @@
+.imagenBuscador{
+    border-radius: 50%;
+}
+.buscador{
+    margin: 1rem 6rem 2rem 6rem;
+}
+.usuarioListaBuscador{
+    padding: 1rem;
+}
+.estudioEn{
+    margin-left: 3rem;
+    font-size: 14px;
+    font-weight: 100;
+    color: rgb(142, 142, 142);
+}
+.listaUsuarios{
+    margin: 2rem 15rem 2rem 15rem;
+}
+.imagenNota{
+    display: flex;
+}
+.notaRedonda{
+    margin-right: 5px;
+}
