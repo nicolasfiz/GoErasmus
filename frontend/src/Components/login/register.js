@@ -8,7 +8,7 @@ const Register = () => {
                     <h3 className="Auth-form-title">Registro</h3>
                     <div className="text-center">
                         ¿Ya estás registrado?{" "}
-                        <Link to="/login" className='link-primary'>
+                        <Link to="/signIn" className='link-primary'>
                             Iniciar sesión
                         </Link>
                     </div>

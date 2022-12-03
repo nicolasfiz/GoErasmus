@@ -28,7 +28,7 @@ export const signUp = async (req, res) => { //Probar cambios + envio email
     // ------------------------------------------------------------------------------------------------------------------ //
         
     //Encrypting the password, formatting some user fields and getting role fields
-    const  contrasena = await authUtils.encryptPassword(contrasenaSinCifrar);
+    const contrasena = await authUtils.encryptPassword(contrasenaSinCifrar);
     const nombre = authUtils.capitalizeString(nombrePersona);
     const apellido1 = authUtils.capitalizeString(primerApellido);
     const email = correo.toLowerCase();
@@ -140,9 +140,18 @@ export const confirmAccount = async (req, res) => { //Probar
   }
 }
 
+export const getAccount = (req, res) => {
+  const {token} = req.params;
+  if (token === undefined)
+    return res.status(400).json({"message": "token not found!"});
+  const {id, rol} = jwt.verify(token, config.secret);
+  return res.json({"id": id, "rol":rol});
+}
+
 export const methods = {
     signIn,
     signUp,
     sendPasswordtoUserEmail,
-    confirmAccount
+    confirmAccount,
+    getAccount
 };
