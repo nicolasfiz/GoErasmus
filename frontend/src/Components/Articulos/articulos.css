@@ -1,0 +1,13 @@
+.articleContainer
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 35px;
+    margin-bottom: 35px;
+}
+
+.articleContainer > * 
+{
+    margin: 10px;
+}

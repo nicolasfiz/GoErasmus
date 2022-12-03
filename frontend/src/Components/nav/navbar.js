@@ -39,7 +39,7 @@ function Navegador() {
               </Tooltip>
             }
           >
-            <Button variant="outline-dark" onClick={() => routeChange("login")} className="rounded-circle custom-button"><BiUserPlus /></Button>
+            <Button variant="outline-dark" onClick={() => routeChange("signIn")} className="rounded-circle custom-button"><BiUserPlus /></Button>
           </OverlayTrigger>
           <OverlayTrigger
             key={'Perfil'}

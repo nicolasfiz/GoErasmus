@@ -1,21 +1,25 @@
-import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import ArticleCard from "./articlecard";
+import articleServices from "../../services/article.service";
+import "./articulos.css"
 
 function Articulos() {
-    return (
-      <Container>
-        <main>
-          <h2>Articulos sin tilde uwu</h2>
-          <p>
-            That feels like an existential question, don't you
-            think?
-          </p>
-        </main>
-        <nav>
-          <Link to="/home">Home</Link>
-        </nav>
-      </Container>
-    );
+
+  const [articulos, setArticulos] = useState([]);
+
+  useEffect(() => {
+    articleServices.getArticles().then(art => {
+      setArticulos(art);
+    });
+  }, []);
+
+  return (
+    <main>
+      <div className="articleContainer">
+        {articulos.map(({idArticulo, titulo, descripcion, urlCabecera, fechaPublicacion}, id) =>  <ArticleCard key={id} titulo={titulo} id={idArticulo} caption={descripcion} url={urlCabecera} fecha={fechaPublicacion}/>)}
+      </div>
+    </main>
+  );
 }
 
 export default Articulos;

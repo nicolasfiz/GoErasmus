@@ -39,7 +39,7 @@ const getCityByName = async (req, res) => {
     try {
         const connection = await getConnection();
         const {name} = req.params;
-        const query = await connection.query(`SELECT nombre, urlCabecera, informacion FROM ciudad WHERE nombre = ?`, name);
+        const query = await connection.query(`SELECT idCiudad, nombre, urlCabecera, informacion FROM ciudad WHERE nombre = ?`, name);
         res.json(query);
     } catch (error) {
         res.status(500).send(error.message);

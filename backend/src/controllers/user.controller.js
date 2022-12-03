@@ -8,10 +8,10 @@ const getUsers = async (req, res) => { // id ? usuarios por rolId : todos los us
         const {id} = req.query;
         let query;
         if (id === undefined)
-            query = await connection.query(`SELECT CONCAT(u.nombre, ' ', u.apellido1, IFNULL(' ' + apellido2, '')) as nombreCompleto,
+            query = await connection.query(`SELECT TRIM(CONCAT(u.nombre, ' ', u.apellido1, ' ', IFNULL(u.apellido2, ' '))) as nombreCompleto,
                                             u.idUsuario, u.nombreUsuario as nombreUsuario, u.email as emailUsuario,  u.cuentaActivada,
-                                            IFNULL(f.nombre, "(null)") as nombreFacultad, IFNULL(r.nombre, "(null)") as nombreRol,
-                                            DATE_FORMAT(u.fechaCreacionCuenta, "%d/%m/%Y %r") as fechaCreacionCuenta FROM Usuario u
+                                            IFNULL(f.nombre, "-") as nombreFacultad, IFNULL(r.nombre, "-") as nombreRol,
+                                            DATE_FORMAT(u.fechaCreacionCuenta, "%d/%m/%Y %r") as fechaCreacionCuenta, u.urlFotoPerfil as ImagenPerfil FROM Usuario u
                                             LEFT JOIN Facultad f ON u.facultad_idFacultad = f.idFacultad
                                             LEFT JOIN Rol r ON u.rol_idRol = r.idRol
                                             GROUP BY u.rol_idRol ORDER BY u.rol_idRol ASC, u.fechaCreacionCuenta DESC`);

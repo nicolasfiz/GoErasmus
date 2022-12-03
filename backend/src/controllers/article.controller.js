@@ -18,18 +18,21 @@ const addDraftArticle = async (req, res) => {
     }
 }
 
-const getArticles = async (req, res) => { //name ? articulos de una ciudad : todos los articulos (Cards + tabla panel admin)
+const getArticles = async (req, res) => {
     try {
         const connection = await getConnection();
         const {name} = req.query;
         let query;
-        if (name === undefined) // idCiudad ? articulos de una ciudad : articulo panel admin
-            query = await connection.query(`SELECT a.titulo, a.descripcion, a.urlCabecera, a.fechaPublicacion FROM articulo a
-                                                LEFT JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad`);
+        if (name === undefined) // nombreCiudad ? articulos de una ciudad : articulo panel admin
+            query = await connection.query(`SELECT a.idArticulo, a.titulo, a.descripcion, a.urlCabecera,
+                                            DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion FROM Articulo a
+                                            LEFT JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad WHERE esBorrador = 'No'
+                                            ORDER BY fechaPublicacion ASC`);
         else
-            query = await connection.query(`SELECT a.titulo, a.descripcion, a.urlCabecera, a.fechaPublicacion FROM Articulo a
-                                                JOIN Ciudad c ON c.idCiudad = a.ciudad_idCiudad WHERE c.nombre = ? AND esBorrador = 0
-                                                ORDER BY fechaPublicacion ASC`, name);
+            query = await connection.query(`SELECT a.idArticulo, a.titulo, a.descripcion, a.urlCabecera,
+                                            DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion FROM Articulo a
+                                            LEFT JOIN Ciudad c ON c.idCiudad = a.ciudad_idCiudad WHERE c.nombre = ? AND esBorrador = 'No'
+                                            ORDER BY fechaPublicacion ASC`, name);
         res.json(query);
 
     } catch (error) {
@@ -37,14 +40,30 @@ const getArticles = async (req, res) => { //name ? articulos de una ciudad : tod
     }
 }
 
+const getCityArticlesLength = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const {name} = req.params;
+        let query;
+        if (name === undefined)
+            query = [{"length": 0}];
+        else
+            query = await connection.query(`SELECT COUNT(*) as length FROM articulo a
+                                            JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad WHERE c.nombre = ?`, name);
+        res.json(query);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
 
 const getArticleById = async (req, res) => { 
     try {
         const connection = await getConnection();
         const {id} = req.params;
-        const query = await connection.query(`SELECT a.titulo, a.descripcion, a.urlCabecera, a.esBorrador, a.fechaPublicacion, c.nombre as nombreCiudad, u.nombreUsuario as autor
-                                                FROM articulo a
-                                                JOIN usuario u ON u.idUsuario = a.usuario_idUsuario
+        const query = await connection.query(`SELECT a.titulo, a.descripcion, a.urlCabecera, a.esBorrador,
+                                                DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion,
+                                                c.nombre as nombreCiudad, u.nombreUsuario as autor FROM articulo a
+                                                LEFT JOIN usuario u ON u.idUsuario = a.usuario_idUsuario
                                                 JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad 
                                                 WHERE idArticulo = ?`, id);
         res.json(query);
@@ -56,14 +75,13 @@ const getArticleById = async (req, res) => {
 const publishArticle = async (req, res) => {
     try {
         const {id} = req.params;
+        const {descripcion} = req.body;
         const connection = await getConnection();
-        const date = new Date();
-        const query = await connection.query("UPDATE articulo SET esBorrador=0, fechaPublicacion=? WHERE idArticulo = ?", [date, id]);
+        const query = await connection.query("UPDATE articulo SET descripcion=?, esBorrador='No', fechaPublicacion=CURRENT_TIMESTAMP WHERE idArticulo = ?", [descripcion, id]);
         res.json(query);
     } catch(error) {
         res.status(500).send(error.message);
     }
-
 }
 
 const deleteArticle = async (req, res) => {
@@ -104,6 +122,7 @@ const deleteArticleVote = async (req, res) => {
 export const methods = {
     addDraftArticle,
     getArticles,
+    getCityArticlesLength,
     getArticleById,
     publishArticle,
     deleteArticle,

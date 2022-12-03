@@ -1,16 +1,17 @@
 import Navegador from "./Components/nav/navbar";
 import { Routes, Route } from "react-router-dom";
-import Inicio from "./Components/inicio/inicio.js";
+import Inicio from "./Components/Inicio/inicio.js";
 import Articulos from "./Components/Articulos/articulos";
+import Articulo from "./Components/Articulos/Articulo/articulo";
 import Paises from "./Components/Paises/paises";
 import Ciudades from "./Components/Ciudades/ciudades";
-import Ciudad from "./Components/Ciudades/Ciudad/ciudad";
+import Ciudad from "./Components/Ciudad/ciudad";
 import Facultades from "./Components/Facultades/facultades";
 import Asignaturas from "./Components/Asignaturas/asignaturas";
 import Administracion from "./Components/Administracion/administracion";
-import Login from "./Components/login/login";
-import Register from "./Components/login/register";
-import Footer from "./Components/footer/footer";
+import Login from "./Components/Login/login";
+import Register from "./Components/Login/register";
+import Footer from "./Components/Footer/footer";
 import React from 'react';
 import Perfil from "./Components/perfil/perfil";
 import EditPerfil from "./Components/editPerfil/editPerfil.js"
@@ -30,10 +31,11 @@ function App() {
           <Route path=":nombrePais/" element={<Ciudades />} />
           <Route path=":nombrePais/:nombreCiudad" element={<Ciudad />} />
           <Route path="articulos" element={<Articulos />} />
+          <Route path="articulos/:id" element={<Articulo />} />
           <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
           <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="signIn" element={<Login />} />
+          <Route path="signUp" element={<Register />} />
           <Route path="perfil/:token" element={<Perfil />} />
           <Route path="editPerfil" element={<EditPerfil />} />
           <Route path="search" element={<Buscador />} />

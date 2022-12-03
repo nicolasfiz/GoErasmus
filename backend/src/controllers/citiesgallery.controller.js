@@ -33,12 +33,14 @@ const addCityImage = async (req, res) => {
 const getCityImages = async (req, res) => {
     try {
         const connection = await getConnection();
-        const {id} = req.query;
+        const {name} = req.query;
         let query;
-        if (id === undefined) // idCiudad ? imagenes de esa ciudad : todas las imagenes
-            query = await connection.query(`SELECT ciudad_idCiudad as idCiudad, urlImagen FROM galeriaimagenesciudad`);
+        if (name === undefined) // nombreCiudad ? imagenes de esa ciudad : todas las imagenes
+            query = await connection.query(`SELECT ciudad_idCiudad as idCiudad, urlImagenOriginal FROM galeriaimagenesciudad`);
         else
-            query = await connection.query(`SELECT urlImagen FROM galeriaimagenesciudad WHERE ciudad_idCiudad = ?`, id);
+            query = await connection.query(`SELECT gic.urlImagenOriginal as org, gic.urlThumbnail as thb FROM galeriaimagenesciudad gic
+                                            JOIN Ciudad c ON c.idCiudad= gic.ciudad_idCiudad
+                                            WHERE c.nombre = ?`, name);
         res.json(query);
     } catch (error) {
         res.status(500).send(error.message);
