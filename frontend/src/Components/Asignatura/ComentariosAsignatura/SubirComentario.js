@@ -27,6 +27,7 @@ const SubirComentario = (props) => {
     } else {
       setValido(false);
     }
+    //maxima longitud
   }
   const toSave = (event) => {
     event.preventDefault()

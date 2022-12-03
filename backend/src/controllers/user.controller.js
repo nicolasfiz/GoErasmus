@@ -1,11 +1,12 @@
 import { getConnection } from "../database/database";
+import { methods as LogrosUtils } from "../libs/logros";
 var cloudinary = require('cloudinary').v2;
 cloudinary.config(process.env.CLOUDINARY_URL);
 
 const getUsers = async (req, res) => { // id ? usuarios por rolId : todos los usuarios 
     try {
         const connection = await getConnection();
-        const {id} = req.query;
+        const { id } = req.query;
         let query;
         if (id === undefined)
             query = await connection.query(`SELECT CONCAT(u.nombre, ' ', u.apellido1, IFNULL(' ' + apellido2, '')) as nombreCompleto,
@@ -32,7 +33,7 @@ const getUser = async (req, res) => {
         console.log(nombreUsuario)
         const result = await connection.query(`SELECT u.nombreUsuario, u.email, r.nombre as rol, u.urlFotoPerfil, f.nombre as facultad, un.nombre as universidad, c.nombre as ciudad, p.nombre as pais
         FROM usuario u LEFT JOIN rol r ON u.Rol_idRol=r.idRol LEFT JOIN facultad f ON u.facultad_idfacultad=f.idFacultad LEFT JOIN universidad un ON f.universidad_iduniversidad=un.iduniversidad
-        LEFT JOIN ciudad c on un.iduniversidad=c.idCiudad left join pais p on c.pais_idpais=p.idpais WHERE u.nombreUsuario = '`+nombreUsuario+`';`);
+        LEFT JOIN ciudad c on un.iduniversidad=c.idCiudad left join pais p on c.pais_idpais=p.idpais WHERE u.nombreUsuario = '`+ nombreUsuario + `';`);
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -42,11 +43,11 @@ const getUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const connection = await getConnection();
         const query = await connection.query("DELETE FROM usuario WHERE idUsuario = ?", id);
         res.json(query);
-    } catch(error) {
+    } catch (error) {
         res.status(500).send(error.message);
     }
 }
@@ -101,9 +102,9 @@ const getFacultades = async (req, res) => {
 }
 
 const getLogros = async (req, res) => {
-    try{
+    try {
         const connection = await getConnection()
-        const {id} = req.params
+        const { id } = req.params
         //Obtener rol del usuario
         const rolQuery = await connection.query(`select r.idRol, r.nombre from usuario u join rol r on u.Rol_idRol=r.idRol where u.idUsuario=?;`, id);
         const rol = rolQuery[0].nombre
@@ -119,10 +120,10 @@ const getLogros = async (req, res) => {
         const arrayConseguidos = []
         const arrayProximos = []
         logrosConseguidos.map(elem => arrayConseguidos.push(elem.descripcion))
-        logrosProximos.map(elem=> arrayProximos.push(elem.descripcion))
-        res.send({rol, cantidad, arrayConseguidos, arrayProximos})
-        
-    }catch(error){
+        logrosProximos.map(elem => arrayProximos.push(elem.descripcion))
+        res.send({ rol, cantidad, arrayConseguidos, arrayProximos })
+
+    } catch (error) {
         res.status(500).send(error.message);
     }
 }
@@ -138,6 +139,12 @@ const uploadPicture = async (req, res) => {
 
 const guardarDatos = async (req, res) => {
     try {
+        const { id } = req.params;
+        const body = req.body;
+        //obtener logros => arrayLogros[]
+        const logros = await LogrosUtils.getLogros(id)
+        //con el rol en parametros
+        console.log(logros)
         const connection = await getConnection();
         const datos = {}
         if (req.files != null) {
@@ -147,10 +154,13 @@ const guardarDatos = async (req, res) => {
                     res.send(error)
                 }
                 datos['urlFotoPerfil'] = result.url;
+                //si no tenia el logro 3 insert usuariologro idusuario 3
+                if(!logros.includes(3)){
+                    LogrosUtils.insertLogro(id, 3)
+                }
             })
         }
-        const { id } = req.params;
-        const body = req.body;
+
         for (const prop in body) {
             if (body[prop].length > 0 && prop != 'file' && prop != 'facultad' && prop != 'universidad' && prop != 'ciudad' && prop != 'pais') {
                 datos[prop] = body[prop]
@@ -161,20 +171,36 @@ const guardarDatos = async (req, res) => {
         console.log("datos", datos)
         console.log("id:", id)
         const result = await connection.query("UPDATE usuario SET ? where idUsuario = ?", [datos, id]);
+        //si no tenia logro 2 insert usuariologro idusuario 2
+        if(!logros.includes(2)){
+            LogrosUtils.insertLogro(id, 2)
+        }
         res.json(result);
+
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
 
+const prueba = async (req, res) => {
+    try {
+        const { idUsuario, idLogro } = req.params
+        const query = await LogrosUtils.insertLogro(idUsuario, idLogro)
+        res.json(query);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
 const resetPoints = async (req, res) => {
-    try{
+    try {
         const connection = await getConnection();
         await connection.query("SET SQL_SAFE_UPDATES = 0;");
         await connection.query("UPDATE usuario SET cantidadPuntos = 0");
         await connection.query("SET SQL_SAFE_UPDATES = 1;");
         res.json({ message: "Points reset successfully" });
-    }catch(error){
+    } catch (error) {
         res.status(500).send(error.message);
     }
 }
@@ -190,5 +216,6 @@ export const methods = {
     getLogros,
     uploadPicture,
     guardarDatos,
-    resetPoints
+    resetPoints,
+    prueba
 };

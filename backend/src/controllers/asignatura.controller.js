@@ -63,7 +63,7 @@ const subirArchivo = async (req, res) => {
             })
         }
         //body
-        const {titulo, descripcion, idUsuario, idAsignatura, nombreArchivo} = req.body;
+        const {titulo, descripcion, idUsuario, idAsignatura, nombreArchivo} = req.body; // añadir rol tambien
         //fecha
         const fecha = new Date();
         //archivo
@@ -74,6 +74,10 @@ const subirArchivo = async (req, res) => {
         const idArchivo = idArchivoQuery[0].idArchivo
         //idVotacion
         const result = await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta, archivo_idArchivo) values (0, 0, ?);", idArchivo)
+        //obtener logros usuarios
+        //si no tiene el logro 4 => insert idusuario 4
+        //else si lo tiene => //select count archivos idUsuario
+            //si son mas de 3 => insert idusuario 7
         res.json(result);
     } catch (error) {
         res.status(500)
@@ -103,7 +107,7 @@ const subirValoracion = async (req, res) => {
     try {
         const connection = await getConnection();
         //body
-        const { descripcion, idUsuario, idAsignatura, nota} = req.body;
+        const { descripcion, idUsuario, idAsignatura, nota} = req.body; //rol tambien
         //fecha
         const fecha = new Date();
         //crear comentario
@@ -121,6 +125,10 @@ const subirValoracion = async (req, res) => {
         await connection.query(`UPDATE asignatura SET puntuacion = ? WHERE idAsignatura = ?`, [puntuacion, idAsignatura])
         //idVotacion
         const result = await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta, comentario_idComentario) values (0, 0, ?);", idComentario)
+        //obtener logros usuarios
+        //si no tiene el logro 4 => insert idusuario 4
+        //else si lo tiene => //select count archivos idUsuario
+            //si son mas de 3 => insert idusuario 7
         res.json(result);
     } catch (error) {
         res.status(500)
@@ -160,6 +168,12 @@ const mg = async (req, res)=>{
         //update mg
         const mgFinal = {numeroMeGusta: mg}    
         const query = await connection.query("UPDATE votacion SET ? where idVotacion = ?", [mgFinal, idVotacion]);
+        //obtener logros usuario
+        //contiene 5 ? insertar 
+            //contiene 8 ?
+                //get mg
+                //mas de 3?
+                    //insertar
         res.json(query);
     }catch(error){
         res.status(500).send(error.message);

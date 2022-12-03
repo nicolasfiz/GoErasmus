@@ -16,4 +16,6 @@ router.post("/picture", userController.uploadPicture);
 router.put("/guardarDatos/:id", userController.guardarDatos);
 router.post("/resetPoints", userController.resetPoints);
 
+router.get("/prueba/:idUsuario/:idLogro", userController.prueba)
+
 export default router;
