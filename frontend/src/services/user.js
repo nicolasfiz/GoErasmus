@@ -17,6 +17,11 @@ const getDatos = async (nombreUsuario) => {
     return request.then(response => response.data);
 }
 
+const getDatosPorId = async (idUsuario) => {
+    const request = axios.get(`${baseUrl}/getUserById/${idUsuario}`)
+    return request.then(response => response.data);
+}
+
 const getImagen = async (id) => {
     const request = axios.get(`${baseUrl}/imagen/${id}`);
     return request.then(response => response.data);
@@ -62,7 +67,8 @@ const funciones = {
     getUniversidades,
     getFacultades,
     guardarDatos,
-    getLogros
+    getLogros,
+    getDatosPorId
 }
 
 export default funciones;

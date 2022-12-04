@@ -5,14 +5,15 @@ import MyImage from "../../assets/mundobyn.png";
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { BiUser, BiUserPlus, BiUserCheck } from "react-icons/bi";
+import { BiUser, BiUserPlus } from "react-icons/bi";
 import './navbar.css';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { GiProgression } from "react-icons/gi";
 
-function Navegador() {
+function Navegador({ user }) {
   let navigate = useNavigate();
+
   const routeChange = (dest) => {
     //let path = `login`;
     navigate(dest);
@@ -23,14 +24,19 @@ function Navegador() {
         <Link to="" className='navbar-brand'>G<img src={MyImage} width={17} height={20} style={{ paddingBottom: 3.2, paddingTop: 0 }} alt="mundoLogo" />Erasmus</Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Link to="search" className='nav-link'>Buscar</Link>
-            <Link to="paises" className='nav-link'>Descubrir</Link>
-            <Link to="articulos" className="nav-link">Artículos</Link>
-            <Link to="asignatura/1" className='nav-link'>Asignatura</Link>
-            <Link to="panelAdministracion" className='nav-link'>Panel de Administración</Link>
-          </Nav>
-          <OverlayTrigger
+          {user ? (
+            <Nav className="me-auto">
+              <Link to="search" className='nav-link'>Buscar</Link>
+              <Link to="paises" className='nav-link'>Descubrir</Link>
+              <Link to="articulos" className="nav-link">Artículos</Link>
+              <Link to="panelAdministracion" className='nav-link'>Panel de Administración</Link>
+            </Nav>
+          ) :
+            (
+              <Nav className='me-auto'>
+              </Nav>
+            )}
+          {!user ? (<OverlayTrigger
             key={'Inicio Sesion'}
             placement={'bottom'}
             overlay={
@@ -40,8 +46,9 @@ function Navegador() {
             }
           >
             <Button variant="outline-dark" onClick={() => routeChange("signIn")} className="rounded-circle custom-button"><BiUserPlus /></Button>
-          </OverlayTrigger>
-          <OverlayTrigger
+          </OverlayTrigger>) : (null)}
+
+          {/*<OverlayTrigger
             key={'Perfil'}
             placement={'bottom'}
             overlay={
@@ -51,21 +58,21 @@ function Navegador() {
             }
           >
             <Button variant="outline-dark" onClick={() => routeChange("perfil/nfiz")} className="rounded-circle custom-button"><BiUserCheck /></Button>
-          </OverlayTrigger>
+          </OverlayTrigger>*/}
 
-          <OverlayTrigger
+          {user ? (<OverlayTrigger
             key={'editPerfil'}
             placement={'bottom'}
             overlay={
               <Tooltip id={`tooltip-${'bottom'}`}>
-                Acceder a mi perfil
+                Configurar mi perfil
               </Tooltip>
             }
           >
             <Button variant="outline-dark" onClick={() => routeChange("editPerfil")} className="rounded-circle custom-button"><BiUser /></Button>
-          </OverlayTrigger>
-
-          <OverlayTrigger
+          </OverlayTrigger>): (null)}
+          
+          {user ? (<OverlayTrigger
             key={'Logros'}
             placement={'bottom'}
             overlay={
@@ -74,8 +81,9 @@ function Navegador() {
               </Tooltip>
             }
           >
-            <Button variant="outline-dark" onClick={() => routeChange("progreso/1")} className="rounded-circle custom-button"><GiProgression /></Button>
-          </OverlayTrigger>
+            <Button variant="outline-dark" onClick={() => routeChange("progreso")} className="rounded-circle custom-button"><GiProgression /></Button>
+          </OverlayTrigger>):(null)}
+          
         </Navbar.Collapse>
       </Container>
 

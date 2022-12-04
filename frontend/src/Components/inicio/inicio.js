@@ -55,7 +55,7 @@ function Inicio() {
       <section className="despedida">
         <div className="texto">
           <h2 className="titulos">Saber más</h2>
-          <p>Si deseas conocernos mejor y disfrutar de todos nuestros servicios puedes registrarte <Link to="/register" className='link-primary'>aquí</Link></p>
+          <p>Si deseas conocernos mejor y disfrutar de todos nuestros servicios puedes registrarte <Link to="/signUp" className='link-primary'>aquí</Link></p>
           <p> </p>
         </div>
       </section>

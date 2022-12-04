@@ -22,11 +22,12 @@ const SubirComentario = (props) => {
       ...valoracion,
       [name]: value,
     })
-    if ((name==="nota" && value.length > 0) && isNumber(value)) {
+    if ((name==="nota" && value.length > 0 && isNumber(value))) {
       setValido(true);
-    } else {
+    } else if((name==="nota" && (value.length === 0 || !isNumber(value)))) {
       setValido(false);
     }
+    //maxima longitud
   }
   const toSave = (event) => {
     event.preventDefault()

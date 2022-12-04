@@ -3,11 +3,23 @@ import { Link } from "react-router-dom";
 import { useState } from 'react';
 import authServices from '../../services/auth.service';
 import tokenServices from "../../services/token.service";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import tokenService from '../../services/token.service'
 
 const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    tokenService
+      .getToken()
+      .then(data => {
+        if(data.length>0) navigate("../", {replace:true})
+      })
+  }, [navigate])
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -26,6 +38,7 @@ const Login = () => {
     
     authServices.signIn(formData).then(t => {
       tokenServices.setToken(t.token);
+      window.location.reload(true)
     }).catch(e => {
       console.log(e);
     });
