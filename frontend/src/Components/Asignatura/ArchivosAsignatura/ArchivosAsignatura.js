@@ -9,7 +9,7 @@ import Archivo from "./Archivo";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import { AiOutlineUpload } from "react-icons/ai";
-import SubirArchivo from "./subirArchivo";
+import SubirArchivo from "./SubirArchivo";
 
 const PaginatedArchivos = ({ itemsPerPage, idAsignatura, idUsuario, votados }) => {
   // We start with an empty list of items.
