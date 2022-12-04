@@ -15,9 +15,8 @@ import SubirComentario from "./ComentariosAsignatura/SubirComentario";
 
 const COMENTARIOS_POR_PAGINA = 6
 
-const Asignatura = () => {
+const Asignatura = ({user}) => {
   const params = useParams();
-  const idUsuario = 1
   const [datosAsignatura, setDatosAsignatura] = useState(null);
   const [votados, setVotados] = useState(null)
   const [subirComentarioModal, setsubirComentarioModal] = useState(false)
@@ -32,10 +31,10 @@ const Asignatura = () => {
       .catch((error) => {
         console.log(error);
       });
-    asignaturaService.getVotacionUsuarios(idUsuario).then((response) => {
+    asignaturaService.getVotacionUsuarios(user.id).then((response) => {
       setVotados(response);
     });
-  }, [params.idAsignatura, idUsuario]);
+  }, [params.idAsignatura, user.id]);
 
   return datosAsignatura && votados ? (
     <div
@@ -50,7 +49,7 @@ const Asignatura = () => {
       <SubirComentario
         show={subirComentarioModal}
         onHide={() => setsubirComentarioModal(false)}
-        idusuario={idUsuario}
+        idusuario={user.id}
         idasignatura={params.idAsignatura}
       />
       <div
@@ -161,10 +160,10 @@ const Asignatura = () => {
         className="mb-3"
       >
         <Tab eventKey="Comentarios" title="Comentarios">
-          <ComentariosAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura} idUsuario={idUsuario} votados={votados} />
+          <ComentariosAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura} idUsuario={user.id} votados={votados} />
         </Tab>
         <Tab eventKey="Archivos" title="Archivos">
-          <ArchivoAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura} idUsuario={idUsuario} votados={votados} />
+          <ArchivoAsignatura itemsPerPage={COMENTARIOS_POR_PAGINA} idAsignatura={params.idAsignatura} idUsuario={user.id} votados={votados} />
         </Tab>
       </Tabs>
     </div>

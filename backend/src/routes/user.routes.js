@@ -15,6 +15,7 @@ router.get("/logros/:id", userController.getLogros);
 router.post("/picture", userController.uploadPicture);
 router.put("/guardarDatos/:id", userController.guardarDatos);
 router.post("/resetPoints", userController.resetPoints);
+router.get("/getUserById/:idUsuario", userController.getUserById)
 
 router.get("/prueba/:idUsuario/:idLogro", userController.prueba)
 

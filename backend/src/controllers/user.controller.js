@@ -41,6 +41,20 @@ const getUser = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const { idUsuario } = req.params;
+        const result = await connection.query(`SELECT u.nombreUsuario, u.email, r.nombre as rol, u.urlFotoPerfil, f.nombre as facultad, un.nombre as universidad, c.nombre as ciudad, p.nombre as pais
+        FROM usuario u LEFT JOIN rol r ON u.Rol_idRol=r.idRol LEFT JOIN facultad f ON u.facultad_idfacultad=f.idFacultad LEFT JOIN universidad un ON f.universidad_iduniversidad=un.iduniversidad
+        LEFT JOIN ciudad c on un.iduniversidad=c.idCiudad left join pais p on c.pais_idpais=p.idpais WHERE u.idUsuario = '`+ idUsuario + `';`);
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -112,17 +126,25 @@ const getLogros = async (req, res) => {
         //logros usuario
         const usuarioLogro = await connection.query(`select * from usuariologro where usuario_idusuario = ?;`, id);
         const array = []
-        usuarioLogro.map(elem => array.push(elem.logro_idLogro))
-        const logrosConseguidos = await connection.query(`select descripcion from logro where idLogro in (?);`, [array]);
-        const logrosProximos = await connection.query(`select descripcion from logro where idLogro not in (?) AND rol_idRol = ?`, [array, idRol])
         const cantidadLogrosRol = await connection.query(`select count(*) as cantidad from logro where rol_idRol = ?;`, idRol);
         const cantidad = cantidadLogrosRol[0].cantidad;
-        const arrayConseguidos = []
-        const arrayProximos = []
-        logrosConseguidos.map(elem => arrayConseguidos.push(elem.descripcion))
-        logrosProximos.map(elem => arrayProximos.push(elem.descripcion))
-        res.send({ rol, cantidad, arrayConseguidos, arrayProximos })
-
+        if (usuarioLogro.length > 0) {
+            usuarioLogro.map(elem => array.push(elem.logro_idLogro))
+            const logrosProximos = await connection.query(`select descripcion from logro where idLogro not in (?) AND rol_idRol = ?`, [array, idRol])
+            const logrosConseguidos = await connection.query(`select descripcion from logro where idLogro in (?);`, [array]);
+            const arrayConseguidos = []
+            const arrayProximos = []
+            logrosConseguidos.map(elem => arrayConseguidos.push(elem.descripcion))
+            logrosProximos.map(elem => arrayProximos.push(elem.descripcion))
+            res.send({ rol, cantidad, arrayConseguidos, arrayProximos })
+        }else{
+            const arrayProximos = []
+            const logrosProximos = await connection.query(`select descripcion from logro where rol_idRol = ?`, [idRol])
+            logrosProximos.map(elem => arrayProximos.push(elem.descripcion))
+            let arrayConseguidos = []
+            
+            res.send({rol, cantidad, arrayConseguidos, arrayProximos })
+        }
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -142,9 +164,7 @@ const guardarDatos = async (req, res) => {
         const { id } = req.params;
         const body = req.body;
         //obtener logros => arrayLogros[]
-        const logros = await LogrosUtils.getLogros(id)
         //con el rol en parametros
-        console.log(logros)
         const connection = await getConnection();
         const datos = {}
         if (req.files != null) {
@@ -155,9 +175,6 @@ const guardarDatos = async (req, res) => {
                 }
                 datos['urlFotoPerfil'] = result.url;
                 //si no tenia el logro 3 insert usuariologro idusuario 3
-                if(!logros.includes(3)){
-                    LogrosUtils.insertLogro(id, 3)
-                }
             })
         }
 
@@ -172,9 +189,6 @@ const guardarDatos = async (req, res) => {
         console.log("id:", id)
         const result = await connection.query("UPDATE usuario SET ? where idUsuario = ?", [datos, id]);
         //si no tenia logro 2 insert usuariologro idusuario 2
-        if(!logros.includes(2)){
-            LogrosUtils.insertLogro(id, 2)
-        }
         res.json(result);
 
     } catch (error) {
@@ -217,5 +231,6 @@ export const methods = {
     uploadPicture,
     guardarDatos,
     resetPoints,
-    prueba
+    prueba,
+    getUserById
 };

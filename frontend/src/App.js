@@ -12,37 +12,61 @@ import Administracion from "./Components/Administracion/administracion";
 import Login from "./Components/login/login";
 import Register from "./Components/login/register";
 import Footer from "./Components/footer/footer";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Perfil from "./Components/perfil/perfil";
 import EditPerfil from "./Components/editPerfil/editPerfil.js"
 import './App.css';
 import Buscador from "./Components/Buscador/Buscador.js";
 import Asignatura from "./Components/Asignatura/Asignatura.js";
 import Logro from "./Components/Logro/logro";
+import tokenService from "./services/token.service"
+import authService from "./services/auth.service"
 
 function App() {
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    tokenService
+      .getToken()
+      .then(data => {
+        authService
+          .getAccount(data)
+          .then(elem => {
+            setUser(elem)
+          })
+      })
+  }, [])
+
   return (
     <main id="app">
-      <Navegador />
+      <Navegador user={user}/>
       <main id="body">
-        <Routes>
-          <Route path="" element={<Inicio />} />
-          <Route path="paises" element={<Paises />} />
-          <Route path=":nombrePais/" element={<Ciudades />} />
-          <Route path=":nombrePais/:nombreCiudad" element={<Ciudad />} />
-          <Route path="articulos" element={<Articulos />} />
-          <Route path="articulos/:id" element={<Articulo />} />
-          <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
-          <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
-          <Route path="signIn" element={<Login />} />
-          <Route path="signUp" element={<Register />} />
-          <Route path="perfil/:token" element={<Perfil />} />
-          <Route path="editPerfil" element={<EditPerfil />} />
-          <Route path="search" element={<Buscador />} />
-          <Route path="panelAdministracion" element={<Administracion />} />
-          <Route path="asignatura/:idAsignatura" element={<Asignatura />} />
-          <Route path="progreso/:token" element={<Logro />} />
-        </Routes>
+          {user ? (
+            <Routes>
+              <Route path="" element={<Inicio />} />
+              <Route path="paises" element={<Paises />} />
+              <Route path=":nombrePais/" element={<Ciudades />} />
+              <Route path=":nombrePais/:nombreCiudad" element={<Ciudad />} />
+              <Route path="articulos" element={<Articulos />} />
+              <Route path="articulos/:id" element={<Articulo />} />
+              <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
+              <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
+              <Route path="signIn" element={<Login />} />
+              <Route path="signUp" element={<Register />} />
+              <Route path="perfil/:token" element={<Perfil />} />
+              <Route path="editPerfil" element={<EditPerfil user={user}/>} />
+              <Route path="search" element={<Buscador />} />
+              <Route path="panelAdministracion" element={<Administracion />} />
+              <Route path="asignatura/:idAsignatura" element={<Asignatura user={user}/>} />
+              <Route path="progreso" element={<Logro user={user}/>} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path="" element={<Inicio />} />
+              <Route path="signIn" element={<Login />} />
+              <Route path="signUp" element={<Register />} />
+            </Routes>
+          )}
       </main>
       <div className="footer">
         <Footer />

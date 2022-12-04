@@ -4,9 +4,9 @@ import "./editPerfil.css";
 import EditForm from "./EditForm";
 import toast, { Toaster } from 'react-hot-toast';
 
-const EditPerfil = () => {
+const EditPerfil = ({user}) => {
     const validEmail = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    let params = "nfiz";
+    //let params = "nfiz";
     const [datos, setDatos] = useState(null);
     const [valido, setValido] = useState(true);
     const [imagen, setImagen] = useState(null);
@@ -23,23 +23,28 @@ const EditPerfil = () => {
 
     useEffect(() => {
         perfilService
-            .getDatos(params)
+            .getDatosPorId(user.id)
             .then(response => {
                 setDatos(response);
-                setUbicacion({
-                    pais: response[0].pais,
-                    ciudad: response[0].ciudad,
-                    universidad: response[0].universidad,
-                    facultad: response[0].facultad
-                })
-                if(response[0].pais.length()===0||response[0].ciudad.length()===0||response[0].universidad.length()===0||response[0].facultad.length()===0){
-                    setValido(false);
+                if(response[0].pais!=null){
+                    console.log(response[0])
+                    setUbicacion({
+                        pais: response[0].pais,
+                        ciudad: response[0].ciudad,
+                        universidad: response[0].universidad,
+                        facultad: response[0].facultad
+                    })
+                    if(response[0].pais.length===0||response[0].ciudad.length===0||response[0].universidad.length===0||response[0].facultad.length===0){
+                        setValido(false);
+                    }
+                }else{
+                    setValido(false)
                 }
             })
             .catch(error => {
                 console.log(error);
             });
-    }, [params]);
+    }, [user]);
 
     const handleImage = (e) => {
         setImagen(e.target.files[0])
@@ -108,10 +113,9 @@ const EditPerfil = () => {
         }
 
         perfilService
-            .guardarDatos(params, bodyFormData)
-            .then(response => console.log("respuesta:",response))
+            .guardarDatos(user.id, bodyFormData)
+            .then(response => toast.success("Los datos se han guardado correctamente"))
             .catch(error => console.log(error))
-       toast.success("Los datos se han guardado correctamente")
     }
 
     return (

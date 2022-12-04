@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import userService from "../../services/user";
 import { useState, useEffect } from "react";
@@ -6,13 +5,12 @@ import Card from "react-bootstrap/Card";
 import "./logro.css"
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const Logro = () => {
-  const token = useParams().token;
+const Logro = ({user}) => {
   const [logros, setLogros] = useState(null);
 
   useEffect(() => {
     userService
-      .getLogros(token)
+      .getLogros(user.id)
       .then((response) => {
         setLogros(response);
         console.log(response);
@@ -20,7 +18,7 @@ const Logro = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [token]);
+  }, [user]);
 
   return (
     <div

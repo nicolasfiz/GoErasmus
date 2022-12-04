@@ -12,12 +12,30 @@ const EditForm = ({ datos, nuevosD, ubicacion, imagen, handleChanges, toSave, va
     const [ciudades, setCiudades] = useState([])
     const [universidades, setUniversidades] = useState([])
     const [facultades, setFacultades] = useState([])
-    const [ciudad, setCiudad] = useState(datos.pais.length > 0)
-    const [universidad, setUniversidad] = useState(datos.ciudad.length > 0)
-    const [facultad, setFacultad] = useState(datos.universidad.length > 0)
+    const [ciudad, setCiudad] = useState(ubicacion.pais.length > 0)
+    const [universidad, setUniversidad] = useState(ubicacion.ciudad.length > 0)
+    const [facultad, setFacultad] = useState(ubicacion.universidad.length > 0)
     const [pais, setPais] = useState(true);
 
     useEffect(() => {
+        if(datos.facultad!=null){
+            perfilService
+            .getCiudades(datos.pais)
+            .then(result => {
+                setCiudades(result);
+            })
+            perfilService
+            .getUniversidades(datos.ciudad)
+            .then(result => {
+                setUniversidades(result);
+            })
+            perfilService
+            .getFacultades(datos.universidad)
+            .then(result => {
+                setFacultades(result);
+            })
+            
+        }
         perfilService
             .getPaises()
             .then(response => {
@@ -26,7 +44,7 @@ const EditForm = ({ datos, nuevosD, ubicacion, imagen, handleChanges, toSave, va
             .catch(error => {
                 console.log(error);
             });
-    }, []);
+    }, [datos]);
 
     const changePais = async (elem) => {
         setPais(false)
