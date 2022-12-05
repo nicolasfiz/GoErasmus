@@ -29,8 +29,8 @@ function Asignaturas() {
     });
   }, [params.nombreFacultad]);
 
-  return (
-    <main className="subjectTable">
+  return ( asignaturas.length !== 0 ? (
+    <section className="subjectTable">
       <Table striped bordered hover className="shadowTable">
         <thead>
           <tr>
@@ -42,7 +42,12 @@ function Asignaturas() {
           {asignaturas.map(({idAsignatura, nombreAsignatura}, id) => <SubjectCell key={id} index={++index} idAsignatura={idAsignatura} nombreAsignatura={nombreAsignatura} />)}
         </tbody>
       </Table>
-    </main>
+    </section>) :
+    (<section style={{margin:"auto", marginTop: "50px", width:"90%"}}>
+        <h2>Hmmm...</h2>
+        <h3>Parece que no tenemos ningún resultado para <i style={{fontWeight: "bold"}}>{params.nombreFacultad}</i></h3>
+        <p style={{margin:"0"}}>Por favor, presione <a style={{textDecoration: "none"}} href="../">este</a> enlace para volver a la {params.nombreUniversidad}</p>
+      </section>)
   );
 }
 
