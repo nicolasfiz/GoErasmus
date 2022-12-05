@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const baseUrl = `${process.env.REACT_APP_URL}/auth`;
 
-const signUp = async () => {
-    const request = await axios.post(`${baseUrl}/signup`)
+const signUp = (formData) => {
+    const request = axios.post(`${baseUrl}/signup`, formData);
     return request.then(response => response.data);
 }
 

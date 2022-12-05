@@ -1,4 +1,3 @@
-import './login.css';
 import { Link } from "react-router-dom";
 import { useState } from 'react';
 import authServices from '../../services/auth.service';
@@ -6,20 +5,21 @@ import tokenServices from "../../services/token.service";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import tokenService from '../../services/token.service'
+import logotypeImage from '../../assets/mundobyn.png';
+import './login.css';
 
 const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let navigate = useNavigate();
+  let nav = useNavigate();
 
   useEffect(() => {
-    tokenService
-      .getToken()
-      .then(data => {
-        if(data.length>0) navigate("../", {replace:true})
-      })
-  }, [navigate])
+    tokenService.getToken().then(data => {
+        if(data && data.length > 0)
+          nav("../", {replace: true})
+    })
+  }, [nav])
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -38,27 +38,32 @@ const Login = () => {
     
     authServices.signIn(formData).then(t => {
       tokenServices.setToken(t.token);
-      window.location.reload(true)
+      window.location.reload(true);
     }).catch(e => {
       console.log(e);
     });
-  } 
+  }
+
   return (
     <>
       <div className="Auth-form-container">
         <form className="Auth-form">
           <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Iniciar sesión</h3>
-            <div className="text-center">
-              ¿No estás registrado aún?{" "}
-              <Link to="/signUp" className='link-primary'>Registro</Link>
-            </div>
+            <h2 style={{cursor: "pointer"}} className="Auth-form-title" onClick={() => nav('/')}>
+              G<img
+                  src={logotypeImage}
+                  width={27}
+                  height={31}
+                  style={{ paddingBottom: 4.5, paddingTop: 0 }}
+                  alt="logo-goerasmus"/>Erasmus
+            </h2>
             <div className="form-group mt-3">
               <label>Email</label>
               <input
                 type="email"
                 className="form-control mt-1"
-                placeholder="Introduce tu email"
+                style={{fontSize: "14px"}}
+                placeholder="johndoe@example.com"
                 value={email}
                 onChange={handleEmail}
                 />
@@ -68,14 +73,15 @@ const Login = () => {
               <input
                 type="password"
                 className="form-control mt-1"
-                placeholder="Introduce tu password"
+                style={{fontSize: "14px"}}
+                placeholder="Contraseña"
                 value={password}
                 onChange={handlePassword}
                 />
             </div>
             <div>
-              <p className="forgot-password text-right mt-2">
-                ¿Has olvidado tu <Link to="/">contraseña</Link>?
+              <p style = {{fontSize: "14px", marginTop: "1.5em", marginBottom:"1em"}} className="mt-2">
+                He olvidado mi <Link to="/recover" style={{textDecoration: "none"}}>contraseña</Link>
               </p>
             </div>
             <div className="d-grid gap-2 mt-3">
@@ -83,8 +89,14 @@ const Login = () => {
                 type="submit"
                 className="btn btn-primary"
                 onClick={generateToken}>
-                  Enviar
+                  Iniciar sesión
               </button>
+            </div>
+            <div className="text-center">
+              <p style = {{fontSize: "14px", marginTop: "1.5em", marginBottom:"1em"}}>
+                ¿No tienes una cuenta? Regístrate {" "}
+                <Link to="/signUp" style={{textDecoration: "none"}}>aquí</Link>
+              </p>
             </div>
           </div>
         </form>

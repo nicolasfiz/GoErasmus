@@ -18,7 +18,7 @@ const Paragraph = ({text}) => {
   return (
     <>
       <section className="citySection">
-        {paragraphs.map((paragraph, id) => <p key={id}> {paragraph} </p>)}
+        {paragraphs.map((paragraph, id) => <p style={{fontSize:"18px", fontFamily:"Times New Roman"}} key={id}> {paragraph} </p>)}
       </section>
     </>
   );
@@ -52,9 +52,18 @@ const Informacion = () => {
   return (
     <>
       <article className="cityInformation">
+        <h1
+          style={{
+            marginTop:"1.5em",
+            marginBottom:"1em",
+            textAlign:"center",
+            fontWeight:"bold",
+            fontFamily:"Times New Roman"}}>
+              ¡Te damos la bienvenida a {params.nombreCiudad}!
+        </h1>
         <ImageGallery items={setImages(ciudad, gallery)} showPlayButton={false} showBullets={true} autoPlay={true} />
+        <div style={{marginTop:"3em"}}></div>
         {ciudad.map(({informacion}, id) => <Paragraph key={id} text={informacion} />)}
-        <hr />
       </article>
     </>);
 }

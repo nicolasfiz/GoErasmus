@@ -10,6 +10,7 @@ import Facultades from "./Components/Facultades/facultades";
 import Asignaturas from "./Components/Asignaturas/asignaturas";
 import Administracion from "./Components/Administracion/administracion";
 import Login from "./Components/login/login";
+import RecoverPassword from "./Components/login/recoverPassword"
 import Register from "./Components/login/register";
 import Footer from "./Components/footer/footer";
 import React, { useState, useEffect } from 'react';
@@ -26,15 +27,12 @@ function App() {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    tokenService
-      .getToken()
-      .then(data => {
-        authService
-          .getAccount(data)
-          .then(elem => {
-            setUser(elem)
-          })
-      })
+    tokenService.getToken().then(data => {
+      if (data)
+        authService.getAccount(data).then(elem => {
+          setUser(elem)
+        })
+    })
   }, [])
 
   return (
@@ -64,6 +62,7 @@ function App() {
             <Routes>
               <Route path="" element={<Inicio />} />
               <Route path="signIn" element={<Login />} />
+              <Route path="recover" element={<RecoverPassword />} />
               <Route path="signUp" element={<Register />} />
             </Routes>
           )}

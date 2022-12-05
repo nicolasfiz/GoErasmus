@@ -12,10 +12,10 @@ const getUsers = async (req, res) => { // id ? usuarios por rolId : todos los us
             query = await connection.query(`SELECT TRIM(CONCAT(u.nombre, ' ', u.apellido1, ' ', IFNULL(u.apellido2, ' '))) as nombreCompleto,
                                             u.idUsuario, u.nombreUsuario as nombreUsuario, u.email as emailUsuario,  u.cuentaActivada,
                                             IFNULL(f.nombre, "-") as nombreFacultad, IFNULL(r.nombre, "-") as nombreRol,
-                                            DATE_FORMAT(u.fechaCreacionCuenta, "%d/%m/%Y %r") as fechaCreacionCuenta, u.urlFotoPerfil as ImagenPerfil FROM Usuario u
+                                            DATE_FORMAT(u.fechaCreacionCuenta, "%d/%m/%Y %r") as fechaCreacionCuenta, u.urlFotoPerfil as imagenPerfil FROM Usuario u
                                             LEFT JOIN Facultad f ON u.facultad_idFacultad = f.idFacultad
                                             LEFT JOIN Rol r ON u.rol_idRol = r.idRol
-                                            GROUP BY u.rol_idRol ORDER BY u.rol_idRol ASC, u.fechaCreacionCuenta DESC`);
+                                            ORDER BY u.rol_idRol ASC, u.fechaCreacionCuenta DESC`);
         else
             query = await connection.query(`SELECT nombreUsuario, cantidadPuntos FROM Usuario
                                             WHERE (rol_idRol = ?) AND (cuentaActivada = 1) AND (cantidadPuntos > 0)

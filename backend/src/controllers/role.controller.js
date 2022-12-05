@@ -21,7 +21,7 @@ const addRole = async (req, res) => {
 const getRoles = async (req, res) => {
     try {
         const connection = await getConnection();
-        const query = await connection.query(`SELECT nombre as nombreRol FROM Rol ORDER BY nombre`);
+        const query = await connection.query(`SELECT idRol, nombre as nombreRol FROM Rol ORDER BY nombre`);
         res.json(query);
     } catch (error) {
         res.status(500).send(error.message);

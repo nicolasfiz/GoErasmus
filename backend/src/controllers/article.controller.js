@@ -62,7 +62,8 @@ const getArticleById = async (req, res) => {
         const {id} = req.params;
         const query = await connection.query(`SELECT a.titulo, a.descripcion, a.urlCabecera, a.esBorrador,
                                                 DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion,
-                                                c.nombre as nombreCiudad, u.nombreUsuario as autor FROM articulo a
+                                                c.nombre as nombreCiudad, u.nombreUsuario as autor, u.urlFotoPerfil
+                                                FROM articulo a
                                                 LEFT JOIN usuario u ON u.idUsuario = a.usuario_idUsuario
                                                 JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad 
                                                 WHERE idArticulo = ?`, id);

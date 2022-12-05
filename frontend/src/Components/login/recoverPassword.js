@@ -60,6 +60,7 @@ const RecoverPassword = () => {
               <input
                 type="email"
                 className="form-control mt-1"
+                style={{fontSize: "14px"}}
                 placeholder="johndoe@example.com"
                 value={email}
                 onChange={handleEmail}/>
@@ -76,7 +77,7 @@ const RecoverPassword = () => {
             </div>
             <div className="text-center">
               <p style = {{fontSize: "14px", marginTop: "1.5em", marginBottom:"1em"}}>
-                  ¿Recordaste la contraseña? {" "} <Link to="/signIn" className='link-primary'>Inicia sesión</Link>
+                  ¿Recordaste la contraseña? {" "} <Link to="/signIn" style={{textDecoration: "none"}}>Inicia sesión</Link>
               </p>
             </div>
           </div>

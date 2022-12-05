@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, InputGroup, Table } from "react-bootstrap";
+import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import userServices from "../../../services/user";
 import "./useradmin.css";
@@ -39,6 +40,7 @@ function UserAdmin() {
     userServices.deleteUser(id).then(() => {
       const usr = users.filter(user => id !== user.idUsuario);
       setUsers(usr);
+      toast.success("Usuario eliminado");
     })
   }
 
@@ -49,35 +51,38 @@ function UserAdmin() {
     });
   }, []);
 
-  return (users.length !== 0 ?
+  return ( users.length !== 0 ?
     (<section className="usersTable" onLoad={() => {setSearch("")}}>
+      <Toaster/>
       <InputGroup className="mb-3">
-        <input style={{width:"60%"}} className="form-control" value={search} type="text" placeholder="Buscar usuario..." onChange={handleChange} />
+        <input className="form-control" value={search} type="text" placeholder="Buscar usuario..." onChange={handleChange} />
       </InputGroup>
       <Table striped hover style={{marginTop: "50px", boxShadow: "2px 2px 2px 1px rgba(0, 0, 0, 0.2)"}}>
         <thead>
           <tr className="centerUserTableText">
             <th>#</th>
-            <th>Nombre Completo</th>
-            <th>Nombre Usuario</th>
+            <th>Nombre</th>
             <th>Email</th>
-            <th>Activada</th>
-            <th>Rol</th>
+            <th>Usuario</th>
+            <th>Imagen</th>
             <th>Facultad</th>
-            <th>Fecha Cuenta</th>
-            <th></th>
+            <th>Rol</th>
+            <th>¿Activada?</th>
+            <th>Fecha creación</th>
+            <th>Operaciones</th>
           </tr>
         </thead>
         <tbody>
-          {users && users.map(({idUsuario, nombreCompleto, nombreUsuario, emailUsuario, cuentaActivada, nombreFacultad, nombreRol, fechaCreacionCuenta}, id) => 
-            <tr key={id} style={{fontSize: "16px",verticalAlign: "middle"}}>
-              <td style={{cursor: "pointer"}} className="centerUserTableText" onClick={() => nav(`/perfil/${nombreUsuario}`) }>{++index}</td>
+          {users && users.map(({idUsuario, nombreCompleto, nombreUsuario, emailUsuario, imagenPerfil, cuentaActivada, nombreFacultad, nombreRol, fechaCreacionCuenta}, id) => 
+            <tr key={id} className="centerUserTableText">
+              <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{++index}</td>
               <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{nombreCompleto}</td>
-              <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{nombreUsuario}</td>
               <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{emailUsuario}</td>
-              <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{cuentaActivada}</td>
-              <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{nombreRol}</td>
+              <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{nombreUsuario}</td>
+              <td>{imagenPerfil ? <a target="_blank" style={{textDecoration: "none"}} href={imagenPerfil} rel="noreferrer">Consultar</a>: '-'}</td>
               <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{nombreFacultad}</td>
+              <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{nombreRol}</td>
+              <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{cuentaActivada}</td>
               <td style={{cursor: "pointer"}} onClick={() => nav(`/perfil/${nombreUsuario}`) }>{fechaCreacionCuenta}</td>
               <td>
                 <Button 
@@ -94,8 +99,9 @@ function UserAdmin() {
     </section>) :
     (<>
       <section className="usersTable">
+        <Toaster/>
         <InputGroup className="mb-3">
-          <input style={{ width: "60%" }} className="form-control" value={search} type="text" placeholder="Buscar usuario..." onChange={handleChange} />
+          <input className="form-control" value={search} type="text" placeholder="Buscar usuario..." onChange={handleChange} />
         </InputGroup>
       </section>
       <section style={{margin:"auto", marginTop: "50px", width:"80%"}}>
