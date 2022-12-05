@@ -28,11 +28,18 @@ function Paises() {
       });
     }, []);
 
-    return <main>
+    return ( paises.length !== 0 ? 
+    (<section>
       <div className="countryContainer">
         {paises.map(({nombrePais, urlBandera}, id) =>  <CountryCard key={id} nombre={nombrePais} urlBandera={urlBandera}/>)}
       </div>
-    </main>;
+    </section>) :
+    (<section style={{margin:"auto", marginTop: "50px", width:"90%"}}>
+      <h2>Hmmm...</h2>
+      <h3>Parece que actualmente no tenemos ningún destino en nuestra base de datos.</h3>
+      <p style={{margin:"0"}}>Por favor, presione <a style={{textDecoration: "none"}} href="../">este</a> enlace para volver a la página principal.</p>
+    </section>)
+    );
 }
 
 export default Paises;

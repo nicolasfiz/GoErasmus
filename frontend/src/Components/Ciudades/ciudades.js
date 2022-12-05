@@ -28,11 +28,18 @@ function Ciudades() {
       });
     }, [params.nombrePais]);
 
-    return <main>
+    return ( ciudades.length !== 0 ? (
+    <section>
       <div className="cityContainer">
         {ciudades.map(({nombreCiudad, urlCabecera}, id) =>  <CityCard key={id} nombre={nombreCiudad} urlCabecera={urlCabecera}/>)}
       </div>
-    </main>;
+    </section>) :
+    (<section style={{margin:"auto", marginTop: "50px", width:"90%"}}>
+      <h2>Hmmm...</h2>
+      <h3>Parece que no tenemos ningún resultado para <i style={{fontWeight: "bold"}}>{params.nombrePais}</i></h3>
+      <p style={{margin:"0"}}>Por favor, presione <a style={{textDecoration: "none"}} href="../paises">este</a> enlace para volver a la lista de países.</p>
+    </section>)
+    );
 }
 
 export default Ciudades;
