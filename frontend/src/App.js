@@ -52,8 +52,6 @@ function App() {
               <Route path="/articulos/:id" element={<Articulo />} />
               <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
               <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
-              <Route path="/signIn" element={<Login />} />
-              <Route path="/signUp" element={<Register />} />
               <Route path="/perfil/:token" element={<Perfil />} />
               <Route path="/editPerfil" element={<EditPerfil user={user}/>} />
               <Route path="/search" element={<Buscador />} />

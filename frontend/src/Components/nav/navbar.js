@@ -5,14 +5,21 @@ import MyImage from "../../assets/mundobyn.png";
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { BiUser, BiUserPlus } from "react-icons/bi";
+import { BiLogOut, BiUser, BiUserPlus } from "react-icons/bi";
 import './navbar.css';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { GiProgression } from "react-icons/gi";
+import { GiProgression} from "react-icons/gi";
+import tokenServices from "../../services/token.service";
 
 function Navegador({ user }) {
   let navigate = useNavigate();
+
+  const cerrarSesion = () => {
+    navigate('/');
+    window.location.reload();
+    tokenServices.removeToken();
+  }
 
   const routeChange = (dest) => {
     //let path = `login`;
@@ -48,7 +55,7 @@ function Navegador({ user }) {
               </Tooltip>
             }
           >
-            <Button variant="outline-dark" onClick={() => routeChange("signIn")} className="rounded-circle custom-button"><BiUserPlus /></Button>
+            <Button variant="outline-dark" onClick={() => routeChange("/signIn")} className="rounded-circle custom-button"><BiUserPlus /></Button>
           </OverlayTrigger>) : (null)}
 
           {/*<OverlayTrigger
@@ -85,6 +92,18 @@ function Navegador({ user }) {
             }
           >
             <Button variant="outline-dark" onClick={() => routeChange("progreso")} className="rounded-circle custom-button"><GiProgression /></Button>
+          </OverlayTrigger>):(null)}
+
+          {user ? (<OverlayTrigger
+            key={'Logout'}
+            placement={'bottom'}
+            overlay={
+              <Tooltip id={`tooltip-${'bottom'}`}>
+                Cerrar sesión
+              </Tooltip>
+            }
+          >
+            <Button variant="outline-dark" onClick={cerrarSesion} className="rounded-circle custom-button"><BiLogOut /></Button>
           </OverlayTrigger>):(null)}
           
         </Navbar.Collapse>
