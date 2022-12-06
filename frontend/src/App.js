@@ -1,5 +1,5 @@
 import Navegador from "./Components/nav/navbar";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Inicio from "./Components/inicio/inicio";
 import Articulos from "./Components/Articulos/articulos";
 import Articulo from "./Components/Articulos/Articulo/articulo";
@@ -26,6 +26,8 @@ import authService from "./services/auth.service"
 function App() {
   const [user, setUser] = useState(null)
 
+  const location = useLocation();
+  console.log(location.pathname);
   useEffect(() => {
     tokenService.getToken().then(data => {
       if (data)
@@ -37,13 +39,14 @@ function App() {
 
   return (
     <main id="app">
-      <Navegador user={user}/>
+    { location.pathname === '/signIn' || location.pathname === '/signUp' || location.pathname === '/recover' ?
+      (null) : <Navegador user={user}/>}
       <section id="body">
           <Routes>
           {user ? (
             <>
             {(user.rol === 'Trotamundos' || user.rol === 'Administrador') ?
-                (<Route path="/panelAdministracion" element={<Administracion />} />) : (<></>)}
+                (<Route path="/panelAdministracion" element={<Administracion />} />) : (null)}
               <Route path="/" element={<Inicio />} />
               <Route path="/paises" element={<Paises />} />
               <Route path="/:nombrePais/" element={<Ciudades />} />
