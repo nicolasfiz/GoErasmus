@@ -22,8 +22,9 @@ const getUniversities = async (req, res) => { // name ? universidades de ciudad 
         const {name} = req.query;
         let query;
         if (name === undefined)
-            query = await connection.query(`SELECT u.nombre as nombreUniversidad, c.nombre as nombreCiudad
-                                            FROM Universidad u LEFT JOIN Ciudad c ON (c.idCiudad = u.ciudad_idCiudad)`);
+            query = await connection.query(`SELECT u.idUniversidad, u.urlLogo, u.nombre as nombreUniversidad, c.nombre as nombreCiudad
+                                            FROM Universidad u LEFT JOIN Ciudad c ON c.idCiudad = u.ciudad_idCiudad
+                                            ORDER BY nombreUniversidad ASC`);
         else
             query = await connection.query(`SELECT u.nombre as nombreUniversidad, u.urlLogo
                                             FROM Universidad u JOIN Ciudad c ON c.idCiudad = u.ciudad_idCiudad WHERE c.nombre= ?

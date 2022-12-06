@@ -83,7 +83,7 @@ function CityAdmin() {
               <td>{++index}</td>
               <td>{nombreCiudad}</td>
               <td><a target="_blank" style={{textDecoration: "none"}} href={urlCabecera} rel="noreferrer">Consultar</a></td>
-              <td>{informacion.substring(0, 80) + '...'}</td>
+              <td>{informacion.substring(0, 75) + '...'}</td>
               <td>{nombrePais}</td>
               <td>
                 <div style={{display: "flex"}}>

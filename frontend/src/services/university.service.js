@@ -17,10 +17,16 @@ const getUniversitiesCityLength = async (name) => {
     return request.then(response => response.data);
 }
 
+const deleteUniversity = async (id) => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then(response => response.data);
+}
+
 const methods = {
     getUniversities,
     getUniversitiesByCityName,
-    getUniversitiesCityLength
+    getUniversitiesCityLength,
+    deleteUniversity
 }
 
 export default methods;

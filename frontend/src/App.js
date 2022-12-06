@@ -27,7 +27,7 @@ function App() {
   const [user, setUser] = useState(null)
 
   const location = useLocation();
-  console.log(location.pathname);
+
   useEffect(() => {
     tokenService.getToken().then(data => {
       if (data)

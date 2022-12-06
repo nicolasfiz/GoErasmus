@@ -12,9 +12,15 @@ const getFacultiesByUniversityName = async (name) => {
     return request.then(response => response.data);
 }
 
+const deleteFaculty = async () => {
+    const request = axios.delete(`${baseUrl}/`)
+    return request.then(response => response.data);
+}
+
 const methods = {
     getFaculties,
-    getFacultiesByUniversityName
+    getFacultiesByUniversityName,
+    deleteFaculty
 }
 
 export default methods;

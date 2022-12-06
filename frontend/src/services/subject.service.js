@@ -12,10 +12,16 @@ const getSubjectsByFacultyName = async (name) => {
     return request.then(response => response.data);
 }
 
+const deleteSubject = async () => {
+    const request = axios.delete(`${baseUrl}/`)
+    return request.then(response => response.data);
+}
+
 
 const methods = {
     getSubjects,
-    getSubjectsByFacultyName
+    getSubjectsByFacultyName,
+    deleteSubject
 }
 
 export default methods;
