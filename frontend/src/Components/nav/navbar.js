@@ -26,10 +26,13 @@ function Navegador({ user }) {
         <Navbar.Collapse id="basic-navbar-nav">
           {user ? (
             <Nav className="me-auto">
-              <Link to="search" className='nav-link'>Buscar</Link>
-              <Link to="paises" className='nav-link'>Descubrir</Link>
-              <Link to="articulos" className="nav-link">Artículos</Link>
-              <Link to="panelAdministracion" className='nav-link'>Panel de Administración</Link>
+              <Link to="/search" className='nav-link'>Buscar</Link>
+              <Link to="/paises" className='nav-link'>Descubrir</Link>
+              <Link to="/articulos" className="nav-link">Artículos</Link>
+              {(user.rol === 'Totamundos' || user.rol === 'Administrador') ?
+                (<Link to="/panelAdministracion" className='nav-link'>Panel de Administración</Link>) : (
+                  <></>
+                )}
             </Nav>
           ) :
             (
