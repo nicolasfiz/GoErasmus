@@ -43,7 +43,7 @@ function App() {
           {user ? (
             <>
             {(user.rol === 'Trotamundos' || user.rol === 'Administrador') ?
-                (<Route path="/panelAdministracion" element={<Administracion />} />) : (console.log("hola"))}
+                (<Route path="/panelAdministracion" element={<Administracion />} />) : (<></>)}
               <Route path="/" element={<Inicio />} />
               <Route path="/paises" element={<Paises />} />
               <Route path="/:nombrePais/" element={<Ciudades />} />
