@@ -7,8 +7,14 @@ const getCountries = async () => {
     return request.then(response => response.data);
 }
 
+const deleteCountry = async (id) => {
+    const request = axios.get(`${baseUrl}/${id}`)
+    return request.then(response => response.data);
+}
+
 const methods = {
-    getCountries
+    getCountries,
+    deleteCountry
 }
 
 export default methods;

@@ -22,8 +22,9 @@ const getCities = async (req, res) => { // name ? ciudades de pais name : todas 
         const {name} = req.query;
         let query;
         if (name === undefined)
-            query = await connection.query(`SELECT c.nombre as nombreCiudad, p.nombre as nombrePais FROM ciudad c
-                                                LEFT JOIN Pais p ON (p.idPais = c.pais_idPais)`);
+            query = await connection.query(`SELECT c.idCiudad, c.nombre as nombreCiudad, c.informacion, c.urlCabecera, p.nombre as nombrePais FROM ciudad c
+                                                LEFT JOIN Pais p ON p.idPais = c.pais_idPais
+                                                ORDER BY nombreCiudad`);
         else
             query = await connection.query(`SELECT c.nombre as nombreCiudad, c.urlCabecera FROM Ciudad c
                                                 JOIN Pais p ON p.idPais = c.pais_idPais WHERE p.nombre=?

@@ -38,38 +38,36 @@ function App() {
   return (
     <main id="app">
       <Navegador user={user}/>
-      <main id="body">
-          {user ? (
-            <Routes>
-              <Route path="" element={<Inicio />} />
-              <Route path="paises" element={<Paises />} />
-              <Route path=":nombrePais/" element={<Ciudades />} />
-              <Route path=":nombrePais/:nombreCiudad" element={<Ciudad />} />
-              <Route path="articulos" element={<Articulos />} />
-              <Route path="articulos/:id" element={<Articulo />} />
-              <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
-              <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
-              <Route path="signIn" element={<Login />} />
-              <Route path="signUp" element={<Register />} />
-              <Route path="perfil/:token" element={<Perfil />} />
-              <Route path="editPerfil" element={<EditPerfil user={user}/>} />
-              <Route path="search" element={<Buscador />} />
-              <Route path="panelAdministracion" element={<Administracion />} />
-              <Route path="asignatura/:idAsignatura" element={<Asignatura user={user}/>} />
-              <Route path="progreso" element={<Logro user={user}/>} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="" element={<Inicio />} />
-              <Route path="signIn" element={<Login />} />
-              <Route path="recover" element={<RecoverPassword />} />
-              <Route path="signUp" element={<Register />} />
-            </Routes>
-          )}
-      </main>
-      <div className="footer">
-        <Footer />
-      </div>
+      <section id="body">
+        {user ? (
+          <Routes>
+            <Route path="/" element={<Inicio />} />
+            <Route path="/paises" element={<Paises />} />
+            <Route path="/:nombrePais/" element={<Ciudades />} />
+            <Route path="/:nombrePais/:nombreCiudad" element={<Ciudad />} />
+            <Route path="/articulos" element={<Articulos />} />
+            <Route path="/articulos/:id" element={<Articulo />} />
+            <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
+            <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
+            <Route path="/signIn" element={<Login />} />
+            <Route path="/signUp" element={<Register />} />
+            <Route path="/perfil/:token" element={<Perfil />} />
+            <Route path="/editPerfil" element={<EditPerfil user={user}/>} />
+            <Route path="/search" element={<Buscador />} />
+            <Route path="/panelAdministracion" element={<Administracion />} />
+            <Route path="/asignatura/:idAsignatura" element={<Asignatura user={user}/>} />
+            <Route path="/progreso" element={<Logro user={user}/>} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Inicio />} />
+            <Route path="/signIn" element={<Login />} />
+            <Route path="/recover" element={<RecoverPassword />} />
+            <Route path="/signUp" element={<Register />} />
+          </Routes>
+        )}
+      </section>
+      <div className="footer"><Footer /></div>
     </main>
   );
 }

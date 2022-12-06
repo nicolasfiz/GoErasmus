@@ -38,7 +38,7 @@ const getCityImages = async (req, res) => {
         if (name === undefined) // nombreCiudad ? imagenes de esa ciudad : todas las imagenes
             query = await connection.query(`SELECT ciudad_idCiudad as idCiudad, urlImagenOriginal FROM galeriaimagenesciudad`);
         else
-            query = await connection.query(`SELECT gic.urlImagenOriginal as org, gic.urlThumbnail as thb FROM galeriaimagenesciudad gic
+            query = await connection.query(`SELECT gic.urlImagen FROM galeriaimagenesciudad gic
                                             JOIN Ciudad c ON c.idCiudad= gic.ciudad_idCiudad
                                             WHERE c.nombre = ?`, name);
         res.json(query);

@@ -45,6 +45,22 @@ const getUniversityById = async (req, res) => {
     }
 }
 
+const getUniversitiesCityLength = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const {name} = req.params;
+        let query;
+        if (name === undefined)
+            query = [{"length": 0}];
+        else
+            query = await connection.query(`SELECT COUNT(*) as length FROM universidad u
+                                            JOIN ciudad c ON c.idCiudad = u.ciudad_idCiudad WHERE c.nombre = ?`, name);
+        res.json(query);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
 const updateUniversity = async (req, res) => {
     try {
         const { id } = req.params;
@@ -77,6 +93,7 @@ export const methods = {
     addUniversity,
     getUniversities,
     getUniversityById,
+    getUniversitiesCityLength,
     updateUniversity,
     deleteUniversity
 };

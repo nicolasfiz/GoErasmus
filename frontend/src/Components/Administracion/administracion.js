@@ -1,46 +1,107 @@
+import { useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
-import UserAdmin from "./User/useradmin";
-import RoleAdmin from "./Role/roleadmin";
-import AchievementAdmin from "./Achievement/achievementadmin";
+import tokenServices from "../../services/token.service";
+import authServices from "../../services/auth.service";
+import UserAdmin from "./AdminTabs/useradmin";
+import RoleAdmin from "./AdminTabs/roleadmin";
+import AchievementAdmin from "./AdminTabs/achievementadmin";
+import CountryAdmin from "./AdminTabs/countryadmin";
+import CityAdmin from "./AdminTabs/cityadmin";
+import UniversityAdmin from "./AdminTabs/universityadmin";
+import FacultyAdmin from "./AdminTabs/facultyadmin";
+import SubjectAdmin from "./AdminTabs/subjectadmin";
+import FileAdmin from "./AdminTabs/fileadmin";
+import CommentAdmin from "./AdminTabs/commentadmin";
+import ArticleAdmin from "./AdminTabs/articleadmin";
 
 function Administracion() {
 
-    return <section>
-      <Tabs
-        defaultActiveKey="usuarios"
-        id="admin-panel"
-        className="mb-3"
-        fill
-      >
-        <Tab eventKey="usuarios" title="Usuarios">
-            <UserAdmin />
-        </Tab>
-        <Tab eventKey="roles" title="Roles">
-            <RoleAdmin />
-        </Tab>
-        <Tab eventKey="logros" title="Logros">
-            <AchievementAdmin />
-        </Tab>
-        <Tab eventKey="paises" title="Paises">
+  const [tokenRole, setTokenRole] = useState([]);
 
-        </Tab>
-        <Tab eventKey="ciudades" title="Ciudades">
-      
-        </Tab>
-        <Tab eventKey="universidades" title="Universidades">
+  useEffect(() => {
+    tokenServices.getToken().then(t => {
+      authServices.getAccount(t).then(d =>{
+        setTokenRole(d.rol);
+      });
+    });
+  }, []);
 
-        </Tab>
-        <Tab eventKey="facultades" title="Facultades">
-
-        </Tab>
-        <Tab eventKey="asignaturas" title="Asignaturas">
-      
-        </Tab>
-        <Tab eventKey="articulos" title="Articulos">
-
-        </Tab>
-      </Tabs>
-    </section>
+  return ( tokenRole && tokenRole === 'Administrador' ?
+  (<section>
+    <Tabs
+      defaultActiveKey="usuarios"
+      id="admin-panel"
+      className="mb-3"
+      fill
+    >
+      <Tab eventKey="usuarios" title="Usuarios">
+        <UserAdmin />
+      </Tab>
+      <Tab eventKey="roles" title="Roles">
+        <RoleAdmin />
+      </Tab>
+      <Tab eventKey="logros" title="Logros">
+       <AchievementAdmin />
+      </Tab>
+      <Tab eventKey="paises" title="Paises">
+        <CountryAdmin />
+      </Tab>
+      <Tab eventKey="ciudades" title="Ciudades">
+        <CityAdmin />
+      </Tab>
+      <Tab eventKey="universidades" title="Universidades">
+        <UniversityAdmin />
+      </Tab>
+      <Tab eventKey="facultades" title="Facultades">
+        <FacultyAdmin />
+      </Tab>
+      <Tab eventKey="asignaturas" title="Asignaturas">
+        <SubjectAdmin />
+      </Tab>
+      <Tab eventKey="archivos" title="Archivos">
+        <FileAdmin />
+      </Tab>
+      <Tab eventKey="comentarios" title="Comentarios">
+        <CommentAdmin />
+      </Tab>
+      <Tab eventKey="articulos" title="Articulos">
+        <ArticleAdmin />
+      </Tab>
+    </Tabs>
+  </section>) :
+  (<section>
+    <Tabs
+      defaultActiveKey="usuarios"
+      id="admin-panel"
+      className="mb-3"
+      fill
+    >
+      <Tab eventKey="paises" title="Paises">
+        <CountryAdmin />
+      </Tab>
+      <Tab eventKey="ciudades" title="Ciudades">
+        <CityAdmin />
+      </Tab>
+      <Tab eventKey="universidades" title="Universidades">
+        <UniversityAdmin />
+      </Tab>
+      <Tab eventKey="facultades" title="Facultades">
+        <FacultyAdmin />
+      </Tab>
+      <Tab eventKey="asignaturas" title="Asignaturas">
+        <SubjectAdmin />
+      </Tab>
+      <Tab eventKey="archivos" title="Archivos">
+        <FileAdmin />
+      </Tab>
+      <Tab eventKey="comentarios" title="Comentarios">
+        <CommentAdmin />
+      </Tab>
+      <Tab eventKey="articulos" title="Articulos">
+        <ArticleAdmin />
+      </Tab>
+    </Tabs>
+  </section>));
 }
 
 export default Administracion;
