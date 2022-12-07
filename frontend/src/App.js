@@ -12,6 +12,7 @@ import Administracion from "./Components/Administracion/administracion";
 import Login from "./Components/login/login";
 import RecoverPassword from "./Components/login/recoverPassword"
 import Register from "./Components/login/register";
+import ConfirmAccount from "./Components/login/confirmAccount";
 import Footer from "./Components/footer/footer";
 import React, { useState, useEffect } from 'react';
 import Perfil from "./Components/perfil/perfil";
@@ -39,7 +40,8 @@ function App() {
   
   return (
     <main id="app">
-    { location.pathname === '/signIn' || location.pathname === '/signUp' || location.pathname === '/recover' ?
+    { location.pathname === '/signIn' || location.pathname === '/signUp'
+      || location.pathname === '/recover' || location.pathname === '/confirmAccount/:token' ?
       null : <Navegador user={user}/>}
       <section id="body">
           <Routes>
@@ -66,6 +68,7 @@ function App() {
               <Route path="/signIn" element={<Login />} />
               <Route path="/recover" element={<RecoverPassword />} />
               <Route path="/signUp" element={<Register />} />
+              <Route path="/confirmAccount/:token" element={<ConfirmAccount />} />
             </>
             )}
           </Routes>

@@ -17,6 +17,11 @@ const recoverPassword = async () => {
     return request.then(response => response.data);
 }
 
+const confirmAccount = (token) => {
+    const request = axios.get(`${baseUrl}/confirmAccount/${token}`)
+    return request.then(response => response.data);
+}
+
 const getAccount = async (token) => {
     const request = axios.get(`${baseUrl}/${token}`)
     return request.then(response => response.data);
@@ -26,6 +31,7 @@ const methods = {
     signUp,
     signIn,
     recoverPassword,
+    confirmAccount,
     getAccount
 }
 
