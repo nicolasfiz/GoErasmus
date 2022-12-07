@@ -36,17 +36,17 @@ function App() {
         })
     })
   }, [])
-
+  
   return (
     <main id="app">
     { location.pathname === '/signIn' || location.pathname === '/signUp' || location.pathname === '/recover' ?
-      (null) : <Navegador user={user}/>}
+      null : <Navegador user={user}/>}
       <section id="body">
           <Routes>
           {user ? (
             <>
             {(user.rol === 'Trotamundos' || user.rol === 'Administrador') ?
-                (<Route path="/panelAdministracion" element={<Administracion />} />) : (null)}
+                <Route path="/panelAdministracion" element={<Administracion />} /> : null}
               <Route path="/" element={<Inicio />} />
               <Route path="/paises" element={<Paises />} />
               <Route path="/:nombrePais/" element={<Ciudades />} />

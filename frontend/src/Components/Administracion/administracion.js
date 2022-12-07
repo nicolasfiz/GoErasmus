@@ -43,6 +43,9 @@ function Administracion() {
       <Tab eventKey="logros" title="Logros">
        <AchievementAdmin />
       </Tab>
+      <Tab eventKey="articulos" title="Articulos">
+        <ArticleAdmin />
+      </Tab>
       <Tab eventKey="paises" title="Paises">
         <CountryAdmin />
       </Tab>
@@ -63,19 +66,19 @@ function Administracion() {
       </Tab>
       <Tab eventKey="comentarios" title="Comentarios">
         <CommentAdmin />
-      </Tab>
-      <Tab eventKey="articulos" title="Articulos">
-        <ArticleAdmin />
       </Tab>
     </Tabs>
   </section>) :
   (<section>
     <Tabs
-      defaultActiveKey="usuarios"
+      defaultActiveKey="articulos"
       id="admin-panel"
       className="mb-3"
       fill
     >
+      <Tab eventKey="articulos" title="Articulos">
+        <ArticleAdmin />
+      </Tab>
       <Tab eventKey="paises" title="Paises">
         <CountryAdmin />
       </Tab>
@@ -96,9 +99,6 @@ function Administracion() {
       </Tab>
       <Tab eventKey="comentarios" title="Comentarios">
         <CommentAdmin />
-      </Tab>
-      <Tab eventKey="articulos" title="Articulos">
-        <ArticleAdmin />
       </Tab>
     </Tabs>
   </section>));

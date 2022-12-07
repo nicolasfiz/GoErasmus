@@ -28,7 +28,7 @@ function Articulos() {
         </Button>
       </div>
       <div className="articleContainer">
-        {articulos.map(({idArticulo, titulo, descripcion, urlCabecera, fechaPublicacion}, id) =>  <ArticleCard key={id} titulo={titulo} id={idArticulo} caption={descripcion} url={urlCabecera} fecha={fechaPublicacion}/>)}
+        {articulos.map(({idArticulo, titulo, descripcion, esBorrador, urlCabecera, fechaPublicacion}, id) => esBorrador === 'No' ? <ArticleCard key={id} titulo={titulo} id={idArticulo} caption={descripcion} url={urlCabecera} fecha={fechaPublicacion}/> : null)}
       </div>
     </section>
   );

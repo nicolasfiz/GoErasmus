@@ -109,9 +109,17 @@ function CityAdmin() {
     (<>
       <section className="contentTable">
         <Toaster/>
-        <InputGroup className="mb-3">
-          <input className="form-control" value={search} type="text" placeholder="Buscar ciudad..." onChange={handleChange} />
-        </InputGroup>
+        <div style={{display: "flex", margin: "0", padding:"0", marginBottom:"1em", marginTop:"1em"}}>
+          <InputGroup>
+            <input style={{width: "60%"}} className="form-control" value={search} type="text" placeholder="Buscar ciudad..." onChange={handleChange} />
+          </InputGroup>
+          <Button
+            style={{marginLeft:"1em"}}
+            variant="outline-success"
+            onClick={createNewCity}>
+              Añadir
+          </Button>
+        </div>
       </section>
       <section style={{margin:"auto", marginTop: "50px", width:"80%"}}>
         <h2>Hmmm...</h2>

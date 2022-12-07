@@ -21,7 +21,7 @@ const getAchievements = async (req, res) => { //Achievements por rol
         const {id} = req.query;
         let query;
         if (id === undefined)
-            query = await connection.query(`SELECT l.nombre as nombreLogro, l.descripcion as descripcionLogro, l.url as urlImagenLogro,
+            query = await connection.query(`SELECT l.idLogro, l.nombre as nombreLogro, l.descripcion as descripcionLogro, l.url as urlImagenLogro,
                                             r.nombre as nombreRol FROM logro l
                                             LEFT JOIN rol r ON l.rol_idRol = r.idRol ORDER BY nombreRol, nombreLogro`);
         else

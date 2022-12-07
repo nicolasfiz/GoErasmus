@@ -36,7 +36,7 @@ function Navegador({ user }) {
               <Link to="/search" className='nav-link'>Buscar</Link>
               <Link to="/paises" className='nav-link'>Descubrir</Link>
               <Link to="/articulos" className="nav-link">Artículos</Link>
-              {(user.rol === 'Totamundos' || user.rol === 'Administrador') ?
+              {(user.rol === 'Trotamundos' || user.rol === 'Administrador') ?
                 (<Link to="/panelAdministracion" className='nav-link'>Panel de Administración</Link>) : (
                   <></>
                 )}

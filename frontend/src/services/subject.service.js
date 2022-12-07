@@ -12,8 +12,8 @@ const getSubjectsByFacultyName = async (name) => {
     return request.then(response => response.data);
 }
 
-const deleteSubject = async () => {
-    const request = axios.delete(`${baseUrl}/`)
+const deleteSubject = async (id) => {
+    const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(response => response.data);
 }
 

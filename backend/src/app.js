@@ -19,6 +19,8 @@ import articlesGalleryRoutes from "./routes/articlesgallery.routes";
 import universityRoutes from "./routes/university.routes";
 import facultyRoutes from "./routes/faculty.routes";
 import subjectRoutes from "./routes/subject.routes";
+import fileRoutes from "./routes/file.routes";
+import commentRoutes from "./routes/comment.routes";
 import buscadorRoutes from "./routes/buscador.routes";
 
 const app = express();
@@ -54,6 +56,8 @@ app.use("/api/articlesgallery", articlesGalleryRoutes);
 app.use("/api/university", universityRoutes);
 app.use("/api/faculty", facultyRoutes);
 app.use("/api/subject", subjectRoutes);
+app.use("/api/file", fileRoutes);
+app.use("/api/comment", commentRoutes);
 app.use("/api/buscador", buscadorRoutes);
 
 export default app;
