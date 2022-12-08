@@ -31,49 +31,58 @@ function App() {
 
   useEffect(() => {
     tokenService.getToken().then(data => {
-      if (data)
+      if (data) {
         authService.getAccount(data).then(elem => {
           setUser(elem)
         })
+          .catch(error => {
+            tokenService.removeToken()
+          })
+      }
     })
   }, [])
-  
+
   return (
     <main id="app">
-    { location.pathname === '/signIn' || location.pathname === '/signUp'
-      || location.pathname === '/recover' || location.pathname === '/confirmAccount/:token' ?
-      null : <Navegador user={user}/>}
+      {location.pathname === '/signIn' || location.pathname === '/signUp'
+        || location.pathname === '/recover' || location.pathname === '/confirmAccount/:token' ?
+        null : <Navegador user={user} />}
       <section id="body">
-          <Routes>
+        <Routes>
           {user ? (
             <>
-            {(user.rol === 'Trotamundos' || user.rol === 'Administrador') ?
+              <Route path="/" element={<Inicio user={user} />} />
+              <Route path="paises" element={<Paises />} />
+              <Route path=":nombrePais/" element={<Ciudades />} />
+              <Route path=":nombrePais/:nombreCiudad" element={<Ciudad />} />
+              <Route path="articulos" element={<Articulos />} />
+              <Route path="articulos/:id" element={<Articulo />} />
+              <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
+              <Route path=":nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
+              <Route path="signIn" element={<Login />} />
+              <Route path="signUp" element={<Register />} />
+              <Route path="perfil/:token" element={<Perfil />} />
+              <Route path="editPerfil" element={<EditPerfil user={user} />} />
+              <Route path="search" element={<Buscador />} />
+              {(user.rol === 'Trotamundos' || user.rol === 'Administrador') ?
                 <Route path="/panelAdministracion" element={<Administracion />} /> : null}
-              <Route path="/" element={<Inicio />} />
-              <Route path="/paises" element={<Paises />} />
-              <Route path="/:nombrePais/" element={<Ciudades />} />
-              <Route path="/:nombrePais/:nombreCiudad" element={<Ciudad />} />
-              <Route path="/articulos" element={<Articulos />} />
-              <Route path="/articulos/:id" element={<Articulo />} />
-              <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
-              <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
-              <Route path="/perfil/:token" element={<Perfil />} />
-              <Route path="/editPerfil" element={<EditPerfil user={user}/>} />
-              <Route path="/search" element={<Buscador />} />
-              <Route path="/asignatura/:idAsignatura" element={<Asignatura user={user}/>} />
-              <Route path="/progreso" element={<Logro user={user}/>} />
-            </>) : (
+              <Route path="asignatura/:idAsignatura" element={<Asignatura user={user} />} />
+              <Route path="progreso" element={<Logro user={user} />} />
+            </>
+          ) : (
             <>
               <Route path="/" element={<Inicio />} />
-              <Route path="/signIn" element={<Login />} />
-              <Route path="/recover" element={<RecoverPassword />} />
-              <Route path="/signUp" element={<Register />} />
+              <Route path="signIn" element={<Login />} />
+              <Route path="recover" element={<RecoverPassword />} />
+              <Route path="signUp" element={<Register />} />
               <Route path="/confirmAccount/:token" element={<ConfirmAccount />} />
             </>
-            )}
-          </Routes>
+          )}
+        </Routes>
       </section>
-      <div className="footer"><Footer /></div>
+      <div className="footer">
+        <Footer />
+      </div>
     </main>
   );
 }

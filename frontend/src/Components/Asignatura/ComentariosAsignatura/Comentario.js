@@ -18,8 +18,13 @@ const Comentario = ({ currentItems, votados, idUsuario }) => {
       asignaturasService
         .mg(idVotacion, bodyFormData)
         .then(respose => {
-          toast.success("Votado")
-          votados.push(idVotacion)
+          console.log(respose)
+          if(respose===true){
+            toast.success("Votado")
+            votados.push(idVotacion)      
+          }else{
+            toast.error("No puedes votar tu propia aportacion")
+          }
         })
         .catch(error => toast.error("ha ocurrido un errror"))
     } 
@@ -33,8 +38,13 @@ const Comentario = ({ currentItems, votados, idUsuario }) => {
       asignaturasService
         .nmg(idVotacion, bodyFormData)
         .then(respose =>{ 
-          toast.success("Votado")
-          votados.push(idVotacion)        
+          console.log(respose)
+          if(respose===true){
+            toast.success("Votado")
+            votados.push(idVotacion)      
+          }else{
+            toast.error("No puedes votar tu propia aportacion")
+          }
         })
         .catch(error => toast.error("ha ocurrido un errror"))
     } 

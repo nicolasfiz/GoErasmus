@@ -3,11 +3,11 @@ import { Spinner } from "react-bootstrap";
 import ListGroup from 'react-bootstrap/ListGroup';
 
 const baseUrl = `${process.env.REACT_APP_DIRECCIONES}asignatura/`;
-const ListadoAsignaturas = ({resultado, loading}) => {
+const ListadoAsignaturas = ({ resultado, loading }) => {
     return (
-        <ListGroup className="listaUsuarios">
+        <ListGroup ListGroup className="listaUsuarios" >
             {!loading ? (
-                resultado.map(elem =>
+                resultado.length > 0 ? (resultado.map(elem =>
                     <ListGroup.Item key={elem.idAsignatura}>
                         <div className="usuarioListaBuscador">
                             <div>
@@ -43,7 +43,14 @@ const ListadoAsignaturas = ({resultado, loading}) => {
                             </div>
                         </div>
                     </ListGroup.Item>
+                )) : (
+                    <section style={{ margin: "auto", marginTop: "50px", width: "80%" }}>
+                        <h2>Hmmm...</h2>
+                        <h3>No pudimos encontrar ninguna coincidencia"</h3>
+                        <p style={{ margin: "0" }}>Compruebe su búsqueda para ver si hay errores tipográficos u ortográficos, o pruebe con otros términos de búsqueda.</p>
+                    </section>
                 )
+
             ) : <div
                 style={{
                     display: "flex",
@@ -56,7 +63,8 @@ const ListadoAsignaturas = ({resultado, loading}) => {
                 <Spinner animation="border" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
-            </div>}
+            </div>
+            }
         </ListGroup>
     )
 }

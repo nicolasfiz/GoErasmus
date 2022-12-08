@@ -5,12 +5,12 @@ import MyImage from "../../assets/mundobyn.png";
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { BiLogOut, BiUser, BiUserPlus } from "react-icons/bi";
+import { BiUser, BiUserPlus, BiLogOut } from "react-icons/bi";
 import './navbar.css';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { GiProgression} from "react-icons/gi";
-import tokenServices from "../../services/token.service";
+import { GiProgression } from "react-icons/gi";
+import tokenService from "../../services/token.service"
 
 function Navegador({ user }) {
   let navigate = useNavigate();
@@ -18,13 +18,20 @@ function Navegador({ user }) {
   const cerrarSesion = () => {
     navigate('/');
     window.location.reload();
-    tokenServices.removeToken();
+    tokenService.removeToken();
   }
 
   const routeChange = (dest) => {
     //let path = `login`;
     navigate(dest);
   }
+
+  /*
+  const cerrarSesion = () => {
+    tokenService.removeToken()
+    window.location.replace(process.env.REACT_APP_DIRECCIONES)
+  }*/
+
   return (
     <Navbar bg="light" expand="lg" sticky="top" >
       <Container >
@@ -103,7 +110,7 @@ function Navegador({ user }) {
               </Tooltip>
             }
           >
-            <Button variant="outline-dark" onClick={cerrarSesion} className="rounded-circle custom-button"><BiLogOut /></Button>
+            <Button variant="outline-primary" onClick={cerrarSesion} className="rounded-circle custom-button" style={{marginLeft: '2rem'}}><BiLogOut /></Button>
           </OverlayTrigger>):(null)}
           
         </Navbar.Collapse>

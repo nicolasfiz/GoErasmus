@@ -6,7 +6,7 @@ import 'react-dropdown/style.css'
 import { useState, useEffect } from 'react';
 import perfilService from "../../services/user";
 
-const EditForm = ({ datos, nuevosD, ubicacion, imagen, handleChanges, toSave, valido, handleImage, handleUbicacion }) => {
+const EditForm = ({ datos, nuevosD, ubicacion, imagen, handleChanges, toSave, valido, handleImage, handleUbicacion, pass2, handlePass2}) => {
     const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
     const [paises, setPaises] = useState([]);
     const [ciudades, setCiudades] = useState([])
@@ -106,17 +106,24 @@ const EditForm = ({ datos, nuevosD, ubicacion, imagen, handleChanges, toSave, va
             </div>
             <section className='campos'>
                 <div className="apartado">
-                    <h3>Nombre de usuario: </h3>
+                    <h3>Nombre de usuario </h3>
                     <input className='field' name="nombreUsuario" value={nuevosD.nombreUsuario} placeholder={datos.nombreUsuario} onChange={handleChanges} />
                     {nuevosD.nombreUsuario.length > 15 ? (<p className='error'>El nombre de usuario no puede tener mas de 15 caracteres</p>) : null}
                 </div>
                 <div className="apartado">
-                    <h3>Email:</h3>
+                    <h3>Email</h3>
                     <input className='field' name="email" value={nuevosD.email} placeholder={datos.email} onChange={handleChanges} />
                     {nuevosD.email.length > 0 && !validEmail.test(nuevosD.email) ? (<p className='error'>El email no es válido</p>) : null}
                 </div>
+                <div className="apartado">
+                    <h3>Contraseña</h3>
+                    <input type={"password"} className='field' name="pass" value={nuevosD.pass} placeholder={"Nueva contraseña"} onChange={handleChanges} />
+                    {nuevosD.pass.length>0 &&(nuevosD.pass.length < 5 || nuevosD.pass.length > 20) ? (<p className='error'>La contraseña debe tener entre 5 y 20 caracteres</p>) : null}
+                    <input type={"password"} style={{marginTop: '1rem'}} className='field' name="pass2" value={pass2} placeholder={"Repetir nueva contraseña"} onChange={handlePass2} />
+                    {nuevosD.pass.length > 0 && nuevosD.pass !== pass2 ? (<p className='error'>Las contraseñas deben ser iguales</p>) : null}
+                </div>
                 <div className='apartado'>
-                    <h3>Donde ha estudidado:</h3>
+                    <h3>Donde ha estudidado</h3>
                     {pais ? <Dropdown className="dropdown" options={paises} value={ubicacion.pais} name="pais" onChange={changePais} placeholder="Selecciona un país" /> : null}
                     {ciudad ? <Dropdown className="dropdown" value={ubicacion.ciudad} options={ciudades} name="ciudad" onChange={changeCiudad} placeholder="Selecciona una ciudad" /> : null}
                     {ciudad && universidad ? <Dropdown className="dropdown" value={ubicacion.universidad} options={universidades} name="universidad" onChange={changeUniversidad} placeholder="Selecciona una universidad" /> : null}

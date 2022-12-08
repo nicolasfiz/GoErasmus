@@ -42,10 +42,16 @@ const SubirArchivo = (props) => {
       .subirArchivo(bodyFormData)
       .then(response => {
         toast.success("Archivo Subido")
+        if(response){
+          toast('!Has obtenido un nuevo logro!', {
+              icon: '👏',
+          });
+        }
         props.onHide()
       })
       .catch(error => {
         toast.error("No se ha podido subir el archivo")
+        console.log(error)
       })
   }
   const handleChanges = ({ target }) => {
@@ -54,7 +60,7 @@ const SubirArchivo = (props) => {
       ...datos,
       [name]: value,
     })
-    if (datos.titulo.length > 0 && imagen != null) {
+    if (datos.titulo.length > 0 && imagen != null && datos.titulo.length < 20 && datos.comentario.length < 180) {
       setValido(true);
     } else {
       setValido(false);
@@ -88,6 +94,7 @@ const SubirArchivo = (props) => {
                 aria-describedby="inputGroup-sizing-sm"
                 onChange={handleChanges}
               />
+              {datos.titulo.length > 20 ? <small style={{color: 'red'}}>El titulo no puede contener mas de 20 caracteres</small> : null }
             </FloatingLabel>
           </div>
           <div>
@@ -99,6 +106,7 @@ const SubirArchivo = (props) => {
                 style={{ height: "100px" }}
                 onChange={handleChanges}
               />
+              {datos.comentario.length > 180 ? <small style={{color: 'red'}}>El comentario no puede contener mas de 180 caracteres</small> : null }
             </FloatingLabel>
           </div>
           <div style={{ marginTop: '1rem' }}>

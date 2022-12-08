@@ -27,6 +27,7 @@ const getAccount = async (token) => {
     return request.then(response => response.data);
 }
 
+
 const methods = {
     signUp,
     signIn,

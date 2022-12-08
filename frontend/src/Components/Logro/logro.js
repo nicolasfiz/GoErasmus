@@ -48,9 +48,8 @@ const Logro = ({user}) => {
                     style={{ marginBottom: '1rem' }}
                   />
                   {
-                    ((logros.cantidad - logros.arrayProximos.length) /
-                      logros.cantidad) *
-                    100
+                    Math.trunc(((logros.cantidad - logros.arrayProximos.length) /
+                      logros.cantidad) * 100)
                   }/100
                 </div>
               </Card.Body>
