@@ -17,10 +17,16 @@ const getCityByName = async (name) => {
     return request.then(response => response.data);
 }
 
+const deleteCity = async (id) => {
+    const request = axios.delete(`${baseUrl}/${id}`);
+    return request.then(response => response.data);
+}
+
 const methods = {
     getAllCities,
     getCitiesByCountryName,
-    getCityByName
+    getCityByName,
+    deleteCity
 }
 
 export default methods;

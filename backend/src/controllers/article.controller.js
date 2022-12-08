@@ -24,10 +24,12 @@ const getArticles = async (req, res) => {
         const {name} = req.query;
         let query;
         if (name === undefined) // nombreCiudad ? articulos de una ciudad : articulo panel admin
-            query = await connection.query(`SELECT a.idArticulo, a.titulo, a.descripcion, a.urlCabecera,
-                                            DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion FROM Articulo a
-                                            LEFT JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad WHERE esBorrador = 'No'
-                                            ORDER BY fechaPublicacion ASC`);
+            query = await connection.query(`SELECT a.idArticulo, a.titulo, a.descripcion, a.urlCabecera, a.esBorrador,
+                                            DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion,
+                                            c.nombre as nombreCiudad, IFNULL(u.nombreUsuario, "Anónimo") as nombreUsuario FROM Articulo a
+                                            LEFT JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad
+                                            LEFT JOIN usuario u ON a.usuario_idUsuario = u.idUsuario
+                                            ORDER BY fechaPublicacion ASC, esBorrador ASC`);
         else
             query = await connection.query(`SELECT a.idArticulo, a.titulo, a.descripcion, a.urlCabecera,
                                             DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion FROM Articulo a

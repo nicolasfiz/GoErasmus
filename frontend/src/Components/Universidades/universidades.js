@@ -27,11 +27,11 @@ function Universidades() {
   }, [params.nombreCiudad]);
   
   return (
-  <main>
+  <section>
     <div className="cityContainer">
       {universidades.map(({nombreUniversidad, urlLogo}, id) =>  <UniversityCard key={id} nombre={nombreUniversidad} urlLogo={urlLogo}/>)}
     </div>
-  </main>);
+  </section>);
 }
 
 export default Universidades;

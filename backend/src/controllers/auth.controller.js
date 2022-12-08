@@ -53,7 +53,7 @@ export const signUp = async (req, res) => { //Probar cambios + envio email
 
     // Creating the subject and the body of the email and sending it
     const subject = "Bienvenido a GoERASMUS";
-    const activationLink = `http://localhost:4000/api/auth/${token}`; //Mirar
+    const activationLink = `${config.react_host}/confirmAccount/${token}`; //Mirar
     const message = `Hola viajero,\nEstás a punto de empezar una larga travesía y el punto de partida es GoERASMUS, pero antes de ir al aeropuerto es necesario hacer la maleta o, en nuestro caso, pulsar el enlace a continuación para activar tu cuenta:\n${activationLink}\nEsperamos con ganas las anécdotas de tus viajes.\n\nUn saludo,\nEl equipo de GoERASMUS.`;  
     sendEmailToUser(email, subject, message);
 

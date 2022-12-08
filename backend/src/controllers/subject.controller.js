@@ -21,8 +21,9 @@ const getSubjects = async (req, res) => { // id ? Asignaturas de facultad : toda
         const {name} = req.query;
         let query;
         if (name === undefined)
-            query = await connection.query(`SELECT a.nombre as nombreAsignatura, f.nombre as nombreFacultad
-                                            FROM asignatura a JOIN facultad f ON a.facultad_idFacultad = f.idFacultad`);
+            query = await connection.query(`SELECT a.idAsignatura, a.nombre as nombreAsignatura, a.puntuacion, f.nombre as nombreFacultad
+                                            FROM asignatura a JOIN facultad f ON a.facultad_idFacultad = f.idFacultad
+                                            ORDER BY nombreAsignatura ASC`);
         else
             query = await connection.query(`SELECT a.idAsignatura, a.nombre as nombreAsignatura FROM asignatura a
                                             JOIN facultad f ON f.idFacultad = a.facultad_idfacultad

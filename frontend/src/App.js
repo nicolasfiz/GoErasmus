@@ -1,5 +1,5 @@
 import Navegador from "./Components/nav/navbar";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Inicio from "./Components/inicio/inicio";
 import Articulos from "./Components/Articulos/articulos";
 import Articulo from "./Components/Articulos/Articulo/articulo";
@@ -12,6 +12,7 @@ import Administracion from "./Components/Administracion/administracion";
 import Login from "./Components/login/login";
 import RecoverPassword from "./Components/login/recoverPassword"
 import Register from "./Components/login/register";
+import ConfirmAccount from "./Components/login/confirmAccount";
 import Footer from "./Components/footer/footer";
 import React, { useState, useEffect } from 'react';
 import Perfil from "./Components/perfil/perfil";
@@ -26,26 +27,31 @@ import authService from "./services/auth.service"
 function App() {
   const [user, setUser] = useState(null)
 
+  const location = useLocation();
+
   useEffect(() => {
     tokenService.getToken().then(data => {
-      if (data){
+      if (data) {
         authService.getAccount(data).then(elem => {
           setUser(elem)
         })
-        .catch(error => {
-          tokenService.removeToken()
-        })
-      } 
+          .catch(error => {
+            tokenService.removeToken()
+          })
+      }
     })
   }, [])
 
   return (
     <main id="app">
-      <Navegador user={user}/>
-      <main id="body">
+      {location.pathname === '/signIn' || location.pathname === '/signUp'
+        || location.pathname === '/recover' || location.pathname === '/confirmAccount/:token' ?
+        null : <Navegador user={user} />}
+      <section id="body">
+        <Routes>
           {user ? (
-            <Routes>
-              <Route path="" element={<Inicio user={user}/>} />
+            <>
+              <Route path="/" element={<Inicio user={user} />} />
               <Route path="paises" element={<Paises />} />
               <Route path=":nombrePais/" element={<Ciudades />} />
               <Route path=":nombrePais/:nombreCiudad" element={<Ciudad />} />
@@ -56,21 +62,24 @@ function App() {
               <Route path="signIn" element={<Login />} />
               <Route path="signUp" element={<Register />} />
               <Route path="perfil/:token" element={<Perfil />} />
-              <Route path="editPerfil" element={<EditPerfil user={user}/>} />
+              <Route path="editPerfil" element={<EditPerfil user={user} />} />
               <Route path="search" element={<Buscador />} />
-              <Route path="panelAdministracion" element={<Administracion />} />
-              <Route path="asignatura/:idAsignatura" element={<Asignatura user={user}/>} />
-              <Route path="progreso" element={<Logro user={user}/>} />
-            </Routes>
+              {(user.rol === 'Trotamundos' || user.rol === 'Administrador') ?
+                <Route path="/panelAdministracion" element={<Administracion />} /> : null}
+              <Route path="asignatura/:idAsignatura" element={<Asignatura user={user} />} />
+              <Route path="progreso" element={<Logro user={user} />} />
+            </>
           ) : (
-            <Routes>
-              <Route path="" element={<Inicio />} />
+            <>
+              <Route path="/" element={<Inicio />} />
               <Route path="signIn" element={<Login />} />
               <Route path="recover" element={<RecoverPassword />} />
               <Route path="signUp" element={<Register />} />
-            </Routes>
+              <Route path="/confirmAccount/:token" element={<ConfirmAccount />} />
+            </>
           )}
-      </main>
+        </Routes>
+      </section>
       <div className="footer">
         <Footer />
       </div>

@@ -22,8 +22,9 @@ const getFaculties = async (req, res) => {
         let {name} = req.query;
         let query;
         if (name === undefined)
-            query = await connection.query(`SELECT f.nombre as nombreFacultad, u.nombre as nombreUniversidad
-                                            FROM Facultad f LEFT JOIN Universidad u ON (f.universidad_idUniversidad = u.idUniversidad)`);
+            query = await connection.query(`SELECT f.idFacultad, f.nombre as nombreFacultad, u.nombre as nombreUniversidad
+                                            FROM Facultad f LEFT JOIN Universidad u ON f.universidad_idUniversidad = u.idUniversidad
+                                            ORDER BY nombreFacultad ASC`);
         else
             query = await connection.query(`SELECT f.nombre as nombreFacultad FROM Facultad f
                                             JOIN Universidad u ON u.idUniversidad = f.universidad_idUniversidad

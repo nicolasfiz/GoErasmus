@@ -9,20 +9,13 @@ import {methods as logrosUtils} from "../libs/logros"
 const getUsers = async (req, res) => { // id ? usuarios por rolId : todos los usuarios 
     try {
         const connection = await getConnection();
-        const { id } = req.query;
-        let query;
-        if (id === undefined)
-            query = await connection.query(`SELECT TRIM(CONCAT(u.nombre, ' ', u.apellido1, ' ', IFNULL(u.apellido2, ' '))) as nombreCompleto,
+        const query = await connection.query(`SELECT TRIM(CONCAT(u.nombre, ' ', u.apellido1, ' ', IFNULL(u.apellido2, ' '))) as nombreCompleto,
                                             u.idUsuario, u.nombreUsuario as nombreUsuario, u.email as emailUsuario,  u.cuentaActivada,
                                             IFNULL(f.nombre, "-") as nombreFacultad, IFNULL(r.nombre, "-") as nombreRol,
                                             DATE_FORMAT(u.fechaCreacionCuenta, "%d/%m/%Y %r") as fechaCreacionCuenta, u.urlFotoPerfil as imagenPerfil FROM Usuario u
                                             LEFT JOIN Facultad f ON u.facultad_idFacultad = f.idFacultad
                                             LEFT JOIN Rol r ON u.rol_idRol = r.idRol
                                             ORDER BY u.rol_idRol ASC, u.fechaCreacionCuenta DESC`);
-        else
-            query = await connection.query(`SELECT nombreUsuario, cantidadPuntos FROM Usuario
-                                            WHERE (rol_idRol = ?) AND (cuentaActivada = 1) AND (cantidadPuntos > 0)
-                                            ORDER BY cantidadPuntos DESC LIMIT 0,100`, id);
         res.json(query);
     } catch (error) {
         res.status(500).send(error.message);

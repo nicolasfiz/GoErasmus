@@ -7,6 +7,7 @@ import Universidades from "../Universidades/universidades";
 import CityArticles from "./CityArticles/cityArticles";
 import cityServices from "../../services/city.service";
 import articleServices from "../../services/article.service";
+import universityServices from "../../services/university.service";
 import cityGalleryServices from "../../services/cityGallery.service";
 import "./ciudad.css";
 import "../Ciudades/ciudades.css";
@@ -45,7 +46,7 @@ const Informacion = () => {
   const setImages = (ciudad, gallery) => {
     let images = [];
     ciudad.forEach( ({urlCabecera}) => {images.push({original: urlCabecera, thumbnail: urlCabecera})});
-    gallery.forEach( ({org, thb}) => {images.push({original: org, thumbnail: thb})});
+    gallery.forEach( ({urlImagen}) => {images.push({original: urlImagen, thumbnail: urlImagen})});
     return images;
   }
 
@@ -71,6 +72,7 @@ const Informacion = () => {
 function Ciudad() {
   const params = useParams();
   const [numArticles, setNumArticles] = useState([]);
+  const [numUniversities, setNumUniversities] = useState([]);
 
   useEffect(() => {
     articleServices.getCityArticlesLength(params.nombreCiudad).then(length => {
@@ -78,11 +80,17 @@ function Ciudad() {
     })
   }, [params.nombreCiudad]);
 
-  let value;
-  numArticles.forEach( ({length}) => {value |= length === 0});
-  const isDisabled = value === 1;
+  useEffect(() => {
+    universityServices.getUniversitiesCityLength(params.nombreCiudad).then(length => {
+      setNumUniversities(length);
+    })
+  }, [params.nombreCiudad]);
+
+  let articles, universities;
+  numArticles.forEach( ({length}) => {articles |= length === 0});
+  numUniversities.forEach( ({length}) => {universities |= length === 0});
   return (
-  <main>
+  <section>
     <Tabs
       defaultActiveKey="informacion"
       id="informacion-universidades-articulos"
@@ -92,14 +100,14 @@ function Ciudad() {
       <Tab eventKey="informacion" title="Información">
         <Informacion />
       </Tab>
-      <Tab eventKey="universidades" title="Universidades">
+      <Tab eventKey="universidades" title="Universidades" disabled={universities === 1}>
         <Universidades />
       </Tab>
-      <Tab eventKey="articulos" title="Artículos" disabled={isDisabled}>
+      <Tab eventKey="articulos" title="Artículos" disabled={articles === 1}>
         <CityArticles />
       </Tab>
     </Tabs>
-  </main>
+  </section>
   )
 }
 

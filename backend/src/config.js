@@ -10,5 +10,6 @@ export default {
     password: process.env.PASSWORD||"",
     secret: process.env.SECRET,
     email: process.env.EMAil,
-    email_pass: process.env.EMAIL_PASS
+    email_pass: process.env.EMAIL_PASS,
+    react_host: process.env.REACT_HOST
 };

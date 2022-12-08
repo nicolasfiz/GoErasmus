@@ -15,15 +15,22 @@ import tokenService from "../../services/token.service"
 function Navegador({ user }) {
   let navigate = useNavigate();
 
+  const cerrarSesion = () => {
+    navigate('/');
+    window.location.reload();
+    tokenService.removeToken();
+  }
+
   const routeChange = (dest) => {
     //let path = `login`;
     navigate(dest);
   }
 
+  /*
   const cerrarSesion = () => {
     tokenService.removeToken()
     window.location.replace(process.env.REACT_APP_DIRECCIONES)
-  }
+  }*/
 
   return (
     <Navbar bg="light" expand="lg" sticky="top" >
@@ -33,10 +40,13 @@ function Navegador({ user }) {
         <Navbar.Collapse id="basic-navbar-nav">
           {user ? (
             <Nav className="me-auto">
-              <Link to="search" className='nav-link'>Buscar</Link>
-              <Link to="paises" className='nav-link'>Descubrir</Link>
-              <Link to="articulos" className="nav-link">Artículos</Link>
-              <Link to="panelAdministracion" className='nav-link'>Panel de Administración</Link>
+              <Link to="/search" className='nav-link'>Buscar</Link>
+              <Link to="/paises" className='nav-link'>Descubrir</Link>
+              <Link to="/articulos" className="nav-link">Artículos</Link>
+              {(user.rol === 'Trotamundos' || user.rol === 'Administrador') ?
+                (<Link to="/panelAdministracion" className='nav-link'>Panel de Administración</Link>) : (
+                  <></>
+                )}
             </Nav>
           ) :
             (
@@ -52,7 +62,7 @@ function Navegador({ user }) {
               </Tooltip>
             }
           >
-            <Button variant="outline-dark" onClick={() => routeChange("signIn")} className="rounded-circle custom-button"><BiUserPlus /></Button>
+            <Button variant="outline-dark" onClick={() => routeChange("/signIn")} className="rounded-circle custom-button"><BiUserPlus /></Button>
           </OverlayTrigger>) : (null)}
 
           {/*<OverlayTrigger
@@ -92,7 +102,7 @@ function Navegador({ user }) {
           </OverlayTrigger>):(null)}
 
           {user ? (<OverlayTrigger
-            key={'cerrarSesion'}
+            key={'Logout'}
             placement={'bottom'}
             overlay={
               <Tooltip id={`tooltip-${'bottom'}`}>
@@ -100,8 +110,8 @@ function Navegador({ user }) {
               </Tooltip>
             }
           >
-            <Button variant="outline-primary" onClick={() => cerrarSesion()} className="rounded-circle custom-button" style={{marginLeft: '2rem'}}><BiLogOut /></Button>
-          </OverlayTrigger>): (null)}
+            <Button variant="outline-primary" onClick={cerrarSesion} className="rounded-circle custom-button" style={{marginLeft: '2rem'}}><BiLogOut /></Button>
+          </OverlayTrigger>):(null)}
           
         </Navbar.Collapse>
       </Container>

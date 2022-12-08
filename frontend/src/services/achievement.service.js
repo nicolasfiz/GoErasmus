@@ -7,8 +7,14 @@ const getAchievements = async () => {
     return request.then(response => response.data);
 }
 
+const deleteAchievement = async (id) => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then(response => response.data);
+}
+
 const methods = {
-    getAchievements
+    getAchievements,
+    deleteAchievement
 }
 
 export default methods;
