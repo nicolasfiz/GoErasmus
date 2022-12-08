@@ -64,7 +64,7 @@ function ArticleAdmin() {
       <InputGroup className="mb-3">
         <input className="form-control" value={search} type="text" placeholder="Buscar artículo..." onChange={handleChange} />
       </InputGroup>
-        <Table striped hover style={{marginTop: "50px", boxShadow: "2px 2px 2px 1px rgba(0, 0, 0, 0.2)"}}>
+        <Table striped hover style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
           <thead>
             <tr className="centerTableText">
               <th>#</th>
