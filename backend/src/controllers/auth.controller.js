@@ -6,7 +6,6 @@ import { sendEmailToUser } from "../libs/sendEmail";
 
 export const signUp = async (req, res) => { //Probar cambios + envio email
   try {
-    console.log("Hola")
     const connection = await getConnection();
     const { nombrePersona, primerApellido, nombreUsuario, correo, contrasenaSinCifrar, contrasenaRepetida } = req.body;
 

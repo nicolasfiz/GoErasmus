@@ -12,8 +12,8 @@ import "./ArchivosAsignatura.css"
 
 const baseUrl = `${process.env.REACT_APP_DIRECCIONES}perfil/`;
 
-const Archivo = ({ currentItems, votados, idUsuario }) => {
-  const mg = (idVotacion) => {
+const Archivo = ({ currentItems, votados, idUsuario}) => {
+  const mg = (idVotacion, nombreUsuario) => {
     if (votados.includes(idVotacion)) {
       toast.error("Ya has votado este comentario");
     } else {
@@ -22,8 +22,13 @@ const Archivo = ({ currentItems, votados, idUsuario }) => {
       asignaturasService
         .mg(idVotacion, bodyFormData)
         .then((respose) => {
-          votados.push(idVotacion)
-          toast.success("Votado")
+          console.log(respose)
+          if(respose === true){
+            votados.push(idVotacion)
+            toast.success("Votado")
+          }else{
+            toast.error("No puedes votar tu propia aportacion")
+          }
         })
         .catch((error) => toast.error("ha ocurrido un errror"));
     }
@@ -37,8 +42,13 @@ const Archivo = ({ currentItems, votados, idUsuario }) => {
       asignaturasService
         .nmg(idVotacion, bodyFormData)
         .then((respose) => {
-          toast.success("Votado")
-          votados.push(idVotacion)
+          console.log(respose)
+          if(respose === true){
+            votados.push(idVotacion)
+            toast.success("Votado")
+          }else{
+            toast.error("No puedes votar tu propia aportacion")
+          }
         })
         .catch((error) => toast.error("ha ocurrido un errror"));
     }

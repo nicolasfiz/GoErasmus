@@ -1,7 +1,10 @@
-import { getConnection } from "../database/database";
-import { methods as LogrosUtils } from "../libs/logros";
-var cloudinary = require('cloudinary').v2;
-cloudinary.config(process.env.CLOUDINARY_URL);
+import { getConnection } from "../database/database"
+import { methods as LogrosUtils } from "../libs/logros"
+var cloudinary = require('cloudinary').v2
+import * as authUtils from "../libs/authUtils"
+cloudinary.config(process.env.CLOUDINARY_URL)
+import { sendEmailToUser } from "../libs/sendEmail"
+import {methods as logrosUtils} from "../libs/logros"
 
 const getUsers = async (req, res) => { // id ? usuarios por rolId : todos los usuarios 
     try {
@@ -161,12 +164,12 @@ const uploadPicture = async (req, res) => {
 
 const guardarDatos = async (req, res) => {
     try {
+        let logroObtenido = false
         const { id } = req.params;
         const body = req.body;
-        //obtener logros => arrayLogros[]
-        //con el rol en parametros
         const connection = await getConnection();
         const datos = {}
+        //checkImagen de peril
         if (req.files != null) {
             await cloudinary.uploader.upload(req.files.file.tempFilePath, async (error, result) => {
                 if (error) {
@@ -175,22 +178,46 @@ const guardarDatos = async (req, res) => {
                 }
                 datos['urlFotoPerfil'] = result.url;
                 //si no tenia el logro 3 insert usuariologro idusuario 3
+                if(await logrosUtils.logrosCheck(id, 3)){
+                    logroObtenido = true
+                }
             })
         }
-
-        for (const prop in body) {
-            if (body[prop].length > 0 && prop != 'file' && prop != 'facultad' && prop != 'universidad' && prop != 'ciudad' && prop != 'pais') {
-                datos[prop] = body[prop]
-            }
+        //contraseña nueva 
+        if(body['pass'].length > 0){
+            const finalPass = await authUtils.encryptPassword(body['pass'])
+            datos['contrasena'] = finalPass
         }
+        //datos de nombre y email
+        if(body['nombreUsuario'].length>0){
+            datos['nombreUsuario'] = body['nombreUsuario']
+        }
+        if(body['email'].length>0){
+            const email = body['email']
+            const token = body['token']
+            datos['email'] = email
+            try{
+                const subject = "Bienvenido a GoERASMUS"
+                const activationLink = `http://localhost:4000/api/auth/${token}`
+                const message = `Hola viajero,\nEstás a punto de empezar una larga travesía y el punto de partida es GoERASMUS, pero antes de ir al aeropuerto es necesario hacer la maleta o, en nuestro caso, pulsar el enlace a continuación para activar tu cuenta:\n${activationLink}\nEsperamos con ganas las anécdotas de tus viajes.\n\nUn saludo,\nEl equipo de GoERASMUS.`
+                sendEmailToUser(email, subject, message);
+            }catch{
+                res.status(500).send("Error, no se ha podido enviar un correo al nuevo Email")
+            }
+            
+        }
+        //ubicacion
         const objectoFacultad = await connection.query(`select idfacultad from facultad where nombre like '${body['facultad']}'`);
         datos['facultad_idfacultad'] = objectoFacultad[0].idfacultad;
-        console.log("datos", datos)
-        console.log("id:", id)
-        const result = await connection.query("UPDATE usuario SET ? where idUsuario = ?", [datos, id]);
+        //console.log("datos", datos)
+        //console.log("id:", id)
+        await connection.query("UPDATE usuario SET ? where idUsuario = ?", [datos, id]);
         //si no tenia logro 2 insert usuariologro idusuario 2
-        res.json(result);
-
+        if(await logrosUtils.logrosCheck(id, 2)){
+            logroObtenido = true
+            console.log("logroObetnido:", logroObtenido)
+        }
+        res.json(logroObtenido);
     } catch (error) {
         res.status(500).send(error.message);
     }

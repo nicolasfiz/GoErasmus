@@ -5,11 +5,12 @@ import MyImage from "../../assets/mundobyn.png";
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { BiUser, BiUserPlus } from "react-icons/bi";
+import { BiUser, BiUserPlus, BiLogOut } from "react-icons/bi";
 import './navbar.css';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { GiProgression } from "react-icons/gi";
+import tokenService from "../../services/token.service"
 
 function Navegador({ user }) {
   let navigate = useNavigate();
@@ -18,6 +19,12 @@ function Navegador({ user }) {
     //let path = `login`;
     navigate(dest);
   }
+
+  const cerrarSesion = () => {
+    tokenService.removeToken()
+    window.location.replace(process.env.REACT_APP_DIRECCIONES)
+  }
+
   return (
     <Navbar bg="light" expand="lg" sticky="top" >
       <Container >
@@ -83,6 +90,18 @@ function Navegador({ user }) {
           >
             <Button variant="outline-dark" onClick={() => routeChange("progreso")} className="rounded-circle custom-button"><GiProgression /></Button>
           </OverlayTrigger>):(null)}
+
+          {user ? (<OverlayTrigger
+            key={'cerrarSesion'}
+            placement={'bottom'}
+            overlay={
+              <Tooltip id={`tooltip-${'bottom'}`}>
+                Cerrar sesión
+              </Tooltip>
+            }
+          >
+            <Button variant="outline-primary" onClick={() => cerrarSesion()} className="rounded-circle custom-button" style={{marginLeft: '2rem'}}><BiLogOut /></Button>
+          </OverlayTrigger>): (null)}
           
         </Navbar.Collapse>
       </Container>

@@ -2,7 +2,7 @@ import './inicio.css';
 import { FcCollaboration, FcOpenedFolder, FcGlobe, FcBullish } from "react-icons/fc";
 import { Link } from 'react-router-dom';
 
-function Inicio() {
+function Inicio({user}) {
   return (
     <>
       <section>
@@ -52,13 +52,13 @@ function Inicio() {
           </div>
         </div>
       </section>
-      <section className="despedida">
+      {user ? null : <section className="despedida">
         <div className="texto">
           <h2 className="titulos">Saber más</h2>
           <p>Si deseas conocernos mejor y disfrutar de todos nuestros servicios puedes registrarte <Link to="/signUp" className='link-primary'>aquí</Link></p>
           <p> </p>
         </div>
-      </section>
+      </section>}
     </>
   );
 }

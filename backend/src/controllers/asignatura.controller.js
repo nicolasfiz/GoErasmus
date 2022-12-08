@@ -1,7 +1,9 @@
-import { getConnection } from "../database/database";
-var cloudinary = require('cloudinary').v2;
-cloudinary.config(process.env.CLOUDINARY_URL);
+import { getConnection } from "../database/database"
+var cloudinary = require('cloudinary').v2
+cloudinary.config(process.env.CLOUDINARY_URL)
+import {methods as logrosUtils} from "../libs/logros"
 import { setTimeout } from "timers/promises";
+import { exit } from "process";
 
 const getAsignatura = async (req, res) => {
     try {
@@ -73,11 +75,10 @@ const subirArchivo = async (req, res) => {
         const idArchivoQuery = await connection.query(`SELECT idArchivo from archivo order by idArchivo DESC LIMIT 1`)
         const idArchivo = idArchivoQuery[0].idArchivo
         //idVotacion
-        const result = await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta, archivo_idArchivo) values (0, 0, ?);", idArchivo)
+        await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta, archivo_idArchivo) values (0, 0, ?);", idArchivo)
         //obtener logros usuarios
-        //si no tiene el logro 4 => insert idusuario 4
-        //else si lo tiene => //select count archivos idUsuario
-            //si son mas de 3 => insert idusuario 7
+        console.log("hasta aqui bien?")
+        let result = await logrosUtils.logroAportaciones(idUsuario)
         res.json(result);
     } catch (error) {
         res.status(500)
@@ -124,11 +125,9 @@ const subirValoracion = async (req, res) => {
         const puntuacion = puntuacionBase.toFixed(1)
         await connection.query(`UPDATE asignatura SET puntuacion = ? WHERE idAsignatura = ?`, [puntuacion, idAsignatura])
         //idVotacion
-        const result = await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta, comentario_idComentario) values (0, 0, ?);", idComentario)
+        await connection.query("insert into votacion (numeroMeGusta, numeroNoMeGusta, comentario_idComentario) values (0, 0, ?);", idComentario)
         //obtener logros usuarios
-        //si no tiene el logro 4 => insert idusuario 4
-        //else si lo tiene => //select count archivos idUsuario
-            //si son mas de 3 => insert idusuario 7
+        let result = await logrosUtils.logroAportaciones(idUsuario)
         res.json(result);
     } catch (error) {
         res.status(500)
@@ -148,6 +147,25 @@ const getVotacionUsuario = async (req, res) => {
     }
 }
 
+const getAportaciones = async (idUsuario) => {
+    try{
+        const connection = await getConnection();
+        const archivosQuery = await connection.query("select v.idVotacion as votacion from archivo a left join votacion v on a.idarchivo=v.archivo_idarchivo where a.usuario_idUsuario = ?;", idUsuario)
+        const comentariosQuery = await connection.query("select v.idVotacion as votacion from comentario c left join votacion v on c.idComentario=v.comentario_idcomentario where c.usuario_idUsuario = ?;", idUsuario)
+        const archivosSucio = JSON.parse(JSON.stringify(archivosQuery))
+        const comentariosSucio = JSON.parse(JSON.stringify(comentariosQuery))
+        const archivosVId = archivosSucio.map(elem => elem.votacion)
+        const comentariosVId = comentariosSucio.map(elem => elem.votacion)
+        console.log("archivosSucio",archivosSucio)
+        console.log("comentariosSucio", comentariosSucio)
+        console.log("archivoVId", archivosVId)
+        console.log("comentariosvID", comentariosVId)
+        return archivosVId.concat(comentariosVId)
+    }catch{
+        return false
+    }
+}
+
 const mg = async (req, res)=>{
     try{
         const { idVotacion } = req.params;
@@ -157,6 +175,12 @@ const mg = async (req, res)=>{
         if(idVotacion === undefined || idUsuario === undefined ){
             res.status(400).json({ message:"Bad Request. Please fill all fields" });
         }
+        //comprobar que no es su propia aportacion
+        const aportaciones = await getAportaciones(idUsuario)
+        if(aportaciones.includes(Number(idVotacion))){
+            res.json(false)
+            return
+        }
         //insert votacion_usuario
         const votacionUsuario = {votacion_idVotacion: idVotacion, usuario_idUsuario: idUsuario}
         await connection.query(`INSERT INTO votacion_usuario SET ?`, votacionUsuario)
@@ -164,17 +188,12 @@ const mg = async (req, res)=>{
         const mgQuery = await connection.query(`select numeroMeGusta from votacion where idVotacion = ?;`, idVotacion)
         let mg = mgQuery[0].numeroMeGusta
         mg+=1
-        console.log(mg)
         //update mg
         const mgFinal = {numeroMeGusta: mg}    
-        const query = await connection.query("UPDATE votacion SET ? where idVotacion = ?", [mgFinal, idVotacion]);
-        //obtener logros usuario
-        //contiene 5 ? insertar 
-            //contiene 8 ?
-                //get mg
-                //mas de 3?
-                    //insertar
-        res.json(query);
+        await connection.query("UPDATE votacion SET ? where idVotacion = ?", [mgFinal, idVotacion]);
+        //logro
+        logrosUtils.logroVotos(idUsuario)
+        res.json(true);
     }catch(error){
         res.status(500).send(error.message);
     }
@@ -188,6 +207,12 @@ const nmg = async (req, res)=>{
         if(idVotacion === undefined || idUsuario === undefined ){
             res.status(400).json({ message:"Bad Request. Please fill all fields" });
         }
+        //comprobar que no es su propia aportacion
+        const aportaciones = await getAportaciones(idUsuario)
+        if(aportaciones.includes(Number(idVotacion))){
+            res.json(false)
+            return
+        }
         //insert votacion_usuario
         const votacionUsuario = {votacion_idVotacion: idVotacion, usuario_idUsuario: idUsuario}
         await connection.query(`INSERT INTO votacion_usuario SET ?`, votacionUsuario)
@@ -198,8 +223,8 @@ const nmg = async (req, res)=>{
         console.log(nmg)
         //update mg
         const nmgFinal = {numeroNoMeGusta: nmg}    
-        const query = await connection.query("UPDATE votacion SET ? where idVotacion = ?", [nmgFinal, idVotacion]);
-        res.json(query);
+        await connection.query("UPDATE votacion SET ? where idVotacion = ?", [nmgFinal, idVotacion]);
+        res.json(true);
     }catch(error){
         res.status(500).send(error.message);
     }

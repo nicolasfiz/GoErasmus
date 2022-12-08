@@ -28,10 +28,14 @@ function App() {
 
   useEffect(() => {
     tokenService.getToken().then(data => {
-      if (data)
+      if (data){
         authService.getAccount(data).then(elem => {
           setUser(elem)
         })
+        .catch(error => {
+          tokenService.removeToken()
+        })
+      } 
     })
   }, [])
 
@@ -41,7 +45,7 @@ function App() {
       <main id="body">
           {user ? (
             <Routes>
-              <Route path="" element={<Inicio />} />
+              <Route path="" element={<Inicio user={user}/>} />
               <Route path="paises" element={<Paises />} />
               <Route path=":nombrePais/" element={<Ciudades />} />
               <Route path=":nombrePais/:nombreCiudad" element={<Ciudad />} />

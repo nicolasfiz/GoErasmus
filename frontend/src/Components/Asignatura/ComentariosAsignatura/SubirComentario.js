@@ -22,9 +22,9 @@ const SubirComentario = (props) => {
       ...valoracion,
       [name]: value,
     })
-    if ((name==="nota" && value.length > 0 && isNumber(value))) {
+    if (((name==="nota" && value.length > 0 && isNumber(value)) || (name==="comentario" && value.length <= 180))) {
       setValido(true);
-    } else if((name==="nota" && (value.length === 0 || !isNumber(value)))) {
+    } else if((name==="nota" && (value.length === 0 || !isNumber(value))) || (name==="comentario" && value.length > 180)) {
       setValido(false);
     }
     //maxima longitud
@@ -47,9 +47,15 @@ const SubirComentario = (props) => {
       .subirValoracion(bodyFormData)
       .then(response => {
         toast.success("Valoración enviada")
+        if(response){
+          toast('!Has obtenido un nuevo logro!', {
+              icon: '👏',
+          });
+        }
         props.onHide()
       })
       .catch(error => {
+        console.log(error)
         toast.error("No se ha podido enviar la valoración")
       })
   }
@@ -92,6 +98,7 @@ const SubirComentario = (props) => {
                 style={{ height: "100px" }}
                 onChange={handleChanges}
               />
+              {valoracion.comentario.length > 180 ? <small style={{color: 'red'}}>El comentario no puede tener mas de 180 caracteres</small> : null }
             </FloatingLabel>
           </div>
         </Modal.Body>
