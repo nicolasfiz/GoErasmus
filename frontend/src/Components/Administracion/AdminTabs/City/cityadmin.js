@@ -1,56 +1,56 @@
-import { useEffect, useState } from "react";
-import { Button, InputGroup, Table } from "react-bootstrap";
-import toast, { Toaster } from 'react-hot-toast';
-import cityServices from "../../../services/city.service";
-import "./adminTables.css";
+import { useEffect, useState } from "react"
+import { Button, InputGroup, Table } from "react-bootstrap"
+import toast, { Toaster } from 'react-hot-toast'
+import cityServices from "../../../../services/city.service"
+import "../adminTables.css"
 
 function CityAdmin() {
 
   // Almacenar tabla forma estatica
-  const [cityTable, setCityTable] = useState([]);
+  const [cityTable, setCityTable] = useState([])
 
   // Almacenar datos que arroje la busqueda de forma dinamica
-  const [cities, setCities] = useState([]);
+  const [cities, setCities] = useState([])
 
   // Controlar lo que se escribe en la barra de busqueda
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("")
 
-  let index = 0;
+  let index = 0
 
   const handleChange = e => {
-    setSearch(e.target.value);
-    filterSearch(e.target.value);
+    setSearch(e.target.value)
+    filterSearch(e.target.value)
   }
 
   const filterSearch = (searchTerm) => {
     let searchResult = cityTable.filter(elem =>
       elem.nombreCiudad.toLowerCase().includes(searchTerm.toLowerCase())
-      || elem.informacion.toLowerCase().includes(searchTerm.toLowerCase()));
-    setCities(searchResult);
+      || elem.informacion.toLowerCase().includes(searchTerm.toLowerCase()))
+    setCities(searchResult)
   }
 
   const createNewCity = () => {
-    console.log("nuevo");
+    console.log("nuevo")
   }
 
   const updateCity = (idCiudad) => {
-    console.log(idCiudad);
+    console.log(idCiudad)
   }
 
   const removeCity = (id) => {
     cityServices.deleteCity(id).then(() => {
-      const ciudad = cities.filter(c => id !== c.idCiudad);
-      setCities(ciudad);
-      toast.success("Ciudad eliminada");
+      const ciudad = cities.filter(c => id !== c.idCiudad)
+      setCities(ciudad)
+      toast.success("Ciudad eliminada")
     })
   }
 
   useEffect(() => {
     cityServices.getAllCities().then(c => {
-      setCities(c);
-      setCityTable(c);
-    });
-  }, []);
+      setCities(c)
+      setCityTable(c)
+    })
+  }, [])
 
   return ( cities.length !== 0 ?
     (<section className="contentTable" onLoad={() => {setSearch("")}}>
@@ -66,7 +66,7 @@ function CityAdmin() {
             Añadir
         </Button>
       </div>
-      <Table striped hover style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
+      <Table striped hover bordered style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
         <thead>
           <tr className="centerTableText">
             <th>#</th>
@@ -86,16 +86,16 @@ function CityAdmin() {
               <td>{informacion.substring(0, 75) + '...'}</td>
               <td>{nombrePais}</td>
               <td>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", gap: "20px", justifyContent: "center"}}>
                   <Button 
                     variant="outline-secondary"
-                    style={{cursor:"pointer", margin:"auto"}}
+                    style={{cursor:"pointer"}}
                     onClick={() => updateCity(idCiudad) }>
                       Editar
                   </Button>
                   <Button 
                     variant="outline-danger"
-                    style={{cursor:"pointer", margin:"auto"}}
+                    style={{cursor:"pointer"}}
                     onClick={() => removeCity(idCiudad) }>
                       Eliminar
                   </Button>
@@ -128,7 +128,7 @@ function CityAdmin() {
         <p style={{margin:"0"}}>Recuerde que puede buscar por cualquier campo de los mostrados en la cabecera de la tabla, a excepción de numeros de fila, enlaces y fechas.</p>
       </section>
     </>)
-  );
+  )
 }
 
-export default CityAdmin;
+export default CityAdmin

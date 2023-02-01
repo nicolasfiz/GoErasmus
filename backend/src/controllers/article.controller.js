@@ -26,7 +26,8 @@ const getArticles = async (req, res) => {
         if (name === undefined) // nombreCiudad ? articulos de una ciudad : articulo panel admin
             query = await connection.query(`SELECT a.idArticulo, a.titulo, a.descripcion, a.urlCabecera, a.esBorrador,
                                             DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion,
-                                            c.nombre as nombreCiudad, IFNULL(u.nombreUsuario, "Anónimo") as nombreUsuario FROM Articulo a
+                                            c.nombre as nombreCiudad, IFNULL(u.nombreUsuario, "Anónimo") as nombreUsuario
+                                            FROM Articulo a
                                             LEFT JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad
                                             LEFT JOIN usuario u ON a.usuario_idUsuario = u.idUsuario
                                             ORDER BY fechaPublicacion ASC, esBorrador ASC`);
@@ -71,6 +72,29 @@ const getArticleById = async (req, res) => {
                                                 WHERE idArticulo = ?`, id);
         res.json(query);
     } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+const publishComment = async (req, res) => {
+    try {
+        const {descripcion, usuario_idUsuario, articulo_idArticulo} = req.body;
+        const comment = { descripcion, usuario_idUsuario };
+
+        const connection = await getConnection();
+
+        await connection.query("INSERT INTO comentario SET ?", comment);
+
+        const idComentario = await connection.query("SELECT idComentario FROM comentario ORDER BY idComentario DESC LIMIT 1");
+        const comentario_idComentario =  idComentario[0].idComentario;
+        const articleComment = {comentario_idComentario, articulo_idArticulo}
+        await connection.query("INSERT INTO comentarioarticulo SET ?", articleComment);
+        
+        const votation = {comentario_idComentario};
+        await connection.query("INSERT INTO votacion SET ?", votation);
+
+        res.json({message: "Comment added successfully"});
+    } catch(error) {
         res.status(500).send(error.message);
     }
 }
@@ -127,6 +151,7 @@ export const methods = {
     getArticles,
     getCityArticlesLength,
     getArticleById,
+    publishComment,
     publishArticle,
     deleteArticle,
     voteArticle,

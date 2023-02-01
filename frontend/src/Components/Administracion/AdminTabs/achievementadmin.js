@@ -67,7 +67,7 @@ function AchievementAdmin() {
             Añadir
         </Button>
       </div>
-      <Table striped hover style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
+      <Table striped hover bordered style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
         <thead>
           <tr className="centerTableText">
             <th>#</th>
@@ -87,16 +87,16 @@ function AchievementAdmin() {
               <td><a target="_blank" style={{textDecoration: "none"}} href={urlImagenLogro} rel="noreferrer">Consultar</a></td>
               <td>{nombreRol}</td>
               <td>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", gap: "20px", justifyContent: "center"}}>
                   <Button 
                     variant="outline-secondary"
-                    style={{cursor:"pointer", margin:"auto"}}
+                    style={{cursor:"pointer"}}
                     onClick={() => updateAchievement(idLogro) }>
                       Editar
                   </Button>
                   <Button 
                     variant="outline-danger"
-                    style={{cursor:"pointer", margin:"auto"}}
+                    style={{cursor:"pointer"}}
                     onClick={() => removeAchievement(idLogro) }>
                       Eliminar
                   </Button>

@@ -1,9 +1,9 @@
-import './login.css';
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import authServices from '../../services/auth.service';
 import logotypeImage from "../../assets/mundobyn.png";
+import './login.css';
 
 const RecoverPassword = () => {
 
@@ -21,24 +21,24 @@ const RecoverPassword = () => {
 
     let formData = new FormData();
     formData.append("email", email);
-    if (send === false)
-    {
-      if(email !== '')
-      {
-        send = true;
-        authServices.recoverPassword(formData).then(() => {
-          toast.success("Email enviado");
-        }).catch(e => {
-          console.log(e);
-          send = false;
-          toast.error("Email no encontrado en la base de datos");
-        });
-      }
-      else
-        toast.error('Introduzca email');
-    }
-    else
+    if (send)
       toast.error("Revisa tu correo");
+    else if (!send && email === '')
+      toast.error("Introduzca email");
+    else
+    {
+      send = true;
+      authServices.recoverPassword(formData).then(t => {
+        if (t.message)
+        {
+         send = false;
+         toast.error(t.message);
+        }
+        toast.success("Email enviado");
+      }).catch(e => {
+        console.log(e);
+      });
+    }
   }
 
   return (

@@ -57,7 +57,7 @@ function UserAdmin() {
       <InputGroup className="mb-3">
         <input className="form-control" value={search} type="text" placeholder="Buscar usuario..." onChange={handleChange} />
       </InputGroup>
-      <Table striped hover style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
+      <Table striped hover bordered style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
         <thead>
           <tr className="centerTableText">
             <th>#</th>

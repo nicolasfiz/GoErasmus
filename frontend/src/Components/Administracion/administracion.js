@@ -5,11 +5,11 @@ import authServices from "../../services/auth.service";
 import UserAdmin from "./AdminTabs/useradmin";
 import RoleAdmin from "./AdminTabs/roleadmin";
 import AchievementAdmin from "./AdminTabs/achievementadmin";
-import CountryAdmin from "./AdminTabs/countryadmin";
-import CityAdmin from "./AdminTabs/cityadmin";
-import UniversityAdmin from "./AdminTabs/universityadmin";
-import FacultyAdmin from "./AdminTabs/facultyadmin";
-import SubjectAdmin from "./AdminTabs/subjectadmin";
+import CountryAdmin from "./AdminTabs/Country/countryadmin";
+import CityAdmin from "./AdminTabs/City/cityadmin";
+import UniversityAdmin from "./AdminTabs/University/universityadmin";
+import FacultyAdmin from "./AdminTabs/Faculty/facultyadmin";
+import SubjectAdmin from "./AdminTabs/Subject/subjectadmin";
 import FileAdmin from "./AdminTabs/fileadmin";
 import CommentAdmin from "./AdminTabs/commentadmin";
 import ArticleAdmin from "./AdminTabs/articleadmin";
@@ -30,10 +30,13 @@ function Administracion() {
   (<section>
     <Tabs
       defaultActiveKey="usuarios"
-      id="admin-panel"
+      id="admin-panel-admins"
       className="mb-3"
       fill
     >
+      <Tab eventKey="articulos" title="Articulos">
+        <ArticleAdmin />
+      </Tab>
       <Tab eventKey="usuarios" title="Usuarios">
         <UserAdmin />
       </Tab>
@@ -42,9 +45,6 @@ function Administracion() {
       </Tab>
       <Tab eventKey="logros" title="Logros">
        <AchievementAdmin />
-      </Tab>
-      <Tab eventKey="articulos" title="Articulos">
-        <ArticleAdmin />
       </Tab>
       <Tab eventKey="paises" title="Paises">
         <CountryAdmin />
@@ -72,7 +72,7 @@ function Administracion() {
   (<section>
     <Tabs
       defaultActiveKey="articulos"
-      id="admin-panel"
+      id="admin-panel-globetrotters"
       className="mb-3"
       fill
     >
@@ -96,9 +96,6 @@ function Administracion() {
       </Tab>
       <Tab eventKey="archivos" title="Archivos">
         <FileAdmin />
-      </Tab>
-      <Tab eventKey="comentarios" title="Comentarios">
-        <CommentAdmin />
       </Tab>
     </Tabs>
   </section>));

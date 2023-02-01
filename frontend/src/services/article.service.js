@@ -22,8 +22,13 @@ const getCityArticlesLength = async (name) => {
     return request.then(response => response.data);
 }
 
+const publishComment = (formData) => {
+    const request = axios.post(`${baseUrl}/comment`, formData)
+    return request.then(response => response.data);
+} 
+
 const deleteArticle = async (id) => {
-    const request = axios.get(`${baseUrl}/${id}`)
+    const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(response => response.data);
 }
 
@@ -32,6 +37,7 @@ const methods = {
     getArticleById,
     getArticlesByCityName,
     getCityArticlesLength,
+    publishComment,
     deleteArticle
 }
 

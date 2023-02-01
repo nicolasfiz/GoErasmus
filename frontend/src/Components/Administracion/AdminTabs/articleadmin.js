@@ -42,7 +42,7 @@ function ArticleAdmin() {
 
   const removeArticle = (id) => {
     articleServices.deleteArticle(id).then(() => {
-      const articulo = articles.filter(c => id !== c.idArticulo);
+      const articulo = articles.filter(art => id !== art.idArticulo);
       setArticles(articulo);
       toast.success("Artículo eliminado");
     })
@@ -64,14 +64,15 @@ function ArticleAdmin() {
       <InputGroup className="mb-3">
         <input className="form-control" value={search} type="text" placeholder="Buscar artículo..." onChange={handleChange} />
       </InputGroup>
-        <Table striped hover style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
+        <Table striped hover bordered style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
           <thead>
             <tr className="centerTableText">
               <th>#</th>
               <th>Título</th>
               <th>Descripción</th>
               <th>Cabecera</th>
-              <th>Publicación</th>
+              <th>Publicado</th>
+              <th>Likes</th>
               <th>Ciudad</th>
               <th>Usuario</th>
               <th>Operaciones</th>
@@ -84,19 +85,20 @@ function ArticleAdmin() {
               <td>{titulo}</td>
               <td>{descripcion.substring(0, 75) + '...'}</td>
               <td><a target="_blank" style={{textDecoration: "none"}} href={urlCabecera} rel="noreferrer">Consultar</a></td>
+              <td>0</td>
               <td>{fechaPublicacion}</td>
               <td>{nombreCiudad}</td>
               <td>{nombreUsuario ? `${nombreUsuario}` : '-'}</td>
               <td>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", gap: "20px", justifyContent: "center"}}>
                   <Button 
                     variant="outline-success"
-                    style={{cursor:"pointer", margin:"auto 1em auto"}}>
+                    style={{cursor:"pointer"}}>
                       Aceptar
                   </Button>
                   <Button 
                     variant="outline-danger"
-                    style={{cursor:"pointer", margin:"auto"}}
+                    style={{cursor:"pointer"}}
                     onClick={() => removeArticle(idArticulo) }>
                       Rechazar
                   </Button>
@@ -109,8 +111,8 @@ function ArticleAdmin() {
               <td>{titulo}</td>
               <td>{descripcion.substring(0, 75) + '...'}</td>
               <td><a target="_blank" style={{textDecoration: "none"}} href={urlCabecera} rel="noreferrer">Consultar</a></td>
-              <td>{esBorrador}</td>
               <td>{fechaPublicacion}</td>
+              <td>-</td>
               <td>{nombreCiudad}</td>
               <td>{nombreUsuario ? `${nombreUsuario}` : '-'}</td>
               <td> {esBorrador === 'Si' ? (

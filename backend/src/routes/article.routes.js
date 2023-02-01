@@ -10,6 +10,7 @@ router.get('/:name/length', articleCtrl.getCityArticlesLength);
 router.get('/:id', articleCtrl.getArticleById);
 router.put('/:id', articleCtrl.publishArticle);
 router.delete('/:id', articleCtrl.deleteArticle);
+router.post('/comment', articleCtrl.publishComment);
 router.post('/:usuario_idUsuario/:articulo_idArticulo', articleCtrl.voteArticle);
 router.delete('/:usuario_idUsuario/:articulo_idArticulo', articleCtrl.deleteArticleVote);
 

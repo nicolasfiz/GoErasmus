@@ -1,10 +1,8 @@
-import { Link } from "react-router-dom";
-import { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import toast, {Toaster} from 'react-hot-toast';
 import authServices from '../../services/auth.service';
 import tokenServices from "../../services/token.service";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from 'react';
-import tokenService from '../../services/token.service'
 import logotypeImage from '../../assets/mundobyn.png';
 import './login.css';
 
@@ -15,7 +13,7 @@ const Login = () => {
   let nav = useNavigate();
 
   useEffect(() => {
-    tokenService.getToken().then(data => {
+    tokenServices.getToken().then(data => {
         if(data && data.length > 0)
           nav("../", {replace: true})
     })
@@ -37,8 +35,13 @@ const Login = () => {
     formData.append("password", password);
     
     authServices.signIn(formData).then(t => {
-      tokenServices.setToken(t.token);
-      window.location.reload(true);
+      if (t.message)
+        toast.error(t.message);
+      else
+      {
+        tokenServices.setToken(t.token);
+        window.location.reload(true);
+      }
     }).catch(e => {
       console.log(e);
     });
@@ -46,6 +49,7 @@ const Login = () => {
 
   return (
     <>
+      <Toaster/>
       <div className="Auth-form-container">
         <form className="Auth-form">
           <div className="Auth-form-content">

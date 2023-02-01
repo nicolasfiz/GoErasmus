@@ -1,11 +1,8 @@
-import { Link } from "react-router-dom";
-import { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
 import authServices from '../../services/auth.service';
 import tokenServices from "../../services/token.service";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from 'react';
 import toast, {Toaster} from 'react-hot-toast';
-import tokenService from '../../services/token.service'
 import logotypeImage from '../../assets/mundobyn.png';
 import './login.css';
 
@@ -21,7 +18,7 @@ const Register = () => {
   let nav = useNavigate();
 
   useEffect(() => {
-    tokenService.getToken().then(data => {
+    tokenServices.getToken().then(data => {
         if(data && data.length > 0)
           nav("../", {replace: true})
     })
@@ -63,11 +60,16 @@ const Register = () => {
     formData.append("nombreUsuario", username);
     
     authServices.signUp(formData).then(t => {
-      toast.success("Registro realizado")
-      setTimeout(() => {
-        tokenServices.setToken(t.token);
-        window.location.reload(true);
-      }, 5000);
+      if (t.message)
+        toast.error(t.message);
+      else
+      {
+        toast.success("Registro realizado");
+        setTimeout(() => {
+          tokenServices.setToken(t.token);
+          window.location.reload(true);
+        }, 5000);
+      }
     }).catch(e => {
       console.log(e);
     });

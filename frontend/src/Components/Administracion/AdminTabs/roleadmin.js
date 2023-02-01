@@ -54,7 +54,7 @@ function RoleAdmin() {
             Añadir
         </Button>
       </div>
-      <Table striped hover style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
+      <Table striped hover bordered style={{marginTop: "50px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"}}>
         <thead>
           <tr className="centerTableText">
             <th>#</th>
@@ -65,9 +65,9 @@ function RoleAdmin() {
         <tbody>
           {roles && roles.map(({idRol, nombreRol}, id) => 
             <tr key={id} className="centerTableText">
-              <td>{++index}</td>
+              <td width="5%">{++index}</td>
               <td>{nombreRol}</td>
-              <td>
+              <td width="20%">
                 <Button 
                   variant="outline-secondary"
                   style={{cursor:"pointer", display: "block", margin: "auto"}}

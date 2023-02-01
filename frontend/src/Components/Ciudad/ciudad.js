@@ -52,20 +52,30 @@ const Informacion = () => {
 
   return (
     <>
-      <article className="cityInformation">
-        <h1
-          style={{
-            marginTop:"1.5em",
-            marginBottom:"1em",
-            textAlign:"center",
-            fontWeight:"bold",
-            fontFamily:"Times New Roman"}}>
-              ¡Te damos la bienvenida a {params.nombreCiudad}!
-        </h1>
-        <ImageGallery items={setImages(ciudad, gallery)} showPlayButton={false} showBullets={true} autoPlay={true} />
-        <div style={{marginTop:"3em"}}></div>
-        {ciudad.map(({informacion}, id) => <Paragraph key={id} text={informacion} />)}
-      </article>
+      <div
+        style={{
+            margin: "5rem 20rem 5rem 20rem",
+            boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
+            borderRadius: "8px",
+            backgroundColor: "white",
+            padding: "2rem"
+        }}
+      >
+        <article className="cityInformation">
+          <h1
+            style={{
+              marginTop:"1em",
+              marginBottom:"1.5em",
+              textAlign:"center",
+              fontWeight:"bold",
+              fontFamily:"Times New Roman"}}>
+                ¡Te damos la bienvenida a {params.nombreCiudad}!
+          </h1>
+          <ImageGallery items={setImages(ciudad, gallery)} showPlayButton={false} showBullets={true} autoPlay={true} />
+          <div style={{marginTop:"3em"}}></div>
+          {ciudad.map(({informacion}, id) => <Paragraph key={id} text={informacion} />)}
+        </article>
+      </div>
     </>);
 }
 
