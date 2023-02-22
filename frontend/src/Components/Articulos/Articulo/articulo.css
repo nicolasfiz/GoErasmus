@@ -1,7 +1,7 @@
 .articleInformation 
 {
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 15%;
+    margin-right: 15%;
 }
 
 .articleSection
@@ -17,7 +17,7 @@
 
 .profile {
     border-radius: 50%;
-    border: 1px solid black;
+    border: 2px solid black;
 }
 
 .headerInformation

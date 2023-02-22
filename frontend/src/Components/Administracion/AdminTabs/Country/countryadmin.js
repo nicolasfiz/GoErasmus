@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast, { Toaster } from 'react-hot-toast'
+// import toast from 'react-hot-toast'
 import CrearNuevoPaisModal from "./crearNuevoPaisModal"
 import EditarPaisModal from "./editarPaisModal"
 import countryServices from "../../../../services/country.service"
@@ -50,7 +50,7 @@ function CountryAdmin() {
 
   const removeCountry = (id) => {
     countryServices.deleteCountry(id).then(() => {
-      toast.success("Pais eliminado")
+      // toast.success("Pais eliminado")
       const pais = countries.filter(p => id !== p.idPais)
       setCountries(pais)
     })
@@ -65,7 +65,6 @@ function CountryAdmin() {
 
   return (
   <>
-    <Toaster/>
     <CrearNuevoPaisModal
       show    = {createCountryForm}
       onHide  = {() => setCreateCountryForm(false)}
@@ -133,7 +132,7 @@ function CountryAdmin() {
                     </Button>
                     <Button 
                       variant = "outline-danger"
-                      onClick = {() => removeCountry(idPais) }>
+                      onClick = {() => {removeCountry(idPais)} }>
                         Eliminar
                     </Button>
                   </div>

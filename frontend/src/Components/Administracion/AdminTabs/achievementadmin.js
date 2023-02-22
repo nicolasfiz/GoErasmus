@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, InputGroup, Table } from "react-bootstrap";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import achievementServices from "../../../services/achievement.service";
 import "./adminTables.css";
 
@@ -55,7 +55,6 @@ function AchievementAdmin() {
 
   return ( achievements.length !== 0 ?
     (<section className="contentTable" onLoad={() => {setSearch("")}}>
-      <Toaster/>
       <div style={{display: "flex", margin: "0", padding:"0", marginBottom:"1em", marginTop:"1em"}}>
         <InputGroup>
           <input className="form-control" value={search} type="text" placeholder="Buscar logro..." onChange={handleChange} />
@@ -109,7 +108,6 @@ function AchievementAdmin() {
     </section>) :
     (<>
       <section className="contentTable">
-        <Toaster/>
         <div style={{display: "flex", margin: "0", padding:"0", marginBottom:"1em", marginTop:"1em"}}>
           <InputGroup>
             <input style={{width: "60%"}} className="form-control" value={search} type="text" placeholder="Buscar logro..." onChange={handleChange} />

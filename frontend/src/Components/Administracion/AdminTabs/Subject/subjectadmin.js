@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import subjectServices from "../../../../services/subject.service"
 import CrearNuevaAsignaturaModal from "./crearNuevaAsignaturaModal"
 import EditarAsignaturaModal from "./editarAsignaturaModal"
@@ -27,8 +27,6 @@ function SubjectAdmin() {
     id: 0,
     nombre: ""
   })
-
-
 
   let index = 0
 
@@ -68,7 +66,6 @@ function SubjectAdmin() {
 
   return (
     <>
-      <Toaster/>
       <CrearNuevaAsignaturaModal
         show    = {createSubjectForm}
         onHide  = {() => setCreateSubjectForm(false)}

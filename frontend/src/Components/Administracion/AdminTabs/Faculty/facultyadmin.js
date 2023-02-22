@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import facultyServices from "../../../../services/faculty.service"
 import CrearNuevaFacultadModal from "./crearNuevaFacultadModal"
 import EditarFacultadModal from "./editarFacultadModal"
@@ -66,7 +66,6 @@ function FacultyAdmin() {
 
   return (
   <>
-    <Toaster/>
     <CrearNuevaFacultadModal
       show    = {createFacultyForm}
       onHide  = {() => setCreateFacultyForm(false)}
