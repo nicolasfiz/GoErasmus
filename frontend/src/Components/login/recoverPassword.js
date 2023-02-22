@@ -31,8 +31,8 @@ const RecoverPassword = () => {
       authServices.recoverPassword(formData).then(t => {
         if (t.message)
         {
-         send = false;
-         toast.error(t.message);
+          send = false;
+          toast.error(t.message);
         }
         toast.success("Email enviado");
       }).catch(e => {

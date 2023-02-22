@@ -42,6 +42,17 @@ const deleteArticle = async (id) => {
     return request.then(response => response.data)
 }
 
+const voteArticle = async (idUsuario, idArticulo) => {
+    console.log(idUsuario, idArticulo)
+    const request = axios.post(`${baseUrl}/${idUsuario}/${idArticulo}`)
+    return request.then(response => response.data)
+}
+
+const deleteVoteArticle = async (idUsuario, idArticulo) => {
+    const request = axios.delete(`${baseUrl}/${idUsuario}/${idArticulo}`)
+    return request.then(response => response.data)
+}
+
 const methods = {
     getArticles,
     getArticleById,
@@ -50,7 +61,9 @@ const methods = {
     getArticleLikesById,
     publishArticle,
     publishComment,
-    deleteArticle
+    deleteArticle,
+    voteArticle,
+    deleteVoteArticle
 }
 
 export default methods

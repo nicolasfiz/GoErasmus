@@ -8,11 +8,11 @@ router.post('/', articleCtrl.addDraftArticle)
 router.get('/', articleCtrl.getArticles)
 router.get('/:name/length', articleCtrl.getCityArticlesLength)
 router.get('/:id', articleCtrl.getArticleById)
-router.get('/likes/:id', articleCtrl.getLikesArticleById)
 router.put('/:id', articleCtrl.publishArticle)
 router.delete('/:id', articleCtrl.deleteArticle)
 router.post('/comment', articleCtrl.publishComment)
 router.post('/:usuario_idUsuario/:articulo_idArticulo', articleCtrl.voteArticle)
+router.get('/likes/:id', articleCtrl.getLikesArticleById)
 router.delete('/:usuario_idUsuario/:articulo_idArticulo', articleCtrl.deleteArticleVote)
 
 export default router

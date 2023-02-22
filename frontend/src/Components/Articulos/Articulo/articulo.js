@@ -12,6 +12,7 @@ import SubirComentarioArticulo from "./subirComentarioArticulo"
 import { BsHandThumbsUp, BsFillHandThumbsUpFill } from "react-icons/bs"
 import ComentariosArticulo from "./comentariosArticulo"
 import "./articulo.css"
+import { toast, Toaster } from "react-hot-toast"
 
 const ArticleHead = ({titulo, autor, imagenPerfil, fecha, esBorrador}) => {
   return (
@@ -48,12 +49,14 @@ const Paragraph = ({desc}) => {
 }
 
 function Articulo() {
+
   const params = useParams()
   const [articulo, setArticulo] = useState([])
   const [votados, setVotados] = useState([])
   const [gallery, setGallery] = useState([])
   const [subirComentarioModal, setsubirComentarioModal] = useState(false)
   const [tokenUserId, setTokenUserId] = useState([])
+  const [votos, setVotos] = useState(0)
   const [isLiked, setIsLiked] = useState(false)
 
   const COMENTARIOS_POR_PAGINA = 6
@@ -70,6 +73,9 @@ function Articulo() {
     articleGalleryServices.getArticleImagesByArticleId(params.id).then(gallery => {
       setGallery(gallery)
     })
+    articleServices.getArticleLikesById(params.id).then( ([{mg}]) => {
+      setVotos(mg)
+    })
   }, [params.id])
 
   const setImages = (articulo, gallery) => {
@@ -79,8 +85,23 @@ function Articulo() {
     return images
   }
 
+  const voteArticle = (idUsuario) => {
+    articleServices.voteArticle(idUsuario, parseInt(params.id)).then( () => {
+      setIsLiked(true)
+      setVotos(votos + 1)
+    })
+  }
+
+  const deleteVoteArticle = (idUsuario) => {
+    articleServices.deleteVoteArticle(idUsuario, parseInt(params.id)).then(() => {
+      setIsLiked(false)
+      setVotos(votos - 1)
+    })
+  }
+
   return (
     <>
+      <Toaster />
       <SubirComentarioArticulo
         show={subirComentarioModal}
         onHide={() => setsubirComentarioModal(false)}
@@ -132,19 +153,22 @@ function Articulo() {
               <Button
                 variant="danger"
                 style={{position: "inline-block", float:"right"}}
-                onClick={() => 
-                  //articleServices.voteArticle().then(() => {setNumVotos++})
-                  setIsLiked(false)
-                }
+                onClick = {deleteVoteArticle(tokenUserId)}
               >
-                Útil <BsFillHandThumbsUpFill/>
+                {votos} <BsFillHandThumbsUpFill/>
               </Button> :
               <Button
                 variant="success"
                 style={{position: "inline-block", float:"right"}}
-                onClick={() => setIsLiked(true)}
+                onClick={() => {
+                    if (tokenUserId !== articulo[0].idAutor)
+                      voteArticle(tokenUserId)
+                    else
+                      toast.error("¡No puedes votarte a tí mismo!")
+                  } 
+                }
               >
-                Útil <BsHandThumbsUp/>
+                {votos} <BsHandThumbsUp/>
               </Button>}
           </div>
         </article>

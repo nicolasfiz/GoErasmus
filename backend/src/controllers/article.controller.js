@@ -65,11 +65,12 @@ const getArticleById = async (req, res) => {
         const {id} = req.params
         const query = await connection.query(`SELECT a.titulo, a.descripcion, a.urlCabecera, a.esBorrador,
                                                 DATE_FORMAT(a.fechaPublicacion, "%d/%m/%Y") as fechaPublicacion,
-                                                c.nombre as nombreCiudad, u.nombreUsuario as autor, u.urlFotoPerfil
+                                                c.nombre as nombreCiudad, u.idUsuario as idAutor,
+                                                u.nombreUsuario as autor, u.urlFotoPerfil
                                                 FROM articulo a
                                                 LEFT JOIN usuario u ON u.idUsuario = a.usuario_idUsuario
                                                 JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad 
-                                                WHERE idArticulo = ?`, id)
+                                                WHERE idArticulo = ?`, [id, id])
         res.json(query)
     } catch (error) {
         res.status(500).send(error.message)
@@ -81,7 +82,6 @@ const getLikesArticleById = async (req, res) => {
         const {id} = req.params
         const connection = await getConnection()
         const query = await connection.query(`SELECT COUNT(*) as mg FROM votacionarticulo WHERE articulo_idArticulo=?`, id)
-        console.log("awawawawawawa", query)
         res.json(query)
     } catch (error) {
         res.status(500).send(error.message)
@@ -138,6 +138,7 @@ const deleteArticle = async (req, res) => {
 const voteArticle = async (req, res) => {
     try {
         const {usuario_idUsuario, articulo_idArticulo} = req.params
+        console.log(usuario_idUsuario, articulo_idArticulo)
         const articleVote = {usuario_idUsuario, articulo_idArticulo}
         const connection = await getConnection()                                      
         const query = await connection.query("INSERT INTO votacionarticulo SET ?", articleVote)
