@@ -82,6 +82,10 @@ const RecoverPassword = () => {
             </div>
           </form>
         </div>
+        <p className="copyright-img cpy-recover-pos">
+          Image by&nbsp;
+          <a href="https://www.freepik.com/free-vector/hand-drawn-colorful-travel-background_16137796.htm#query=travel%20tourism%20background&position=1&from_view=keyword&track=ais">Freepik</a>
+        </p>
       </div>
     </>
   )
