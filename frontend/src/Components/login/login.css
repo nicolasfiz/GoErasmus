@@ -1,10 +1,16 @@
+.Auth-bg {
+  background-image: url(../../../public/auth-bg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
 .Auth-form-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 4rem;
 }
-  
+
 .Auth-form {
   width: 420px;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
@@ -13,21 +19,22 @@
   border-radius: 8px;
   background-color: white;
 }
-  
+
 .Auth-form-content {
   padding-left: 12%;
   padding-right: 12%;
 }
-  
+
 .Auth-form-title {
   text-align: center;
   margin-bottom: 1em;
   font-size: 36px;
   color: rgb(34, 34, 34);
   font-weight: 800;
+  cursor: pointer;
 }
-  
-label {
+
+.Auth-form label {
   font-size: 14px;
   font-weight: 600;
   color: rgb(34, 34, 34);
@@ -35,4 +42,75 @@ label {
 
 .inputs {
   display: flex;
+  justify-content: space-between;
+}
+
+div.inputs:first-of-type {
+  margin-top: -20px !important;
+}
+
+.Auth-form input {
+  font-size: 14px;
+}
+
+.form-group{
+  flex-grow: 1;
+  margin-top: 1rem;
+}
+
+.inputs .form-group .dup[type="text"] {
+  width: 150px;
+}
+
+.inputs .form-group .dup[type="password"] {
+  width: 150px;
+}
+
+.ml-3 {
+  margin-left: 10px;
+}
+
+.passwordEye {
+  z-index: 9999;
+  cursor: pointer;
+  position: absolute;
+  top: 15%;
+  right: 5%;
+}
+
+.Auth-form p {
+  font-size: 14px;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+
+.Auth-form p a {
+  text-decoration: none;
+}
+
+.Auth-form-image {
+  width: 27px;
+  height: 31px;
+  padding-bottom: 4.5px;
+  padding-top: 0px;
+}
+.space {
+  padding-bottom: 0.5rem;
+}
+
+.register-margin {
+  margin-top: 3.5rem;
+}
+
+.login-margin {
+  margin-top: 7rem;
+}
+
+.recover-margin {
+  margin-top: 10.5rem;
+}
+
+.error-msg {
+  color:red;
+  margin-top: 0.5rem !important; 
 }

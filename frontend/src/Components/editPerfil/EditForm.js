@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import perfilService from "../../services/user";
 
 const EditForm = ({ datos, nuevosD, ubicacion, imagen, handleChanges, toSave, valido, handleImage, handleUbicacion, pass2, handlePass2}) => {
-    const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
+    const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+[.][a-zA-Z]+$');
     const [paises, setPaises] = useState([]);
     const [ciudades, setCiudades] = useState([])
     const [universidades, setUniversidades] = useState([])

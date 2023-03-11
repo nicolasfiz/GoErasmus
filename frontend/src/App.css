@@ -1,6 +1,5 @@
 
 #body {
-    padding-bottom: 60px;
     display: flex;
     flex-direction: column;
     min-height: 90vh;

@@ -50,34 +50,37 @@ function App() {
       <section id="body">
         <Routes>
           <Route path="/" element={<Inicio user={user} />} />
-          <Route path="/signUp" element={<Register />} />
-          <Route path="/signIn" element={<Login />} />
-          <Route path="/recover" element={<RecoverPassword />} />
           <Route path="/confirmAccount/:token" element={<ConfirmAccount />} />
           { user ?
             <>
               { user.rol === 'Trotamundos' || user.rol === 'Administrador' ?
                 <Route path="/panelAdministracion" element={<Administracion />} /> : null
               }
-              <Route path="/search" element={<Buscador />} />
-              <Route path="/progreso" element={<Logro user={user} />} />
-              <Route path="/articulos" element={<Articulos />} />
-              <Route path="/articulos/:id" element={<Articulo />} />
-              <Route path="/paises" element={<Paises />} />
-              <Route path="/:nombrePais/" element={<Ciudades />} />
-              <Route path="/:nombrePais/:nombreCiudad" element={<Ciudad />} />
-              <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
               <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad/:nombreFacultad" element={<Asignaturas />} />
+              <Route path="/:nombrePais/:nombreCiudad/:nombreUniversidad" element={<Facultades />} />
+              <Route path="/:nombrePais/:nombreCiudad" element={<Ciudad />} />
+              <Route path="/:nombrePais/" element={<Ciudades />} />
+              <Route path="/articulos/:id" element={<Articulo />} />
               <Route path="/asignatura/:idAsignatura" element={<Asignatura user={user} />} />
               <Route path="/perfil/:token" element={<Perfil />} />
+              <Route path="/search" element={<Buscador />} />
+              <Route path="/progreso" element={<Logro user={user} />} />
               <Route path="/editPerfil" element={<EditPerfil user={user} />} />
+              <Route path="/articulos" element={<Articulos />} />
+              <Route path="/paises" element={<Paises />} />
             </> : null
           }
+          <Route path="/signUp" element={<Register />} />
+          <Route path="/signIn" element={<Login />} />
+          <Route path="/recover" element={<RecoverPassword />} />
         </Routes>
       </section>
+      { location.pathname === '/signIn' || location.pathname === '/signUp' || location.pathname === '/recover'
+        || location.pathname === '/confirmAccount/:token' ?
+          null : (
       <section className="footer">
         <Footer />
-      </section>
+      </section>)}
     </main>
   )
 }

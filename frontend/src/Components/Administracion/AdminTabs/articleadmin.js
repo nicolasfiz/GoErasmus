@@ -29,12 +29,13 @@ function ArticleAdmin() {
     filterSearch(e.target.value)
   }
 
-  const filterSearch = (searchTerm) => { // Añadido likes, comprobar
+  const filterSearch = (searchTerm) => {
     let searchResult = articleTable.filter(elem =>
       elem.titulo.toLowerCase().includes(searchTerm.toLowerCase())
       || elem.nombreCiudad.toLowerCase().includes(searchTerm.toLowerCase())
       || elem.nombreUsuario.toLowerCase().includes(searchTerm.toLowerCase())
-      || elem.likes.includes(searchTerm))
+      || likes.find(({idArticulo}) => idArticulo === elem.idArticulo).mg.toString().includes(searchTerm.toString())
+      )
     setArticlesList(searchResult)
   }
 

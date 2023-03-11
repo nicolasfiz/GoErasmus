@@ -153,7 +153,7 @@ function Articulo() {
               <Button
                 variant="danger"
                 style={{position: "inline-block", float:"right"}}
-                onClick = {deleteVoteArticle(tokenUserId)}
+                onClick = { () => {deleteVoteArticle(tokenUserId)}}
               >
                 {votos} <BsFillHandThumbsUpFill/>
               </Button> :
