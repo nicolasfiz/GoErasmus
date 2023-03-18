@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Form, Modal } from "react-bootstrap"
-import toast, { Toaster } from "react-hot-toast"
+import ToastComponent from "../../toast"
 import facultyServices from "../../../../services/faculty.service"
 import subjectServices from "../../../../services/subject.service"
 
@@ -18,6 +18,16 @@ function EditarAsignaturaModal(props){
 
   // Lista de facultades
   const [faculties, setFaculties] = useState([])
+
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
 
   const handleChanges = (tag, { target }) => {
     if (tag === "nombre") {
@@ -42,11 +52,11 @@ function EditarAsignaturaModal(props){
     bodyFormData.append("facultad_idFacultad", facultad)
 
     subjectServices.updateSubject(row.id, bodyFormData).then(() => {
-      toast.success("Datos actualizados")
+      handleButtonClick()
       props.updatechanges()
       props.onHide()
     }).catch(error => {
-      toast.error(error)
+      console.log(error)
     })
   }
 
@@ -58,7 +68,7 @@ function EditarAsignaturaModal(props){
 
   return (
     <>
-      <Toaster/>
+      {ToastComponent("Cambios realizados con éxito", showToast, handleToastClose)}
       <Modal
         {...others}
         size="lg"

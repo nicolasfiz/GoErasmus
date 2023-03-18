@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast from 'react-hot-toast'
+import ToastComponent from "../toast"
 import commentServices from "../../../services/comment.service"
 import "./adminTables.css"
 
@@ -31,11 +31,21 @@ function CommentAdmin() {
     setComments(searchResult)
   }
 
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
+
   const removeComment = (id) => {
     commentServices.deleteComment(id).then(() => {
       const c = comments.filter(comment => id !== comment.idComentario)
       setComments(c)
-      toast.success("Comentario eliminado")
+      handleButtonClick()
     })
   }
 
@@ -48,6 +58,7 @@ function CommentAdmin() {
 
   return (
   <>
+    {ToastComponent("Comentario eliminado", showToast, handleToastClose)}
     <section className = "contentTable flex">
       <input
         type        = "text"

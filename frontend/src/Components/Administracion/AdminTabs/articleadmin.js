@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-//import toast from 'react-hot-toast'
+import ToastComponent from "../toast"
 import articleServices from "../../../services/article.service"
 import tokenServices from "../../../services/token.service"
 import authServices from "../../../services/auth.service"
@@ -23,6 +23,9 @@ function ArticleAdmin() {
   const [likes, setLikes] = useState([])
 
   let index = 0
+
+  const [showDeleteToast, setShowDeleteToast] = useState(false)
+  const [showPublishToast, setShowPublishToast] = useState(false)
 
   const handleChange = e => {
     setSearch(e.target.value)
@@ -47,7 +50,7 @@ function ArticleAdmin() {
         else if (tokenRole === 'Administrador')
           setArticlesList(art)
       })
-      //toast.success("Artículo publicado")
+      setShowPublishToast(true)
     })
   }
 
@@ -55,7 +58,7 @@ function ArticleAdmin() {
     articleServices.deleteArticle(id).then(() => {
       const articulo = articlesList.filter(art => id !== art.idArticulo)
       setArticlesList(articulo)
-      //toast.success("Artículo eliminado")
+      setShowDeleteToast(true)
     })
   }
 
@@ -84,6 +87,8 @@ function ArticleAdmin() {
   }, [articlesList])
 
   return (<>
+    {ToastComponent("Artículo publicado", showPublishToast, () => {setShowPublishToast(false)})}
+    {ToastComponent("Artículo eliminado", showDeleteToast, () => {setShowDeleteToast(false)})}
     <section className = "contentTable">
       <input
         type        = "text"

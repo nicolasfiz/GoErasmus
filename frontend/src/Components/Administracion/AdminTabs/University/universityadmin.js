@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast from 'react-hot-toast'
 import universityServices from "../../../../services/university.service"
 import CrearNuevaUniversidadModal from "./crearNuevaUniversidadModal"
 import EditarUniversidadModal from "./editarUniversidadModal"
+import ToastComponent from "../../toast"
 import "../adminTables.css"
 
 function UniversityAdmin() {
@@ -27,7 +27,17 @@ function UniversityAdmin() {
   const [row, setRow] = useState({
     id: 0,
     nombre: ""
-  }); 
+  })
+
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
 
   let index = 0
 
@@ -53,7 +63,7 @@ function UniversityAdmin() {
     universityServices.deleteUniversity(id).then(() => {
       const universidad = universities.filter(c => id !== c.idUniversidad)
       setUniversities(universidad)
-      toast.success("Universidad eliminada")
+      handleButtonClick()
     })
   }
 
@@ -66,6 +76,7 @@ function UniversityAdmin() {
 
   return (
   <>
+    {ToastComponent("Universidad eliminada", showToast, handleToastClose)}
     <CrearNuevaUniversidadModal
       show    = {createUniversityForm}
       onHide  = {() => setCreateUniversityForm(false)}

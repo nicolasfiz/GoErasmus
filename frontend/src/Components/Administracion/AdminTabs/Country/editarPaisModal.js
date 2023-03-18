@@ -1,6 +1,6 @@
 import { useState} from "react"
 import { Button, Form, Modal } from "react-bootstrap"
-import toast, { Toaster } from "react-hot-toast"
+import ToastComponent from "../../toast"
 import countryServices from "../../../../services/country.service"
 
 function EditarPaisModal(props){
@@ -15,6 +15,16 @@ function EditarPaisModal(props){
   //Comprueba si datos validos
   const [nombreValido, setNombreValido] = useState(true)
   const [imagenValida, setImagenValida] = useState(true)
+
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
 
   const handleNameChanges = ({ target }) => {
     setNombrePais(target.value)
@@ -46,17 +56,17 @@ function EditarPaisModal(props){
       bodyFormData.append("file", imagen)
     
     countryServices.updateCountry(row.id, bodyFormData).then(() => {
-      toast.success("Valores actualizados")
+      handleButtonClick()
       props.updatechanges()
       props.onHide()
     }).catch(error => {
-      toast.error(error)
+      console.log(error)
     })
   }
 
   return (
     <>
-      <Toaster/>
+      {ToastComponent("Cambios realizados con éxito", showToast, handleToastClose)}
       <Modal
         {...others}
         size="lg"

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-// import toast from 'react-hot-toast'
 import CrearNuevoPaisModal from "./crearNuevoPaisModal"
 import EditarPaisModal from "./editarPaisModal"
 import countryServices from "../../../../services/country.service"
 import "../adminTables.css"
+import ToastComponent from "../../toast"
 
 function CountryAdmin() {
 
@@ -29,6 +29,16 @@ function CountryAdmin() {
     nombre: ""
   }); 
 
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
+
   let index = 0
 
   const handleChange = ({ target }) => {
@@ -50,7 +60,7 @@ function CountryAdmin() {
 
   const removeCountry = (id) => {
     countryServices.deleteCountry(id).then(() => {
-      // toast.success("Pais eliminado")
+      handleButtonClick()
       const pais = countries.filter(p => id !== p.idPais)
       setCountries(pais)
     })
@@ -65,6 +75,7 @@ function CountryAdmin() {
 
   return (
   <>
+    {ToastComponent("País eliminado", showToast, handleToastClose)}
     <CrearNuevoPaisModal
       show    = {createCountryForm}
       onHide  = {() => setCreateCountryForm(false)}

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react"
 import { Tab, Tabs } from "react-bootstrap"
 import ArticleAdmin from "./AdminTabs/articleadmin"
 import UserAdmin from "./AdminTabs/useradmin"
-import RoleAdmin from "./AdminTabs/roleadmin"
-import AchievementAdmin from "./AdminTabs/achievementadmin"
 import CountryAdmin from "./AdminTabs/Country/countryadmin"
 import CityAdmin from "./AdminTabs/City/cityadmin"
 import UniversityAdmin from "./AdminTabs/University/universityadmin"
@@ -13,7 +11,6 @@ import FileAdmin from "./AdminTabs/fileadmin"
 import CommentAdmin from "./AdminTabs/commentadmin"
 import authServices from "../../services/auth.service"
 import tokenServices from "../../services/token.service"
-import { Toaster } from "react-hot-toast"
 
 function Administracion() {
 
@@ -29,7 +26,6 @@ function Administracion() {
 
   return ( tokenRole && (tokenRole === 'Administrador' || tokenRole === 'Trotamundos')) ?
     <section>
-      <Toaster />
       <Tabs
         defaultActiveKey="articulos"
         id="admin-panel-access"
@@ -66,14 +62,6 @@ function Administracion() {
             <CommentAdmin />
           </Tab> : null
         }
-        {tokenRole === 'Administrador' ?
-          <Tab eventKey="roles" title="Roles">
-            <RoleAdmin />
-          </Tab> : null }
-        {tokenRole === 'Administrador' ?
-          <Tab eventKey="logros" title="Logros">
-            <AchievementAdmin />
-          </Tab> : null }
       </Tabs>
     </section> : null
 }

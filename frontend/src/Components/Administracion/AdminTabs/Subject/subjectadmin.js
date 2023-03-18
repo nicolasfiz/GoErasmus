@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast from 'react-hot-toast'
+import ToastComponent from "../../toast"
 import subjectServices from "../../../../services/subject.service"
 import CrearNuevaAsignaturaModal from "./crearNuevaAsignaturaModal"
 import EditarAsignaturaModal from "./editarAsignaturaModal"
@@ -49,11 +49,21 @@ function SubjectAdmin() {
     })
   }
 
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
+
   const removeSubject = (id) => {
     subjectServices.deleteSubject(id).then(() => {
       const asignatura = subjects.filter(c => id !== c.idAsignatura)
       setSubjects(asignatura)
-      toast.success("Asignatura eliminada")
+      handleButtonClick()
     })
   }
 
@@ -66,6 +76,7 @@ function SubjectAdmin() {
 
   return (
     <>
+      {ToastComponent("Asignatura eliminada", showToast, handleToastClose)}
       <CrearNuevaAsignaturaModal
         show    = {createSubjectForm}
         onHide  = {() => setCreateSubjectForm(false)}

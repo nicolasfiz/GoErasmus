@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap"
-import toast, { Toaster } from "react-hot-toast"
+import ToastComponent from "../../toast"
 import countryServices from "../../../../services/country.service"
 
 function CrearNuevoPaisModal(props){
@@ -19,6 +19,16 @@ function CrearNuevoPaisModal(props){
 
   //Desestructurando props
   const {updatechanges, ...others} = props
+
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
 
   const handleNameChanges = ({ target }) => {
     setNombrePais(target.value)
@@ -45,17 +55,17 @@ function CrearNuevoPaisModal(props){
     bodyFormData.append("file", imagen)
 
     countryServices.createCountry(bodyFormData).then(() => {
-        toast.success("País añadido")
+        handleButtonClick()
         props.updatechanges()
         props.onHide()
       }).catch(error => {
-        toast.error(error)
+        console.log(error)
       })
   }
 
   return (
     <>
-      <Toaster/>
+      {ToastComponent("País creado con éxito", showToast, handleToastClose)}
       <Modal
         {...others}
         size="lg"

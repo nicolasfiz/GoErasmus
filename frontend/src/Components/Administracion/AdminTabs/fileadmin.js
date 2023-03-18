@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast from 'react-hot-toast'
 import fileServices from "../../../services/file.service"
+import ToastComponent from "../toast"
 import "./adminTables.css"
 
 function FileAdmin() {
@@ -34,11 +34,21 @@ function FileAdmin() {
     setFiles(searchResult)
   }
 
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
+
   const removeFile = (id) => {
     fileServices.deleteFile(id).then(() => {
       const f = files.filter(file => id !== file.idArchivo)
       setFiles(f)
-      toast.success("Archivo eliminado")
+      handleButtonClick()
     })
   }
 
@@ -51,6 +61,7 @@ function FileAdmin() {
 
   return (
   <>
+    {ToastComponent("Archivo eliminado", showToast, handleToastClose)}
     <section className="contentTable flex">
       <input
         type        = "text"

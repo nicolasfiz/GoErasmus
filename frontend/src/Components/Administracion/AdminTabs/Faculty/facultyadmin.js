@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast from 'react-hot-toast'
+import ToastComponent from "../../toast"
 import facultyServices from "../../../../services/faculty.service"
 import CrearNuevaFacultadModal from "./crearNuevaFacultadModal"
 import EditarFacultadModal from "./editarFacultadModal"
@@ -43,6 +43,16 @@ function FacultyAdmin() {
     setFaculties(searchResult)
   }
 
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
+
   const updateChanges = () => {
     facultyServices.getFaculties().then(f => {
       setFaculties(f)
@@ -51,9 +61,9 @@ function FacultyAdmin() {
 
   const removeFaculty = (id) => {
     facultyServices.deleteFaculty(id).then(() => {
+      handleButtonClick()
       const facultad = faculties.filter(c => id !== c.idFacultad)
       setFaculties(facultad)
-      toast.success("Facultad eliminada")
     })
   }
 
@@ -66,6 +76,7 @@ function FacultyAdmin() {
 
   return (
   <>
+    {ToastComponent("Facultad eliminada", showToast, handleToastClose)}
     <CrearNuevaFacultadModal
       show    = {createFacultyForm}
       onHide  = {() => setCreateFacultyForm(false)}

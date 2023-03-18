@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Form, Modal } from "react-bootstrap"
-import toast, { Toaster } from "react-hot-toast"
+import ToastComponent from "../../toast"
 import universityServices from "../../../../services/university.service"
 import cityServices from "../../../../services/city.service"
 
@@ -21,6 +21,16 @@ function EditarUniversidadModal(props){
 
   // Lista de ciudades
   const [cities, setCities] = useState([])
+
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
 
   const handleChanges = (tag, { target }) => {
     if (tag === "nombre"){
@@ -58,11 +68,11 @@ function EditarUniversidadModal(props){
     bodyFormData.append("ciudad_idCiudad", ciudad)
 
     universityServices.updateUniversity(row.id, bodyFormData).then(() => {
-      toast.success("Datos actualizados")
+      handleButtonClick()
       props.updatechanges()
       props.onHide()
     }).catch(error => {
-      toast.error(error)
+      console.log(error)
     })
   }
 
@@ -74,7 +84,7 @@ function EditarUniversidadModal(props){
 
   return (
     <>
-      <Toaster/>
+      {ToastComponent("Cambios realizados con éxito", showToast, handleToastClose)}
       <Modal
         {...others}
         size="lg"

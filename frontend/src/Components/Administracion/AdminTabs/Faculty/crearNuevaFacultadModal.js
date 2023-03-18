@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap"
-import toast, { Toaster } from "react-hot-toast"
+import ToastComponent from "../../toast"
 import facultyServices from "../../../../services/faculty.service"
 import universityServices from "../../../../services/university.service"
 
@@ -19,6 +19,16 @@ function CrearNuevaFacultadModal(props){
 
   //Desestructurando props
   const {updatechanges, ...others} = props
+
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
 
   const handleChanges = (tag, { target }) => {
     if (tag === "nombre")
@@ -41,11 +51,11 @@ function CrearNuevaFacultadModal(props){
     bodyFormData.append("universidad_idUniversidad", universidad)
 
     facultyServices.createFaculty(bodyFormData).then(() => {
-        toast.success("Facultad añadida")
         props.updatechanges()
         props.onHide()
+        handleButtonClick()
       }).catch(error => {
-        toast.error(error)
+        console.log(error)
       })
   }
 
@@ -57,7 +67,7 @@ function CrearNuevaFacultadModal(props){
 
   return (
     <>
-      <Toaster/>
+      {ToastComponent("Facultad creada con éxito", showToast, handleToastClose)}
       <Modal
         {...others}
         size="lg"

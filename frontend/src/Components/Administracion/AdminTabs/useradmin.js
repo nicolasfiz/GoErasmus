@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-//import toast from 'react-hot-toast'
+import ToastComponent from "../toast"
 import userServices from "../../../services/user"
 import "./adminTables.css"
 
@@ -32,11 +32,21 @@ function UserAdmin() {
     setUsers(searchResult)
   }
 
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
+
   const removeUser = (id) => {
     userServices.deleteUser(id).then(() => {
       const usr = users.filter(user => id !== user.idUsuario)
       setUsers(usr)
-      // toast.success("Usuario eliminado")
+      handleButtonClick()
     })
   }
 
@@ -49,6 +59,7 @@ function UserAdmin() {
 
   return (
   <>
+    {ToastComponent("Usuario eliminado", showToast, handleToastClose)}
     <section className = "contentTable flex">
       <input
         type        = "text"

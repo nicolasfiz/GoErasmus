@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap"
-import toast, { Toaster } from "react-hot-toast"
+import ToastComponent from "../../toast"
 import universityServices from "../../../../services/university.service"
 import cityServices from "../../../../services/city.service"
 
@@ -21,6 +21,16 @@ function CrearNuevaUniversidadModal(props){
 
   //Desestructurando props
   const {updatechanges, ...others} = props
+
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
 
   const handleChanges = (tag, { target }) => {
     if (tag === "nombre"){
@@ -54,11 +64,11 @@ function CrearNuevaUniversidadModal(props){
     bodyFormData.append("ciudad_idCiudad", ciudad)
 
     universityServices.createUniversity(bodyFormData).then(() => {
-      toast.success("Universidad añadida")
+      handleButtonClick()
       props.updatechanges()
       props.onHide()
     }).catch(error => {
-      toast.error(error)
+      console.log(error)
     })
   }
 
@@ -70,7 +80,7 @@ function CrearNuevaUniversidadModal(props){
 
   return (
     <>
-      <Toaster/>
+      {ToastComponent("Universidad creada con éxito", showToast, handleToastClose)}
       <Modal
         {...others}
         size="lg"
