@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import { Button } from "react-bootstrap"
 import ImageGallery from 'react-image-gallery'
 import "react-image-gallery/styles/css/image-gallery.css"
+import asignaturaServices from "../../../services/asignatura.service"
 import articleServices from "../../../services/article.service"
 import articleGalleryServices from "../../../services/articleGallery.service"
 import authServices from "../../../services/auth.service"
@@ -67,6 +68,9 @@ function Articulo() {
         setTokenUserId(d.id)
       })
     })
+  }, [])
+
+  useEffect(() => {
     articleServices.getArticleById(params.id).then(art => {
       setArticulo(art)
     })
@@ -77,6 +81,12 @@ function Articulo() {
       setVotos(mg)
     })
   }, [params.id])
+
+  useEffect(() => {
+    asignaturaServices.getVotacionUsuarios(tokenUserId).then(r => {
+      setVotados(r)
+    })
+  }, [tokenUserId])
 
   const setImages = (articulo, gallery) => {
     let images = []
@@ -172,6 +182,7 @@ function Articulo() {
               </Button>}
           </div>
         </article>
+        <ComentariosArticulo itemsPerPage={COMENTARIOS_POR_PAGINA} idArticulo={params.id} idUsuario={tokenUserId} votados={votados} />
       </div>
     </>)
 }

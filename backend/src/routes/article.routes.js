@@ -14,5 +14,6 @@ router.post('/comment', articleCtrl.publishComment)
 router.post('/:usuario_idUsuario/:articulo_idArticulo', articleCtrl.voteArticle)
 router.get('/likes/:id', articleCtrl.getLikesArticleById)
 router.delete('/:usuario_idUsuario/:articulo_idArticulo', articleCtrl.deleteArticleVote)
+router.get('/:id/comments', articleCtrl.getArticleComments)
 
 export default router

@@ -152,13 +152,35 @@ const deleteArticleVote = async (req, res) => {
     try {
         const {usuario_idUsuario, articulo_idArticulo} = req.params
         const connection = await getConnection()
-        const query = await connection.query(`DELETE FROM votacionarticulo WHERE usuario_idUsuario = ?
-                                                AND articulo_idArticulo = ? `, [usuario_idUsuario, articulo_idArticulo])
+        const query = await connection.query(
+            `DELETE FROM votacionarticulo WHERE usuario_idUsuario = ?
+                AND articulo_idArticulo = ? `, [usuario_idUsuario, articulo_idArticulo])
         res.json(query)
     } catch(error) {
         res.status(500).send(error.message)
     }
 }
+
+const getArticleComments = async (req, res) => {
+    try {
+        const {id} = req.params
+        const connection = await getConnection()
+        const query = await connection.query(
+            `SELECT c.descripcion, c.fecha, u.nombreUsuario, u.urlFotoPerfil,
+                    v.idVotacion, ifnull(v.numeroMeGusta, 0) as mg, ifnull(v.numeroNoMeGusta, 0) as nmg
+            FROM Articulo art
+                LEFT JOIN ComentarioArticulo ca ON ca.articulo_idArticulo= art.idArticulo
+                LEFT JOIN Comentario c ON c.idComentario=ca.comentario_idComentario
+                LEFT JOIN Votacion v ON v.comentario_idComentario=c.idComentario
+                LEFT JOIN Usuario u ON u.idUsuario=c.usuario_idUsuario
+            WHERE idArticulo=?`, [id])
+        console.log(query)
+        res.json(query)
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+}
+
 
 export const methods = {
     addDraftArticle,
@@ -170,5 +192,6 @@ export const methods = {
     publishArticle,
     deleteArticle,
     voteArticle,
-    deleteArticleVote
+    deleteArticleVote,
+    getArticleComments
 }

@@ -32,7 +32,7 @@ const publishArticle = async (id) => {
     return request.then(response => response.data)
 }
 
-const publishComment = (formData) => {
+const publishComment = async (formData) => {
     const request = axios.post(`${baseUrl}/comment`, formData)
     return request.then(response => response.data)
 } 
@@ -43,13 +43,17 @@ const deleteArticle = async (id) => {
 }
 
 const voteArticle = async (idUsuario, idArticulo) => {
-    console.log(idUsuario, idArticulo)
     const request = axios.post(`${baseUrl}/${idUsuario}/${idArticulo}`)
     return request.then(response => response.data)
 }
 
 const deleteVoteArticle = async (idUsuario, idArticulo) => {
     const request = axios.delete(`${baseUrl}/${idUsuario}/${idArticulo}`)
+    return request.then(response => response.data)
+}
+
+const getArticleComments = async (idArticulo) => {
+    const request = axios.get(`${baseUrl}/${idArticulo}/comments`)
     return request.then(response => response.data)
 }
 
@@ -63,7 +67,8 @@ const methods = {
     publishComment,
     deleteArticle,
     voteArticle,
-    deleteVoteArticle
+    deleteVoteArticle,
+    getArticleComments
 }
 
 export default methods
