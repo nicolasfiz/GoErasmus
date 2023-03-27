@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import toast from "react-hot-toast";
-import articleServices from "../../../services/article.service";
+import { useState } from "react"
+import { Button, FloatingLabel, Form, Modal } from "react-bootstrap"
+import toast from "react-hot-toast"
+import articleServices from "../../../services/article.service"
 
 const SubirComentarioArticulo = (props) => {
-  const [comentario, setComentario] = useState("");
-  const [valido, setValido] = useState(false);
+  const [comentario, setComentario] = useState("")
+  const [valido, setValido] = useState(false)
 
   const handleChanges = ({ target }) => {
-    setComentario(target.value);
-    setValido(target.value.length <= 180);
+    setComentario(target.value)
+    setValido(target.value.length <= 180)
   }
 
   const toSave = (event) => {
@@ -22,16 +22,11 @@ const SubirComentarioArticulo = (props) => {
 
 
     /*for (const pair of bodyFormData.entries()) {
-      console.log(`${pair[0]}, ${pair[1]}`);
+      console.log(`${pair[0]}, ${pair[1]}`)
     }*/
 
     articleServices.publishComment(bodyFormData).then(response => {
         toast.success("Comentario publicado")
-        if (response){
-          toast('!Has obtenido un nuevo logro!', {
-              icon: '👏',
-          });
-        }
         props.onHide()
       }).catch(error => {
         console.log(error)
@@ -69,6 +64,6 @@ const SubirComentarioArticulo = (props) => {
         </Modal.Footer>
       </form>
     </Modal>
-  );
-};
-export default SubirComentarioArticulo;
+  )
+}
+export default SubirComentarioArticulo
