@@ -27,7 +27,7 @@ function CountryAdmin() {
   const [row, setRow] = useState({
     id: 0,
     nombre: ""
-  }); 
+  })
 
   const [showToast, setShowToast] = useState(false)
 

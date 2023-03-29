@@ -3,30 +3,31 @@ import Card from "react-bootstrap/Card"
 import toast from 'react-hot-toast'
 import moment from "moment"
 import ToggleButton from 'react-bootstrap/ToggleButton'
-//import articleServices from "../../../services/article.service"
+import asignaturaServices from "../../../services/asignatura.service"
 import "../Articulo/articulo.css"
 import anonimo from "../../../assets/ImagenesUsers/anonimo.png"
-
 
 const baseUrl = `${process.env.REACT_APP_DIRECCIONES}perfil/`
 
 const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
-  const mg = (idVotacion) => {
+
+  const mg = (idVotacion, mg) => {
     if (votados.includes(idVotacion))
       toast.error("Ya has votado este comentario")
     else
     {
       const bodyFormData = new FormData()
       bodyFormData.append("idUsuario", idUsuario)
-      /*asignaturasService.mg(idVotacion, bodyFormData).then(respose => {
-        if (respose)
+      asignaturaServices.mg(idVotacion, bodyFormData).then(response => {
+        if (response)
         {
-          toast.success("Votado")
-          votados.push(idVotacion)      
+          toast.success("Comentario votado")
+          votados.push(idVotacion)
+
         }
         else
           toast.error("No puedes votar tu propia aportacion")
-      }).catch( () => toast.error("ha ocurrido un errror"))*/
+      }).catch( () => toast.error("Ha ocurrido un errror"))
     } 
   }
 
@@ -37,15 +38,15 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
     {
       const bodyFormData = new FormData()
       bodyFormData.append("idUsuario", idUsuario)
-      /*asignaturasService.nmg(idVotacion, bodyFormData).then(respose =>{ 
-        if(respose)
+      asignaturaServices.nmg(idVotacion, bodyFormData).then(response =>{ 
+        if (response)
         {
-          toast.success("Votado")
+          toast.success("Comentario votado")
           votados.push(idVotacion)      
         }
         else
           toast.error("No puedes votar tu propia aportacion")
-      }).catch( () => toast.error("ha ocurrido un errror"))*/
+      }).catch( () => toast.error("Ha ocurrido un errror"))
     } 
   }
 
@@ -77,7 +78,7 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
                     size="sm"
                     id={`likeComentario${item.idVotacion}`}
                     type="checkbox"
-                    onChange={() => mg(item.idVotacion)}
+                    onChange={() => mg(item.idVotacion, item.mg)}
                   >
                     <AiFillLike /> {item.mg}
                   </ToggleButton>

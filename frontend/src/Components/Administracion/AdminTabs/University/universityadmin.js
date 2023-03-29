@@ -17,13 +17,13 @@ function UniversityAdmin() {
   // Controlar lo que se escribe en la barra de busqueda
   const [search, setSearch] = useState("")
 
-  // Controla la visibilidad del Modal para creación de países
+  // Controla la visibilidad del Modal para creación de universidades
   const [createUniversityForm, setCreateUniversityForm] = useState(false)
 
-  // Controla la visibilidad del Modal para edición de países
+  // Controla la visibilidad del Modal para edición de universidades
   const [editUniversityForm, setEditUniversityForm] = useState(false)
 
-  //Datos pais a editar
+  //Datos universidad a editar
   const [row, setRow] = useState({
     id: 0,
     nombre: ""

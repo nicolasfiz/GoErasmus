@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import toast from 'react-hot-toast'
 import cityServices from "../../../../services/city.service"
+import ToastComponent from "../../toast"
+import CrearNuevaCiudadModal from "./crearNuevaCiudadModal"
+import EditarCiudadModal from "./editarCiudadModal"
 import "../adminTables.css"
 
 function CityAdmin() {
@@ -15,7 +17,30 @@ function CityAdmin() {
   // Controlar lo que se escribe en la barra de busqueda
   const [search, setSearch] = useState("")
 
+    // Controla la visibilidad del Modal para creación de ciudades
+  const [createCityForm, setCreateCityForm] = useState(false)
+
+  // Controla la visibilidad del Modal para edición de ciudades
+  const [editCityForm, setEditCityForm] = useState(false)
+
   let index = 0
+
+   //Datos pais a editar
+  const [row, setRow] = useState({
+    id: 0,
+    nombre: "",
+    texto: ""
+  })
+
+  const [showToast, setShowToast] = useState(false)
+
+  const handleButtonClick = () => {
+    setShowToast(true)
+  }
+
+  const handleToastClose = () => {
+    setShowToast(false)
+  }
 
   const handleChange = e => {
     setSearch(e.target.value)
@@ -29,19 +54,17 @@ function CityAdmin() {
     setCities(searchResult)
   }
 
-  const createNewCity = () => {
-    console.log("nuevo")
-  }
-
-  const updateCity = (idCiudad) => {
-    console.log(idCiudad)
+  const updateChanges = () => {
+    cityServices.getAllCities().then(p => {
+      setCities(p)
+    })
   }
 
   const removeCity = (id) => {
     cityServices.deleteCity(id).then(() => {
       const ciudad = cities.filter(c => id !== c.idCiudad)
       setCities(ciudad)
-      toast.success("Ciudad eliminada")
+      handleButtonClick()
     })
   }
 
@@ -54,6 +77,18 @@ function CityAdmin() {
 
   return (
     <>
+      {ToastComponent("Ciudad eliminada", showToast, handleToastClose)}
+      <CrearNuevaCiudadModal
+        show    = {createCityForm}
+        onHide  = {() => setCreateCityForm(false)}
+        updatechanges = { () => updateChanges() }
+      />
+      <EditarCiudadModal
+        show    = {editCityForm}
+        onHide  = {() => setEditCityForm(false)}
+        updatechanges = { () => updateChanges() }
+        row = {row}
+      />
       <section className="contentTable flex">
         <input
           type        = "text"
@@ -66,7 +101,7 @@ function CityAdmin() {
         <Button
           style   = {{ marginLeft:"1em" }}
           variant = "outline-success"
-          onClick = { () => {createNewCity()} }>
+          onClick = { () => {setCreateCityForm(true)} }>
             Añadir
         </Button>
       </section>
@@ -96,8 +131,13 @@ function CityAdmin() {
                     </Button>
                     <Button 
                       variant="outline-secondary"
-                      onClick={() => {
-                        updateCity(idCiudad)
+                      onClick={() => { 
+                        setRow({
+                          id: idCiudad,
+                          nombre: nombreCiudad,
+                          texto: informacion
+                        })
+                        setEditCityForm(true)
                       } }>
                         Editar
                     </Button>
