@@ -42,7 +42,7 @@ const Informacion = () => {
     <>
       <div
         style={{
-            margin: "5rem 20rem 5rem 20rem",
+            margin: "5rem 15rem 5rem 15rem",
             boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
             borderRadius: "8px",
             backgroundColor: "white",
@@ -59,9 +59,17 @@ const Informacion = () => {
               fontFamily:"Times New Roman"}}>
                 ¡Te damos la bienvenida a {params.nombreCiudad}!
           </h1>
-          <ImageGallery items={setImages(ciudad, gallery)} showPlayButton={false} showBullets={true} autoPlay={true} />
-          <div style={{marginTop:"3em"}}></div>
-          {ciudad.map(({informacion}, id) => <ReactMarkdown key={id} children={informacion} />)}
+          <ImageGallery
+            items                 = {setImages(ciudad, gallery)}
+            slideInterval         = {5000}
+            showPlayButton        = {false}
+            showNav               = {false}
+            showFullscreenButton  = {false}
+            showBullets           = {true}
+            autoPlay              = {true}
+          />
+          <div style={{marginTop:"1em"}}></div>
+          {ciudad.map(({informacion}, id) => <div style={{textAlign: "justify"}}><ReactMarkdown key={id} children={informacion} /></div>)}
         </article>
       </div>
     </>)

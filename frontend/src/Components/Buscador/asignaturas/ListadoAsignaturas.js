@@ -5,7 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 const baseUrl = `${process.env.REACT_APP_DIRECCIONES}asignatura/`;
 const ListadoAsignaturas = ({ resultado, loading }) => {
     return (
-        <ListGroup ListGroup className="listaUsuarios" >
+        <ListGroup className="listaUsuarios" >
             {!loading ? (
                 resultado.length > 0 ? (resultado.map(elem =>
                     <ListGroup.Item key={elem.idAsignatura}>

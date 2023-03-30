@@ -14,6 +14,7 @@ import { BsHandThumbsUp, BsFillHandThumbsUpFill } from "react-icons/bs"
 import ComentariosArticulo from "./comentariosArticulo"
 import "./articulo.css"
 import { toast, Toaster } from "react-hot-toast"
+import ReactMarkdown from "react-markdown"
 
 const ArticleHead = ({titulo, autor, imagenPerfil, fecha, esBorrador}) => {
   return (
@@ -33,17 +34,6 @@ const ArticleHead = ({titulo, autor, imagenPerfil, fecha, esBorrador}) => {
           </p>
         </i>
         <hr style={{width:"80%", margin: "1em 0 1em 10%"}}/>
-      </section>
-    </>
-  )
-}
-
-const Paragraph = ({desc}) => {
-  const paragraphs = desc.split(/\n+/)
-  return (
-    <>
-      <section className="articleSection">
-        {paragraphs.map((paragraph, id) => <p style={{fontSize:"18px", fontFamily: "Times New Roman"}} key={id}> {paragraph} </p>)}
       </section>
     </>
   )
@@ -147,9 +137,7 @@ function Articulo() {
             autoPlay              = {true}
           />
           <div style={{ marginTop:"1em" }}></div>
-          { articulo.map(({descripcion}, id) => 
-            <Paragraph key={id} desc={descripcion} />
-          )}
+          { articulo.map(({descripcion}, id) => <div style={{textAlign: "justify"}}><ReactMarkdown key={id} children={descripcion} /></div>)}
           <hr />
           <div>
             <Button
