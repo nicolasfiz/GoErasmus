@@ -69,7 +69,7 @@ const Informacion = () => {
             autoPlay              = {true}
           />
           <div style={{marginTop:"1em"}}></div>
-          {ciudad.map(({informacion}, id) => <div style={{textAlign: "justify"}}><ReactMarkdown key={id} children={informacion} /></div>)}
+          {ciudad.map(({informacion}, id) => <div key={id} style={{textAlign: "justify"}}><ReactMarkdown children={informacion} /></div>)}
         </article>
       </div>
     </>)

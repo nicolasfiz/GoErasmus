@@ -22,6 +22,11 @@ const getCityByName = async (name) => {
     return request.then(response => response.data)
 }
 
+const updateCity = async (id, bodyFormData) => {
+    const request = axios.put(`${baseUrl}/${id}`, bodyFormData)
+    return request.then(response => response.data).catch(error => error.response.data)
+}
+
 const deleteCity = async (id) => {
     const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(response => response.data)
@@ -32,6 +37,7 @@ const methods = {
     getAllCities,
     getCitiesByCountryName,
     getCityByName,
+    updateCity,
     deleteCity
 }
 

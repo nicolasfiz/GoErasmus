@@ -53,13 +53,31 @@ const getCityByName = async (req, res) => {
     }
 }
 
-const updateCity = async (req, res) => {
+const updateCity = async (req, res) => { //if else con informacion
     try {
         const {id} = req.params
-        const { nombre, informacion, urlCabecera, pais_idPais } = req.body
-        if(id === undefined || nombre === undefined || informacion === undefined || urlCabecera === undefined || pais_idPais === undefined)
+        const { nombre, informacion, pais_idPais } = req.body
+        if (id === undefined || nombre === undefined || informacion === undefined || pais_idPais === undefined)
             res.status(400).json({message:"Bad Request. Please fill all fields"})
-        const city = { nombre, informacion, urlCabecera, pais_idPais }
+        
+        let city
+        if (req.files === null && pais_idPais > 0)
+            city = { nombre, informacion, ciudad_idCiudad }
+        else if (req.files === null)
+            city = { nombre, informacion }
+        else
+        {
+            const uploaded = await cloudinary.uploader.upload(req.files.file.tempFilePath, {
+                folder: 'ciudades',
+            })
+    
+            const {secure_url} = uploaded
+            if (pais_idPais > 0)
+                city = { nombre, "urlCabecera": secure_url, informacion, pais_idPais }
+            else
+                city = { nombre, "urlCabecera": secure_url, informacion }
+        }
+
         const connection = await getConnection()
         const query = await connection.query("UPDATE ciudad SET ? WHERE idCiudad = ?", [city, id])
         res.json(query)

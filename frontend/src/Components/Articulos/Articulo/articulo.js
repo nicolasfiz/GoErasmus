@@ -137,7 +137,7 @@ function Articulo() {
             autoPlay              = {true}
           />
           <div style={{ marginTop:"1em" }}></div>
-          { articulo.map(({descripcion}, id) => <div style={{textAlign: "justify"}}><ReactMarkdown key={id} children={descripcion} /></div>)}
+          { articulo.map(({descripcion}, id) => <div key={id} style={{textAlign: "justify"}}><ReactMarkdown children={descripcion} /></div>)}
           <hr />
           <div>
             <Button
