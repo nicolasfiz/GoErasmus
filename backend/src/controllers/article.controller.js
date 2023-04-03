@@ -1,15 +1,19 @@
 import { getConnection } from "../database/database"
+let cloudinary = require('cloudinary').v2
+cloudinary.config(process.env.CLOUDINARY_URL)
 
 const addDraftArticle = async (req, res) => {
     try {
-        const { titulo, descripcion, urlCabecera, ciudad_idCiudad, usuario_idUsuario } = req.body
+        const { titulo, descripcion, ciudad_idCiudad, usuario_idUsuario } = req.body
 
-        if (titulo === undefined || descripcion === undefined || urlCabecera === undefined ||
-            ciudad_idCiudad === undefined || usuario_idUsuario === undefined)
+        if (titulo === undefined || descripcion === undefined || ciudad_idCiudad === undefined || usuario_idUsuario === undefined)
             res.status(400).json({message: "Bad Request. Please fill all fields"})
-        const esBorrador = 1
-        const fechaPublicacion = null
-        const article = { titulo, descripcion, urlCabecera, esBorrador, fechaPublicacion, ciudad_idCiudad, usuario_idUsuario }
+        
+        const uploaded = await cloudinary.uploader.upload(req.files.file.tempFilePath, {
+            folder: 'articulos',
+        })
+
+        const article = { titulo, descripcion, "urlCabecera": uploaded.secure_url, ciudad_idCiudad, usuario_idUsuario }
         const connection = await getConnection()
         await connection.query("INSERT INTO articulo SET ?", article)
         res.json({message: "Article added successfully"})
@@ -38,22 +42,6 @@ const getArticles = async (req, res) => {
                                             ORDER BY fechaPublicacion ASC`, name)
         res.json(query)
 
-    } catch (error) {
-        res.status(500).send(error.message)
-    }
-}
-
-const getCityArticlesLength = async (req, res) => {
-    try {
-        const connection = await getConnection()
-        const {name} = req.params
-        let query
-        if (name === undefined)
-            query = [{"length": 0}]
-        else
-            query = await connection.query(`SELECT COUNT(*) as length FROM articulo a
-                                            JOIN ciudad c ON c.idCiudad = a.ciudad_idCiudad WHERE c.nombre = ?`, name)
-        res.json(query)
     } catch (error) {
         res.status(500).send(error.message)
     }
@@ -114,9 +102,7 @@ const publishComment = async (req, res) => {
 const publishArticle = async (req, res) => {
     try {
         const {id} = req.params
-        //const {descripcion} = req.body
         const connection = await getConnection()
-        //const query = await connection.query("UPDATE articulo SET descripcion=?, esBorrador='No', fechaPublicacion=CURRENT_TIMESTAMP WHERE idArticulo = ?", [descripcion, id])
         const query = await connection.query("UPDATE articulo SET esBorrador='No', fechaPublicacion=CURRENT_TIMESTAMP WHERE idArticulo = ?", id)
         res.json(query)
     } catch(error) {
@@ -186,7 +172,6 @@ export const methods = {
     addDraftArticle,
     getArticles,
     getArticleById,
-    getCityArticlesLength,
     getLikesArticleById,
     publishComment,
     publishArticle,

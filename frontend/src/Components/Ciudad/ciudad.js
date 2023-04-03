@@ -6,7 +6,6 @@ import "react-image-gallery/styles/css/image-gallery.css"
 import Universidades from "../Universidades/universidades"
 import CityArticles from "./CityArticles/cityArticles"
 import cityServices from "../../services/city.service"
-import articleServices from "../../services/article.service"
 import universityServices from "../../services/university.service"
 import cityGalleryServices from "../../services/cityGallery.service"
 import ReactMarkdown from "react-markdown"
@@ -77,14 +76,7 @@ const Informacion = () => {
 
 function Ciudad() {
   const params = useParams()
-  const [numArticles, setNumArticles] = useState([])
   const [numUniversities, setNumUniversities] = useState([])
-
-  useEffect(() => {
-    articleServices.getCityArticlesLength(params.nombreCiudad).then(length => {
-      setNumArticles(length)
-    })
-  }, [params.nombreCiudad])
 
   useEffect(() => {
     universityServices.getUniversitiesCityLength(params.nombreCiudad).then(length => {
@@ -92,8 +84,7 @@ function Ciudad() {
     })
   }, [params.nombreCiudad])
 
-  let articles, universities
-  numArticles.forEach( ({length}) => {articles |= length === 0})
+  let universities
   numUniversities.forEach( ({length}) => {universities |= length === 0})
   return (
   <section>
@@ -109,7 +100,7 @@ function Ciudad() {
       <Tab eventKey="universidades" title="Universidades" disabled={universities === 1}>
         <Universidades />
       </Tab>
-      <Tab eventKey="articulos" title="Artículos" disabled={articles === 1}>
+      <Tab eventKey="articulos" title="Artículos">
         <CityArticles />
       </Tab>
     </Tabs>

@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom"
 import Inicio from "./Components/inicio/inicio"
 import Articulos from "./Components/Articulos/articulos"
 import Articulo from "./Components/Articulos/Articulo/articulo"
+import CrearArticulo from "./Components/Articulos/crearArticulo"
 import Paises from "./Components/Paises/paises"
 import Ciudades from "./Components/Ciudades/ciudades"
 import Ciudad from "./Components/Ciudad/ciudad"
@@ -34,7 +35,7 @@ function App() {
       if (data) {
         authService.getAccount(data).then(elem => {
           setUser(elem)
-        }).catch(error => {
+        }).catch(() => {
             tokenService.removeToken()
         })
       }
@@ -66,6 +67,7 @@ function App() {
               <Route path="/search" element={<Buscador />} />
               <Route path="/progreso" element={<Logro user={user} />} />
               <Route path="/editPerfil" element={<EditPerfil user={user} />} />
+              <Route path="/crearArticulo/" element={<CrearArticulo userid={user.id}/>} />
               <Route path="/articulos" element={<Articulos />} />
               <Route path="/paises" element={<Paises />} />
             </> : null

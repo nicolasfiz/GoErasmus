@@ -2,6 +2,11 @@ import axios from 'axios'
 
 const baseUrl = `${process.env.REACT_APP_URL}/article`
 
+const createDraftArticle = async (bodyFormData) => {
+    const request = axios.post(`${baseUrl}/`, bodyFormData)
+    return request.then(response => response.data).catch(error => error.response.data)
+}
+
 const getArticles = async () => {
     const request = axios.get(`${baseUrl}/`)
     return request.then(response => response.data)
@@ -14,11 +19,6 @@ const getArticleById = async (id) => {
 
 const getArticlesByCityName = async (name) => {
     const request = axios.get(`${baseUrl}/?name=${name}`)
-    return request.then(response => response.data)
-}
-
-const getCityArticlesLength = async (name) => {
-    const request = axios.get(`${baseUrl}/${name}/length`)
     return request.then(response => response.data)
 }
 
@@ -58,10 +58,10 @@ const getArticleComments = async (idArticulo) => {
 }
 
 const methods = {
+    createDraftArticle,
     getArticles,
     getArticleById,
     getArticlesByCityName,
-    getCityArticlesLength,
     getArticleLikesById,
     publishArticle,
     publishComment,

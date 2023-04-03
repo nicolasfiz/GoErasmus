@@ -1,8 +1,8 @@
-import { Button, Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Button, Card } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 
 function ArticleCard ({id, titulo, caption, url, fecha}) {
-    const nav = useNavigate();
+    const nav = useNavigate()
     return (
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src={url} />
@@ -15,7 +15,7 @@ function ArticleCard ({id, titulo, caption, url, fecha}) {
             <small className="text-muted">Publicado el {fecha}</small>
           </Card.Footer>
       </Card>
-    );
+    )
   }
 
-export default ArticleCard;
+export default ArticleCard

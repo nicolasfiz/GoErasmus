@@ -49,7 +49,7 @@ const PaginatedItemsArt = ({ itemsPerPage, idArticulo, idUsuario, votados }) => 
     }
   }
 
-  return items ? (
+  return items && items[0].fecha !== null ? (
     <>
       <p style={{ textAlign: "center", fontWeight: "100", fontSize: "22px"}}> Ordenar </p>
       <div style={{ display: "flex", justifyContent: "center" }}>

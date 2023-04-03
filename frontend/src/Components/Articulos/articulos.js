@@ -1,29 +1,31 @@
-import { useEffect, useState } from "react";
-import ArticleCard from "./articlecard";
-import articleServices from "../../services/article.service";
+import { useEffect, useState } from "react"
+import ArticleCard from "./articlecard"
+import articleServices from "../../services/article.service"
 import "./articulos.css"
-import { Button } from "react-bootstrap";
+import { Button } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 
 function Articulos() {
 
-  const [articulos, setArticulos] = useState([]);
+  const nav = useNavigate()
 
-  const createNewArticle = () => {
-    console.log("nuevo");
-  }
+  const [articulos, setArticulos] = useState([])
 
   useEffect(() => {
     articleServices.getArticles().then(art => {
-      setArticulos(art);
-    });
-  }, []);
+      setArticulos(art)
+    })
+  }, [])
 
   return (
     <section>
       <div style={{display:"flex", flexDirection: "row-reverse", marginTop:"1.5em", marginRight:"5em"}}>
         <Button
           variant="outline-success"
-          onClick={createNewArticle}>
+          onClick={() => {nav(`/crearArticulo`, {
+            state: { cityId: -1, }
+          })}}
+        >
             Crear Artículo
         </Button>
       </div>
@@ -31,7 +33,7 @@ function Articulos() {
         {articulos.map(({idArticulo, titulo, descripcion, esBorrador, urlCabecera, fechaPublicacion}, id) => esBorrador === 'No' ? <ArticleCard key={id} titulo={titulo} id={idArticulo} caption={descripcion} url={urlCabecera} fecha={fechaPublicacion}/> : null)}
       </div>
     </section>
-  );
+  )
 }
 
-export default Articulos;
+export default Articulos

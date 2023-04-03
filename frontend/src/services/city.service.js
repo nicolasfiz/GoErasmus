@@ -17,6 +17,11 @@ const getCitiesByCountryName = async (name) => {
     return request.then(response => response.data)
 }
 
+const getNameByCityId = async (id) => {
+    const request = axios.get(`${baseUrl}/name/${id}`)
+    return request.then(response => response.data).catch(error => error.response.data)
+}
+
 const getCityByName = async (name) => {
     const request = axios.get(`${baseUrl}/${name}`)
     return request.then(response => response.data)
@@ -36,6 +41,7 @@ const methods = {
     createCity,
     getAllCities,
     getCitiesByCountryName,
+    getNameByCityId,
     getCityByName,
     updateCity,
     deleteCity

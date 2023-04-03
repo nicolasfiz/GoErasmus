@@ -11,3 +11,39 @@
 {
     margin: 10px;
 }
+
+.formTitle
+{
+    margin-bottom: 1em;
+}
+
+.formSection
+{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.formSection > h4
+{
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: black;
+}
+
+.formFooter
+{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.spacer
+{
+    flex: 1;
+}
+
+.buttonForm
+{
+    margin-left: 10px;
+}

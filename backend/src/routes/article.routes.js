@@ -6,7 +6,6 @@ import {methods as articleCtrl} from '../controllers/article.controller'
 
 router.post('/', articleCtrl.addDraftArticle)
 router.get('/', articleCtrl.getArticles)
-router.get('/:name/length', articleCtrl.getCityArticlesLength)
 router.get('/:id', articleCtrl.getArticleById)
 router.put('/:id', articleCtrl.publishArticle)
 router.delete('/:id', articleCtrl.deleteArticle)

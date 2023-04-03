@@ -53,7 +53,18 @@ const getCityByName = async (req, res) => {
     }
 }
 
-const updateCity = async (req, res) => { //if else con informacion
+const getNameByCityId = async (req, res) => {
+    try {
+        const connection = await getConnection()
+        const {id} = req.params
+        const query = await connection.query(`SELECT nombre as nombreCiudad FROM ciudad WHERE idCiudad=?`, id)
+        res.json(query)
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+}
+
+const updateCity = async (req, res) => {
     try {
         const {id} = req.params
         const { nombre, informacion, pais_idPais } = req.body
@@ -100,6 +111,7 @@ const deleteCity = async (req, res) => {
 export const methods = {
     addCity,
     getCities,
+    getNameByCityId,
     getCityByName,
     updateCity,
     deleteCity
