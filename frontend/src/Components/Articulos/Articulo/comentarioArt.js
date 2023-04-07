@@ -6,12 +6,20 @@ import ToggleButton from 'react-bootstrap/ToggleButton'
 import asignaturaServices from "../../../services/asignatura.service"
 import "../Articulo/articulo.css"
 import anonimo from "../../../assets/ImagenesUsers/anonimo.png"
+import { useState } from "react"
 
 const baseUrl = `${process.env.REACT_APP_DIRECCIONES}perfil/`
 
 const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
 
-  const mg = (idVotacion, mg) => {
+  const mgs = [], nmgs = []
+  currentItems.forEach(item => mgs.push(item.mg))
+  currentItems.forEach(item => nmgs.push(item.nmg))
+
+  const [likes, setLikes] = useState(mgs)
+  const [dislikes, setDislikes] = useState(nmgs)
+
+  const mg = (idVotacion, idx) => {
     if (votados.includes(idVotacion))
       toast.error("Ya has votado este comentario")
     else
@@ -21,9 +29,10 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
       asignaturaServices.mg(idVotacion, bodyFormData).then(response => {
         if (response)
         {
-          toast.success("Comentario votado")
+          const arr = [...likes];
+          arr[idx] += 1;
+          setLikes(arr);
           votados.push(idVotacion)
-
         }
         else
           toast.error("No puedes votar tu propia aportacion")
@@ -31,7 +40,7 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
     } 
   }
 
-  const nmg = (idVotacion) => {
+  const nmg = (idVotacion, idx) => {
     if (votados.includes(idVotacion))
       toast.error("Ya has votado este comentario")
     else
@@ -41,7 +50,9 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
       asignaturaServices.nmg(idVotacion, bodyFormData).then(response =>{ 
         if (response)
         {
-          toast.success("Comentario votado")
+          const arr = [...dislikes]
+          arr[idx] += 1
+          setDislikes(arr)
           votados.push(idVotacion)      
         }
         else
@@ -78,9 +89,9 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
                     size="sm"
                     id={`likeComentario${item.idVotacion}`}
                     type="checkbox"
-                    onChange={() => mg(item.idVotacion, item.mg)}
+                    onChange={() => mg(item.idVotacion, currentItems.indexOf(item))}
                   >
-                    <AiFillLike /> {item.mg}
+                    <AiFillLike /> {likes[currentItems.indexOf(item)]}
                   </ToggleButton>
                 </div>
                 <div>
@@ -89,9 +100,9 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
                     size="sm"
                     id={`dislikeComentario${item.idVotacion}`}
                     type="checkbox"
-                    onChange={() => nmg(item.idVotacion)}
+                    onChange={() => nmg(item.idVotacion, currentItems.indexOf(item))}
                   >
-                    <AiFillDislike /> {item.nmg}
+                    <AiFillDislike /> {dislikes[currentItems.indexOf(item)]}
                   </ToggleButton>
                 </div>
               </Card.Footer>
