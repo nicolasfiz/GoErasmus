@@ -16,7 +16,8 @@ const addDraftArticle = async (req, res) => {
         const article = { titulo, descripcion, "urlCabecera": uploaded.secure_url, ciudad_idCiudad, usuario_idUsuario }
         const connection = await getConnection()
         await connection.query("INSERT INTO articulo SET ?", article)
-        res.json({message: "Article added successfully"})
+        const query = await connection.query("SELECT idArticulo FROM Articulo WHERE titulo=? AND ciudad_idCiudad=? AND usuario_idUsuario=? AND descripcion=? AND urlCabecera=?", [titulo, ciudad_idCiudad, usuario_idUsuario, descripcion, uploaded.secure_url])
+        res.json(query)
     } catch(error) {
         res.status(500).send(error.message)
     }
@@ -110,11 +111,12 @@ const publishArticle = async (req, res) => {
     }
 }
 
+//GaleriaImagenesArticulo se borra automaticamente
 const deleteArticle = async (req, res) => {
     try {
         const {id} = req.params
         const connection = await getConnection()
-        const query = await connection.query("DELETE FROM articulo WHERE idArticulo = ?", id)
+        query = await connection.query("DELETE FROM articulo WHERE idArticulo = ?", id)
         res.json(query)
     } catch(error) {
         res.status(500).send(error.message)

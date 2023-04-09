@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import cityServices from "../../services/city.service"
 import articleServices from "../../services/article.service"
+import articleGalleryServices from "../../services/articleGallery.service"
 import { Toaster, toast } from "react-hot-toast"
 import "./articulos.css"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -15,14 +16,25 @@ function CrearArticulo({ userid}) {
   const [titulo, setTitulo] = useState("")
   const [cabecera, setCabecera] = useState(null)
   const [texto, setTexto] = useState("")
+  const [galeria, setGaleria] = useState([])
   const [ciudad, setCiudad] = useState(cityId)
 
   const [tituloValido, setTituloValido] = useState(false)
-  const [cabeceraValida, setCabeceraValida] = useState(null)
-  const [textoValido, setTextoValido] = useState("")
-  const [ciudadValida, setCiudadValida] = useState(cityId)
+  const [cabeceraValida, setCabeceraValida] = useState(false)
+  const [textoValido, setTextoValido] = useState(false)
+  const [galeriaValida, setGaleriaValida] = useState(true)
+  const [ciudadValida, setCiudadValida] = useState(false)
 
   const [cities, setCities] = useState([])
+
+  const handleUploadFiles = files => {
+    const uploaded = []
+    files.forEach(file => {
+      if (uploaded.findIndex((f) => f.name === file.name) === -1)
+          uploaded.push(file)
+    })
+    setGaleria(uploaded)
+  }
 
   const handleChanges = (tag, { target }) => {
     if (tag === "titulo")
@@ -50,6 +62,15 @@ function CrearArticulo({ userid}) {
       }
       else
         setCabeceraValida(false)
+    } else if (tag === "galeria") {
+      const archivosSeleccionados = Array.prototype.slice.call(target.files)
+      handleUploadFiles(archivosSeleccionados)
+      let valid = true
+      archivosSeleccionados.forEach(img => {
+        const subStr = img.name.substring(img.name.length - 4, img.name.length)
+        valid &&= subStr === ".png" || subStr === ".jpg"
+      })
+      setGaleriaValida(valid)
     }
   }
 
@@ -63,8 +84,28 @@ function CrearArticulo({ userid}) {
     bodyFormData.append("descripcion", texto)
     bodyFormData.append("file", cabecera)
 
-    articleServices.createDraftArticle(bodyFormData).then(() => {
-        toast.success("Borrador enviado")
+    articleServices.createDraftArticle(bodyFormData).then(([{idArticulo}]) => {
+        if (galeria.length !== 0)
+        {
+          const galleryFormData = new FormData()
+          galeria.forEach((file, i) => {
+            galleryFormData.append(`file${i}`, file, file.name)
+          })
+
+          articleGalleryServices.insertArticleImages(idArticulo, galleryFormData).then(() => {
+            toast.success("Borrador enviado")
+          }).catch(error => {
+            articleServices.deleteArticle(idArticulo).then(() => {
+              toast.error("Algo inesperado ocurrió")
+              console.log(error)
+            }).catch(error => {
+              toast.error("Algo inesperado ocurrió")
+              console.log(error)
+            })
+          })
+        }
+        else
+          toast.success("Borrador enviado")
       }).catch(error => {
         console.log(error)
         toast.error("Ha ocurrido algo inesperado")
@@ -114,6 +155,17 @@ function CrearArticulo({ userid}) {
               <Form.Control type="file" onChange={ (event) => handleChanges("cabecera", event)}/>
             </div>
             <div className="formSection">
+              <h4>Imágenes de galería en formato .png o .jpg (opcional)</h4>
+              <Form.Control type="file" multiple onChange={ (event) => handleChanges("galeria", event)}/>
+              <div className="ml-3">
+                { galeria.length !== 0 ? 
+                  galeria.map((file, id) => (
+                    <div className="mt-2" style={{fontSize: "13px"}} key={id}> <li> <i>{ file.name }</i> </li> </div>
+                  )) : null
+                }
+              </div>
+            </div>
+            <div className="formSection">
               <h4>Ciudad</h4>
               <Form.Select defaultValue={0} disabled={cityId !== -1} onChange = { (event) => handleChanges("ciudad", event)}>
                 {cityId === -1 ? 
@@ -136,6 +188,7 @@ function CrearArticulo({ userid}) {
                 onChange={(event) => handleChanges("texto", event)}
               />
             </div>
+            <p style={{fontSize:"13px" }}>Si no sabes sobre lenguaje de marcado, pulsa <a style={{textDecoration: "none"}} target="_blank" rel="noreferrer" href="https://www.markdowntutorial.com/es/">aquí</a></p>
           </div>
           <div className="formFooter">
             <div className="spacer"></div>
@@ -150,7 +203,7 @@ function CrearArticulo({ userid}) {
               className="buttonForm"
               type='submit'
               variant='success'
-              disabled={ !(tituloValido && ciudadValida && cabeceraValida && textoValido) }>
+              disabled={ !(tituloValido && ciudadValida && cabeceraValida && textoValido && galeriaValida) }>
                 Enviar borrador
             </Button>
           </div>

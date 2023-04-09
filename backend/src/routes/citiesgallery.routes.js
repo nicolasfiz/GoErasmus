@@ -1,12 +1,11 @@
 import {Router} from 'express'
-const router = Router();
+const router = Router()
 
-import {methods as citgalleryCtrl} from '../controllers/citiesgallery.controller';
-// import * as authJwt from "../middlewares/authJwt";
+import {methods as citgalleryCtrl} from '../controllers/citiesgallery.controller'
+// import * as authJwt from "../middlewares/authJwt"
 
-router.post('/:ciudad_idCiudad', citgalleryCtrl.addCityImage);
-router.get('/', citgalleryCtrl.getCityImages);
-router.get('/:id', citgalleryCtrl.getCityImageById);
-router.delete('/:id', citgalleryCtrl.deleteCityImage);
+router.post('/:id', citgalleryCtrl.addCityImages)
+router.get('/', citgalleryCtrl.getCityImages)
+router.delete('/:id', citgalleryCtrl.deleteCityImages)
 
-export default router;
+export default router

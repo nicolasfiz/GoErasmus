@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap"
 import ToastComponent from "../../toast"
 import cityServices from "../../../../services/city.service"
+import cityGalleryServices from "../../../../services/cityGallery.service"
 import countryServices from "../../../../services/country.service"
 
 function CrearNuevaCiudadModal(props){
@@ -10,12 +11,14 @@ function CrearNuevaCiudadModal(props){
   const [nombre, setNombre] = useState("")
   const [cabecera, setCabecera] = useState(null)
   const [input, setInput] = useState("")
+  const [galeria, setGaleria] = useState([])
   const [pais, setPais] = useState(0)
   
   //Comprueba si los datos son validos
   const [nombreValido, setNombreValido] = useState(false)
   const [cabeceraValida, setCabeceraValida] = useState(false)
   const [inputValido, setInputValido] = useState(false)
+  const [galeriaValida, setGaleriaValida] = useState(true)
   const [paisValido, setPaisValido] = useState(false)
 
   //Lista de universidades
@@ -26,6 +29,14 @@ function CrearNuevaCiudadModal(props){
 
   const [showToast, setShowToast] = useState(false)
 
+  const handleUploadFiles = files => {
+    const uploaded = []
+    files.forEach(file => {
+      if (uploaded.findIndex((f) => f.name === file.name) === -1)
+          uploaded.push(file)
+    })
+    setGaleria(uploaded)
+  }
 
   const handleButtonClick = () => {
     setShowToast(true)
@@ -61,6 +72,15 @@ function CrearNuevaCiudadModal(props){
       }
       else
         setCabeceraValida(false)
+    } else if (tag === "galeria") {
+      const archivosSeleccionados = Array.prototype.slice.call(target.files)
+      handleUploadFiles(archivosSeleccionados)
+      let valid = true
+      archivosSeleccionados.forEach(img => {
+        const subStr = img.name.substring(img.name.length - 4, img.name.length)
+        valid &&= subStr === ".png" || subStr === ".jpg"
+      })
+      setGaleriaValida(valid)
     }
   }
 
@@ -73,10 +93,28 @@ function CrearNuevaCiudadModal(props){
     bodyFormData.append("informacion", input)
     bodyFormData.append("file", cabecera)
 
-    cityServices.createCity(bodyFormData).then(() => {
-        props.updatechanges()
-        props.onHide()
-        handleButtonClick()
+    cityServices.createCity(bodyFormData).then(([{idCiudad}]) => {
+        if (galeria.length !== 0) {
+          const galleryFormData = new FormData()
+          galeria.forEach((file, i) => {
+            galleryFormData.append(`file${i}`, file, file.name)
+          })
+          cityGalleryServices.insertCityImages(idCiudad, galleryFormData).then(() => {
+            props.updatechanges()
+            props.onHide()
+            handleButtonClick()
+          }).catch(error => {
+            cityServices.deleteCity(idCiudad).then(() => {
+              console.log(error)
+            }).catch(error => {
+              console.log(error)
+            })
+          })
+        } else {
+          props.updatechanges()
+          props.onHide()
+          handleButtonClick()
+        }
       }).catch(error => {
         console.log(error)
       })
@@ -101,6 +139,8 @@ function CrearNuevaCiudadModal(props){
           setPaisValido(false)
           setInputValido(false)
           setCabeceraValida(false)
+          setGaleriaValida(true)
+          setGaleria([])
         }}
       >
         <Modal.Header closeButton>
@@ -131,6 +171,17 @@ function CrearNuevaCiudadModal(props){
                 <Form.Label>Imagen de cabecera en formato .png o .jpg</Form.Label>
                 <Form.Control type="file" onChange={ (event) => handleChanges("cabecera", event)}/>
               </Form.Group>
+              <Form.Group controlId="formGalleryImg" className="mb-3">
+                <Form.Label>Imágenes de galería en formato .png o .jpg (opcional)</Form.Label>
+                <Form.Control type="file" multiple onChange={ (event) => handleChanges("galeria", event)}/>
+                <div className="ml-3">
+                  { galeria.length !== 0 ? 
+                    galeria.map((file, id) => (
+                      <div className="mt-2" style={{fontSize: "13px"}} key={id}> <li> <i>{ file.name }</i> </li> </div>
+                    )) : null
+                  }
+                </div>
+              </Form.Group>
               <FloatingLabel controlId="floatingTextCreateCity" label="Información sobre la ciudad">
                 <Form.Control
                   as="textarea"
@@ -140,13 +191,14 @@ function CrearNuevaCiudadModal(props){
                   onChange={(event) => handleChanges("input", event)}
                 />
               </FloatingLabel>
+              <p style={{fontSize:"13px" }}>Si no sabes sobre lenguaje de marcado, pulsa <a style={{textDecoration: "none"}} target="_blank" rel="noreferrer" href="https://www.markdowntutorial.com/es/">aquí</a></p> 
             </div>
           </Modal.Body>
           <Modal.Footer>
             <Button
               type='submit'
               variant='success'
-              disabled={ !(nombreValido && paisValido && cabeceraValida && inputValido) }>
+              disabled={ !(nombreValido && paisValido && cabeceraValida && inputValido && galeriaValida) }>
                 Crear ciudad
             </Button>
           </Modal.Footer>

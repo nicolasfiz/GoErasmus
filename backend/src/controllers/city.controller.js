@@ -11,12 +11,11 @@ const addCity = async (req, res) => {
         const uploaded = await cloudinary.uploader.upload(req.files.file.tempFilePath, {
             folder: 'ciudades',
         })
-        const {secure_url} = uploaded
-
-        const city = { nombre, informacion, "urlCabecera": secure_url, pais_idPais }
+        const city = { nombre, informacion, "urlCabecera": uploaded.secure_url, pais_idPais }
         const connection = await getConnection()
         await connection.query("INSERT INTO ciudad SET ?", city)
-        res.json({message: "City added successfully"})
+        const query = await connection.query("SELECT idCiudad FROM ciudad WHERE nombre=? AND informacion=? AND pais_idPais=? AND urlCabecera=?", [nombre, informacion, pais_idPais, uploaded.secure_url])
+        res.json(query)
     } catch(error) {
         res.status(500).send(error.message)
     }
@@ -97,6 +96,7 @@ const updateCity = async (req, res) => {
     }
 }
 
+//Galeria Imágenes se borra de base de datos automáticamente
 const deleteCity = async (req, res) => {
     try {
         const {id} = req.params
