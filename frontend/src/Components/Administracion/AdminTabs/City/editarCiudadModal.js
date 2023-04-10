@@ -98,7 +98,8 @@ const toSave = (event) => {
   bodyFormData.append("pais_idPais", pais)
 
   cityServices.updateCity(row.id, bodyFormData).then(() => {
-    if (galeria.length !== 0) { //HACERLO MEJOR
+    
+    if (galeria.length !== 0) {
       const galleryFormData = new FormData()
       galeria.forEach((file, i) => {
         galleryFormData.append(`file${i}`, file, file.name)
@@ -145,7 +146,7 @@ return (
         setTextoValido(true)
         setPaisValido(true)
         setGaleriaValida(true)
-        setGaleria([]) //Valor por defecto -> lo que habia antes de la edicion
+        setGaleria([])
       }}
     >
       <Modal.Header closeButton>
