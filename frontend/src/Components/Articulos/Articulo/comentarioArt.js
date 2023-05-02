@@ -36,7 +36,7 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
         }
         else
           toast.error("No puedes votar tu propia aportacion")
-      }).catch( () => toast.error("Ha ocurrido un errror"))
+      }).catch( () => toast.error("Ha ocurrido un error"))
     } 
   }
 
@@ -57,7 +57,7 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
         }
         else
           toast.error("No puedes votar tu propia aportacion")
-      }).catch( () => toast.error("Ha ocurrido un errror"))
+      }).catch( () => toast.error("Ha ocurrido un error"))
     } 
   }
 
@@ -91,7 +91,7 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
                     type="checkbox"
                     onChange={() => mg(item.idVotacion, currentItems.indexOf(item))}
                   >
-                    <AiFillLike /> {likes[currentItems.indexOf(item)]}
+                    <AiFillLike /> {item.mg/*likes[currentItems.indexOf(item)]*/}
                   </ToggleButton>
                 </div>
                 <div>
@@ -102,7 +102,7 @@ const ComentarioArt = ({ currentItems, votados, idUsuario }) => {
                     type="checkbox"
                     onChange={() => nmg(item.idVotacion, currentItems.indexOf(item))}
                   >
-                    <AiFillDislike /> {dislikes[currentItems.indexOf(item)]}
+                    <AiFillDislike /> {item.nmg/*dislikes[currentItems.indexOf(item)]*/}
                   </ToggleButton>
                 </div>
               </Card.Footer>

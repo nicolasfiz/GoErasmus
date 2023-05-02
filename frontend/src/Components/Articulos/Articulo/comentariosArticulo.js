@@ -37,8 +37,7 @@ const PaginatedItemsArt = ({ itemsPerPage, idArticulo, idUsuario, votados }) => 
   const changeCheck = (tipo) => {
     if (tipo === "like") {
       setCheck(true)
-      currentItems.sort((a, b) => a.mg - b.mg)
-      currentItems.reverse()
+      currentItems.sort( (a, b) => a.mg - b.mg ).reverse()
     } else {
       setCheck(false)
       currentItems.sort((a, b) =>
