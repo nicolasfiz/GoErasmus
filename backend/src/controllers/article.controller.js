@@ -169,7 +169,6 @@ const getArticleComments = async (req, res) => {
     }
 }
 
-
 export const methods = {
     addDraftArticle,
     getArticles,

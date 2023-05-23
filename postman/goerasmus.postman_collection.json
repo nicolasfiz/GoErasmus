@@ -1,0 +1,1512 @@
+{
+	"info": {
+		"_postman_id": "18283355-be23-4dcd-8148-85d1337abac0",
+		"name": "goerasmus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14968671"
+	},
+	"item": [
+		{
+			"name": "articles",
+			"item": [
+				{
+					"name": "/api/article",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"Si el chaleco viene de Chalecoslovaquia, el checo viene de ... Brno, ¡por supuesto!\",\r\n    \"descripcion\": \"Mucho checo la verdad, no entienden ni papa de ingles la mayoria\",\r\n    \"urlCabecera\": \"nose\",\r\n    \"ciudad_idCiudad\": 8,\r\n    \"usuario_idUsuario\": 1\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/article",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/article",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/article?name=Varsovia",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Varsovia"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/article/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/article/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/article/likes/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/article/likes/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article",
+								"likes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "undefined"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/article/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris bibendum bibendum turpis, vel ornare metus efficitur et. Aliquam tempus, nibh at aliquet rutrum, metus enim molestie leo, vel scelerisque metus metus vitae massa. Praesent venenatis, erat in iaculis egestas, arcu nulla lobortis justo, vel vulputate leo turpis pulvinar erat. Mauris rhoncus dictum euismod. Mauris auctor lacinia ligula, quis fringilla purus bibendum at. Pellentesque fermentum ut lectus at vehicula. Proin dignissim fermentum pretium. Sed et lobortis nibh, id malesuada lacus. Morbi rhoncus tellus metus, non facilisis leo eleifend eu. Duis ut mauris commodo, consectetur mi at, vehicula elit. Suspendisse cursus, orci eu cursus elementum, ligula libero mattis nisi, non pulvinar risus est id tellus. In dolor nunc, convallis non augue at, accumsan viverra tortor. Etiam et est sagittis, aliquet enim ac, sagittis mi.\\nMauris vitae iaculis elit. Proin aliquet tincidunt eros non lobortis. Curabitur id velit dui. Aliquam eros turpis, finibus at ultrices quis, mattis sit amet quam. Nullam et nulla et libero vehicula pulvinar sed quis mi. Nam porttitor, augue non varius dignissim, nisi libero ullamcorper nulla, ut rhoncus nunc urna tincidunt libero. Fusce rutrum sem varius dolor semper, non tristique sapien aliquet. Nulla vestibulum ante eget quam tincidunt vestibulum. Suspendisse sit amet mattis arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer sit amet justo at felis accumsan hendrerit. Ut varius dignissim lorem et euismod. Nulla quis posuere nisi. Integer eget enim vel leo maximus interdum sit amet a nunc.\\nSuspendisse sit amet facilisis libero. Nam ac dolor pretium, tempor enim eu, scelerisque enim. Sed quis nisi ut mi aliquam ultrices imperdiet ut leo. Cras sollicitudin sem quis enim venenatis tristique. Pellentesque egestas imperdiet egestas. Nunc ac sagittis arcu, nec rutrum sem. Vivamus vehicula laoreet nisl non vestibulum.\\nEtiam elit lectus, sodales sed felis sit amet, interdum porttitor eros. Suspendisse dolor diam, viverra id lorem vel, venenatis fringilla tortor. Nullam ante mi, congue quis fringilla vitae, feugiat at arcu. Duis dictum ultrices dolor eget vulputate. Duis commodo urna condimentum leo lacinia vulputate. Vestibulum pharetra eros efficitur consequat vulputate. Integer porta vel diam vitae mollis. Maecenas sed ex eget justo ultricies vestibulum.\\nEtiam facilisis fringilla lectus, quis fermentum magna dictum nec. Phasellus suscipit tincidunt orci sit amet tincidunt. Nulla facilisi. Curabitur ullamcorper ultrices ex vitae placerat. In dignissim volutpat massa a feugiat. In et sagittis arcu. Vivamus felis diam, ultricies at nisi nec, dictum faucibus dolor. Nunc luctus, sem at imperdiet gravida, purus nisl venenatis diam, nec tincidunt arcu arcu nec odio.\\nNulla dictum id elit ut mattis. Pellentesque vestibulum sollicitudin dolor, quis porttitor diam tincidunt vel. Sed quis nisi enim. Vivamus sit amet tempor diam. Nulla facilisi. Mauris porta sed tellus ac lobortis. Duis ornare mi pellentesque nisi eleifend convallis. Vestibulum facilisis cursus dignissim. Etiam ut tincidunt eros. Morbi elementum ipsum lectus, non efficitur tellus euismod a. Vivamus vel rutrum eros. Quisque vitae leo convallis, laoreet eros quis, sollicitudin tortor. Integer sit amet finibus felis. Aenean rhoncus urna ullamcorper leo consectetur porta. Mauris aliquet urna metus, eu facilisis mauris gravida tincidunt.\\nNam sem lorem, eleifend id tempus in, rhoncus nec eros. Duis scelerisque, urna id dictum mattis, justo felis pretium felis, a finibus eros ante non orci. Vivamus varius, mi nec volutpat congue, tortor enim hendrerit velit, vel volutpat justo tortor eu ante. Maecenas fermentum quam eget eros imperdiet, sed luctus leo mollis. Curabitur blandit convallis lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed posuere interdum nisl. Ut et congue orci. Cras hendrerit accumsan enim, nec finibus lectus egestas et. Nulla facilisi. Nunc efficitur turpis id ornare pretium. Vivamus nunc lorem, pulvinar sit amet finibus nec, laoreet id ligula. Morbi vestibulum eget quam ac ornare. Nunc consequat consectetur justo et dapibus. Nulla facilisi.\\nQuisque laoreet sodales interdum. In porttitor mi eget tellus bibendum maximus. Curabitur risus enim, facilisis non odio nec, auctor auctor risus. Donec hendrerit, libero quis porta consectetur, mauris leo semper tortor, quis ultricies nunc ante id odio. Integer non facilisis enim, ac congue nisl. Sed consequat, ligula quis pellentesque finibus, tellus augue mollis enim, nec aliquam nisl erat ut tellus. Ut libero ante, vehicula at massa a, pretium porttitor eros. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean consectetur eget quam vel mattis. Etiam pharetra justo dapibus ullamcorper elementum. Duis hendrerit lorem enim, in bibendum est interdum at. Suspendisse malesuada turpis a lorem vestibulum dignissim. In volutpat felis id odio aliquet, eget blandit lorem pellentesque. In a tellus turpis. Nulla quis justo vel urna placerat placerat a eget lacus.\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/article/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/article/comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Increible aportacion!\",\r\n    \"usuario_idUsuario\": 19,\r\n    \"articulo_idArticulo\": 1\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/article/comment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/article/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/article/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/article/:usuario_idUsuario/:articulo_idArticulo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/article/:usuario_idUsuario/:articulo_idArticulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article",
+								":usuario_idUsuario",
+								":articulo_idArticulo"
+							],
+							"variable": [
+								{
+									"key": "usuario_idUsuario",
+									"value": "1"
+								},
+								{
+									"key": "articulo_idArticulo",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/article/:usuario_idUsuario/:articulo_idArticulo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/article/:usuario_idUsuario/:articulo_idArticulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article",
+								":usuario_idUsuario",
+								":articulo_idArticulo"
+							],
+							"variable": [
+								{
+									"key": "usuario_idUsuario",
+									"value": "1"
+								},
+								{
+									"key": "articulo_idArticulo",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/:id/comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/article/:id/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"article",
+								":id",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "articles-gallery",
+			"item": [
+				{
+					"name": "/api/articlesgallery/:articulo_idArticulo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Juanandarcas/Downloads/palacio-real-parque-lazienki.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/articlesgallery/:articulo_idArticulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"articlesgallery",
+								":articulo_idArticulo"
+							],
+							"variable": [
+								{
+									"key": "articulo_idArticulo",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/articlesgallery/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/articlesgallery/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"articlesgallery",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "/api/auth/signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombrePersona\": \"juan antonio\",\r\n    \"primerApellido\": \"dominguez\",\r\n    \"nombreUsuario\": \"Juanandarcas2\",\r\n    \"correo\": \"juanantonio.2898@gmail.com\",\r\n    \"contrasenaSinCifrar\": \"1234\",\r\n    \"contrasenaRepetida\": \"1234\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/auth/signin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juanantonio.2898@gmail.com\",\r\n    \"password\": \"1234\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/auth/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/auth/recover-password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juanandarcas@uma.es\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/auth/recover-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"recover-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/auth/confirmAccount/:token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/auth/confirmAccount/:token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"confirmAccount",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsInJvbCI6Ik5vdmF0byIsImlhdCI6MTY2OTkzMTQ1MSwiZXhwIjoxNjcwMDE3ODUxfQ.qG8ktPwUfOgpwGcCzsz8-Svu3CdMJhwKyEEnBMnDSj8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/auth/:token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/auth/:token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsInJvbCI6Ik5vdmF0byIsImlhdCI6MTY2OTkzMTQ1MSwiZXhwIjoxNjcwMDE3ODUxfQ.qG8ktPwUfOgpwGcCzsz8-Svu3CdMJhwKyEEnBMnDSj8"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cities",
+			"item": [
+				{
+					"name": "/api/city",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Malaga\",\r\n    \"informacion\": \"\",\r\n    \"urlCabecera\": \"\",\r\n    \"pais_idPais\": 4\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/city/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"city",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/city",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/city/?name=Eslovaquia",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"city",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Eslovaquia"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/city/name/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/city/name/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"city",
+								"name",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/city/:name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/city/:name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"city",
+								":name"
+							],
+							"variable": [
+								{
+									"key": "name",
+									"value": "Varsovia"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/city/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Bratislava\",\r\n    \"informacion\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris bibendum bibendum turpis, vel ornare metus efficitur et. Aliquam tempus, nibh at aliquet rutrum, metus enim molestie leo, vel scelerisque metus metus vitae massa. Praesent venenatis, erat in iaculis egestas, arcu nulla lobortis justo, vel vulputate leo turpis pulvinar erat. Mauris rhoncus dictum euismod. Mauris auctor lacinia ligula, quis fringilla purus bibendum at. Pellentesque fermentum ut lectus at vehicula. Proin dignissim fermentum pretium. Sed et lobortis nibh, id malesuada lacus. Morbi rhoncus tellus metus, non facilisis leo eleifend eu. Duis ut mauris commodo, consectetur mi at, vehicula elit. Suspendisse cursus, orci eu cursus elementum, ligula libero mattis nisi, non pulvinar risus est id tellus. In dolor nunc, convallis non augue at, accumsan viverra tortor. Etiam et est sagittis, aliquet enim ac, sagittis mi.\\nMauris vitae iaculis elit. Proin aliquet tincidunt eros non lobortis. Curabitur id velit dui. Aliquam eros turpis, finibus at ultrices quis, mattis sit amet quam. Nullam et nulla et libero vehicula pulvinar sed quis mi. Nam porttitor, augue non varius dignissim, nisi libero ullamcorper nulla, ut rhoncus nunc urna tincidunt libero. Fusce rutrum sem varius dolor semper, non tristique sapien aliquet. Nulla vestibulum ante eget quam tincidunt vestibulum. Suspendisse sit amet mattis arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer sit amet justo at felis accumsan hendrerit. Ut varius dignissim lorem et euismod. Nulla quis posuere nisi. Integer eget enim vel leo maximus interdum sit amet a nunc.\\nSuspendisse sit amet facilisis libero. Nam ac dolor pretium, tempor enim eu, scelerisque enim. Sed quis nisi ut mi aliquam ultrices imperdiet ut leo. Cras sollicitudin sem quis enim venenatis tristique. Pellentesque egestas imperdiet egestas. Nunc ac sagittis arcu, nec rutrum sem. Vivamus vehicula laoreet nisl non vestibulum.\\nEtiam elit lectus, sodales sed felis sit amet, interdum porttitor eros. Suspendisse dolor diam, viverra id lorem vel, venenatis fringilla tortor. Nullam ante mi, congue quis fringilla vitae, feugiat at arcu. Duis dictum ultrices dolor eget vulputate. Duis commodo urna condimentum leo lacinia vulputate. Vestibulum pharetra eros efficitur consequat vulputate. Integer porta vel diam vitae mollis. Maecenas sed ex eget justo ultricies vestibulum.\\nEtiam facilisis fringilla lectus, quis fermentum magna dictum nec. Phasellus suscipit tincidunt orci sit amet tincidunt. Nulla facilisi. Curabitur ullamcorper ultrices ex vitae placerat. In dignissim volutpat massa a feugiat. In et sagittis arcu. Vivamus felis diam, ultricies at nisi nec, dictum faucibus dolor. Nunc luctus, sem at imperdiet gravida, purus nisl venenatis diam, nec tincidunt arcu arcu nec odio.\\nNulla dictum id elit ut mattis. Pellentesque vestibulum sollicitudin dolor, quis porttitor diam tincidunt vel. Sed quis nisi enim. Vivamus sit amet tempor diam. Nulla facilisi. Mauris porta sed tellus ac lobortis. Duis ornare mi pellentesque nisi eleifend convallis. Vestibulum facilisis cursus dignissim. Etiam ut tincidunt eros. Morbi elementum ipsum lectus, non efficitur tellus euismod a. Vivamus vel rutrum eros. Quisque vitae leo convallis, laoreet eros quis, sollicitudin tortor. Integer sit amet finibus felis. Aenean rhoncus urna ullamcorper leo consectetur porta. Mauris aliquet urna metus, eu facilisis mauris gravida tincidunt.\\nNam sem lorem, eleifend id tempus in, rhoncus nec eros. Duis scelerisque, urna id dictum mattis, justo felis pretium felis, a finibus eros ante non orci. Vivamus varius, mi nec volutpat congue, tortor enim hendrerit velit, vel volutpat justo tortor eu ante. Maecenas fermentum quam eget eros imperdiet, sed luctus leo mollis. Curabitur blandit convallis lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed posuere interdum nisl. Ut et congue orci. Cras hendrerit accumsan enim, nec finibus lectus egestas et. Nulla facilisi. Nunc efficitur turpis id ornare pretium. Vivamus nunc lorem, pulvinar sit amet finibus nec, laoreet id ligula. Morbi vestibulum eget quam ac ornare. Nunc consequat consectetur justo et dapibus. Nulla facilisi.\\nQuisque laoreet sodales interdum. In porttitor mi eget tellus bibendum maximus. Curabitur risus enim, facilisis non odio nec, auctor auctor risus. Donec hendrerit, libero quis porta consectetur, mauris leo semper tortor, quis ultricies nunc ante id odio. Integer non facilisis enim, ac congue nisl. Sed consequat, ligula quis pellentesque finibus, tellus augue mollis enim, nec aliquam nisl erat ut tellus. Ut libero ante, vehicula at massa a, pretium porttitor eros. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean consectetur eget quam vel mattis. Etiam pharetra justo dapibus ullamcorper elementum. Duis hendrerit lorem enim, in bibendum est interdum at. Suspendisse malesuada turpis a lorem vestibulum dignissim. In volutpat felis id odio aliquet, eget blandit lorem pellentesque. In a tellus turpis. Nulla quis justo vel urna placerat placerat a eget lacus.\",\r\n    \"urlCabecera\": \"https://res.cloudinary.com/dnkmzoohy/image/upload/v1668114618/ciudades/Bratislava_stmkik.jpg\",\r\n    \"pais_idPais\": 4\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/city/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"city",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/city/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/city/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"city",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cities-gallery",
+			"item": [
+				{
+					"name": "/api/citiesgallery/:ciudad_idCiudad",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Juanandarcas/Downloads/palacio-real-parque-lazienki.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/citiesgallery/:ciudad_idCiudad",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"citiesgallery",
+								":ciudad_idCiudad"
+							],
+							"variable": [
+								{
+									"key": "ciudad_idCiudad",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/citiesgallery/:name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/citiesgallery/:name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"citiesgallery",
+								":name"
+							],
+							"variable": [
+								{
+									"key": "name",
+									"value": "Varsovia"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/citiesgallery/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/citiesgallery/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"citiesgallery",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "/api/comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/comment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/comment/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/comment/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"comment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "countries",
+			"item": [
+				{
+					"name": "/api/country",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Ejemplo\",\r\n    \"urlBandera\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/country/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"country",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/country",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/country",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"country"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/country/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"España\",\r\n    \"urlBandera\": \"arrivah\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/country/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"country",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/country/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/country/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"country",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "35"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "faculties",
+			"item": [
+				{
+					"name": "/api/faculty",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"ETSI Ingenieria Informática\",\r\n    \"universidad_idUniversidad\": 5\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/faculty/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"faculty",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/faculty",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/faculty/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"faculty",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Universidad de Bolonia",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/faculty/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"ETSI Ingeniería Informatica\",\r\n    \"universidad_idUniversidad\": 5\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/faculty/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"faculty",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/faculty/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/faculty/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"faculty",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "files",
+			"item": [
+				{
+					"name": "/api/file",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/file",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/file/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/faculty/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"faculty",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subjects",
+			"item": [
+				{
+					"name": "/api/subject",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"a\",\r\n    \"facultad_idFacultad\": 1\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/subject/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"subject",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/subject",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/subject?name=Facultad de Tecnologías de la Información",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"subject"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Facultad de Tecnologías de la Información"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/subject/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"aeoa\",\r\n    \"facultad_idFacultad\": 1\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/subject/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"subject",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/subject/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/subject/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"subject",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "universities",
+			"item": [
+				{
+					"name": "/api/university",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Universidad de Malaga\",\r\n    \"urlLogo\": \"esta\",\r\n    \"ciudad_idCiudad\": 3\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/university/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"university",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/university",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/university/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"university",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Varsovia",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/university/:name/length",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/university/:name/length",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"university",
+								":name",
+								"length"
+							],
+							"variable": [
+								{
+									"key": "name",
+									"value": "Praga"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/university/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Universidad de Malaga\",\r\n    \"urlLogo\": \" \",\r\n    \"ciudad_idCiudad\": 3\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/university/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"university",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/university/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/university/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"university",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "/api/user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/user/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

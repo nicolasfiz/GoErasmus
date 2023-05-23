@@ -35,7 +35,7 @@ const addArticleImages = async (req, res) => {
 const getArticleImages = async (req, res) => {
     try {
         const connection = await getConnection()
-        const {id} = req.query
+        const {id} = req.params
         let query = await connection.query(`SELECT urlImagen FROM galeriaimagenesarticulo WHERE articulo_idArticulo = ?`, id)
         res.json(query)
     } catch (error) {

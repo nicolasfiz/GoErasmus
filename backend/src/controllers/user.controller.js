@@ -227,7 +227,7 @@ const prueba = async (req, res) => {
 }
 
 
-const resetPoints = async (req, res) => {
+/*const resetPoints = async (req, res) => {
     try {
         const connection = await getConnection()
         await connection.query("SET SQL_SAFE_UPDATES = 0")
@@ -237,7 +237,7 @@ const resetPoints = async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message)
     }
-}
+}*/
 
 export const methods = {
     getUsers,
@@ -250,7 +250,7 @@ export const methods = {
     getLogros,
     uploadPicture,
     guardarDatos,
-    resetPoints,
+    //resetPoints,
     prueba,
     getUserById
 }

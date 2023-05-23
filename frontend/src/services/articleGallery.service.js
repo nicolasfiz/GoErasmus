@@ -8,7 +8,7 @@ const insertArticleImages = async (id, bodyFormData) => {
 }
 
 const getArticleImagesByArticleId = async (id) => {
-    const request = axios.get(`${baseUrl}/?id=${id}`)
+    const request = axios.get(`${baseUrl}/${id}`)
     return request.then(response => response.data)
 }
 

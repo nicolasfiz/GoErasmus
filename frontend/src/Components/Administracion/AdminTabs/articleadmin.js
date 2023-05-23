@@ -37,7 +37,7 @@ function ArticleAdmin() {
       elem.titulo.toLowerCase().includes(searchTerm.toLowerCase())
       || elem.nombreCiudad.toLowerCase().includes(searchTerm.toLowerCase())
       || elem.nombreUsuario.toLowerCase().includes(searchTerm.toLowerCase())
-      || likes.find(({idArticulo}) => idArticulo === elem.idArticulo).mg.toString().includes(searchTerm.toString())
+      // || likes.find(({idArticulo}) => idArticulo === elem.idArticulo).mg.toString().includes(searchTerm.toString())
       )
     setArticlesList(searchResult)
   }

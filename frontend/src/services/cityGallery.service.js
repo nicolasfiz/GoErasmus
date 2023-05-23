@@ -8,7 +8,7 @@ const insertCityImages = async (id, bodyFormData) => {
 }
 
 const getCityImagesByCityName = async (name) => {
-    const request = axios.get(`${baseUrl}/?name=${name}`)
+    const request = axios.get(`${baseUrl}/${name}`)
     return request.then(response => response.data)
 }
 

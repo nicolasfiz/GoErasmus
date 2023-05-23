@@ -34,12 +34,8 @@ const addCityImages = async (req, res) => {
 const getCityImages = async (req, res) => {
     try {
         const connection = await getConnection()
-        const {name} = req.query
-        let query
-        if (name === undefined) // nombreCiudad ? imagenes de esa ciudad : todas las imagenes
-            query = await connection.query(`SELECT ciudad_idCiudad as idCiudad, urlImagenOriginal FROM galeriaimagenesciudad`)
-        else
-            query = await connection.query(`SELECT gic.urlImagen FROM galeriaimagenesciudad gic
+        const {name} = req.params
+        const query = await connection.query(`SELECT gic.urlImagen FROM galeriaimagenesciudad gic
                                             JOIN Ciudad c ON c.idCiudad= gic.ciudad_idCiudad
                                             WHERE c.nombre = ?`, name)
         res.json(query)
@@ -48,7 +44,7 @@ const getCityImages = async (req, res) => {
     }
 }
 
-const deleteCityImages = async (req, res) => {
+const deleteCityImages = async (req, res) => { //??
     try {
         const connection = await getConnection()
         const {id} = req.params
