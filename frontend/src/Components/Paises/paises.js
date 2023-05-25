@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { Button, Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import countryService from "../../services/country.service";
-import './paises.css';
+import { useEffect, useState } from "react"
+import { Button, Card } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
+import countryService from "../../services/country.service"
+import './paises.css'
 
 const  CountryCard = ({nombre, urlBandera}) => {
 
-  const nav = useNavigate();
+  const nav = useNavigate()
 
   return (
       <Card style={{ width: '18rem' }}>
@@ -15,18 +15,18 @@ const  CountryCard = ({nombre, urlBandera}) => {
         <Button size="lg" variant="primary" onClick={() => {nav(`/${nombre}/`)}}>{nombre}</Button>
       </Card.Body>
     </Card>
-  );
+  )
 }
 
 function Paises() {
 
-    const [paises, setPaises] = useState([]);
+    const [paises, setPaises] = useState([])
 
     useEffect(() => {
       countryService.getCountries().then(countries => {
-        setPaises(countries);
-      });
-    }, []);
+        setPaises(countries)
+      })
+    }, [])
 
     return ( paises.length !== 0 ? 
     (<section>
@@ -39,7 +39,7 @@ function Paises() {
       <h3>Parece que actualmente no tenemos ningún destino en nuestra base de datos.</h3>
       <p style={{margin:"0"}}>Por favor, presione <a style={{textDecoration: "none"}} href="../">este</a> enlace para volver a la página principal.</p>
     </section>)
-    );
+    )
 }
 
-export default Paises;
+export default Paises

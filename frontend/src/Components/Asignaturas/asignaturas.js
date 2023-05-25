@@ -1,47 +1,47 @@
-import { useEffect, useState } from "react";
-import { InputGroup, Table } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
-import subjectServices from "../../services/subject.service";
-import "./asignaturas.css";
-import "../Facultades/facultades.css";
+import { useEffect, useState } from "react"
+import { InputGroup, Table } from "react-bootstrap"
+import { useNavigate, useParams } from "react-router-dom"
+import subjectServices from "../../services/subject.service"
+import "./asignaturas.css"
+import "../Facultades/facultades.css"
 
 const  SubjectCell = ({index, idAsignatura, nombreAsignatura}) => {
 
-  const nav = useNavigate();
+  const nav = useNavigate()
 
   return <>
-           <tr>
-             <td className="centerTableText">{index}</td>
-             <td onClick={() => nav(`/asignatura/${idAsignatura}`) }>{nombreAsignatura}</td>
-           </tr>
-         </>;
+          <tr>
+            <td className="centerTableText">{index}</td>
+            <td onClick={() => nav(`/asignatura/${idAsignatura}`) }>{nombreAsignatura}</td>
+          </tr>
+        </>
 }
 
 function Asignaturas() {
   
-  const params = useParams();
-  const [tablaAsignaturas, setTablaAsignaturas] = useState([]);
-  const [asignaturas, setAsignaturas] = useState([]);
-  const [search, setSearch] = useState("");
-  let index = 0;
+  const params = useParams()
+  const [tablaAsignaturas, setTablaAsignaturas] = useState([])
+  const [asignaturas, setAsignaturas] = useState([])
+  const [search, setSearch] = useState("")
+  let index = 0
 
   const handleChange = e => {
-    setSearch(e.target.value);
-    filterSearch(e.target.value);
+    setSearch(e.target.value)
+    filterSearch(e.target.value)
   }
 
   const filterSearch = (searchTerm) => {
     let searchResult = tablaAsignaturas.filter(elem =>
-      elem.nombreAsignatura.toLowerCase().includes(searchTerm.toLowerCase()));
-    setAsignaturas(searchResult);
+      elem.nombreAsignatura.toLowerCase().includes(searchTerm.toLowerCase()))
+    setAsignaturas(searchResult)
   }
 
   useEffect(() => {
     subjectServices.getSubjectsByFacultyName(params.nombreFacultad).then(subjects => {
-      setAsignaturas(subjects);
-      setTablaAsignaturas(subjects);
-    });
-  }, [params.nombreFacultad]);
+      setAsignaturas(subjects)
+      setTablaAsignaturas(subjects)
+    })
+  }, [params.nombreFacultad])
 
   return ( asignaturas.length !== 0 ?
     <div
@@ -101,7 +101,7 @@ function Asignaturas() {
         <h3>Parece que no tenemos ningún resultado para <i style={{fontWeight: "bold"}}>{params.nombreFacultad}</i></h3>
         <p style={{margin:"0"}}>Por favor, presione <a style={{textDecoration: "none"}} href="../">este</a> enlace para volver a la {params.nombreUniversidad}</p>
       </section>)
-  );
+  )
 }
 
-export default Asignaturas;
+export default Asignaturas
